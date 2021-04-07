@@ -82,8 +82,18 @@
         </div>
       </div>
     </div>
-    @section('content')
+    <div class="container">
+      <div class="search">
+        <form action="timkiem.php" method="GET">
+            <div class="search-right">
+                <input style="border-radius:5px;padding-left:10px;width:290px;" placeholder="Nhập tên cần tìm" type="text" name="search">
+                <button style="border: 0;background-color: transparent;"><i class="fa fa-search" aria-hidden="true" style="color:#00CED1"></i></button>
+            </div>
+        </form>
+      </div>
+      @section('content')
         
-    @show
+      @show
+    </div>
 </body>
 </html>

@@ -12,6 +12,8 @@ use App\TheLoai;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Util\Json;
 
+use function GuzzleHttp\json_decode;
+
 class Noidung extends Controller
 {
     public function add_truyen(Request $req){
@@ -109,11 +111,64 @@ class Noidung extends Controller
 
 
     public function test(){
-      $tentruyen = new Truyen();
-      $tentruyen = $tentruyen -> get_all_truyen();
-     $tentruyen = json_decode($tentruyen);
-      return view('trangchu',compact('tentruyen'));
+      $newtruyen = new Truyen();
+      $newtruyen = $newtruyen -> get_new_truyen();
+      $newtruyen = json_decode($newtruyen);
+      $viewtruyen = new Truyen();
+      $viewtruyen = $viewtruyen ->get_view_truyen();
+      $viewtruyen = json_decode($viewtruyen);
+      $hiendai = new Truyen();
+      $hiendai = $hiendai -> get_loai_truyen(1);//hiện đại id=1
+      $hiendai = json_decode($hiendai);
+      $cotrang = new Truyen();
+      $cotrang = $cotrang -> get_loai_truyen(2);//hiện đại id=2
+      $cotrang = json_decode($cotrang);
+      return view('trangchu',compact('newtruyen','viewtruyen','cotrang','hiendai'));
     }
 
+
+    public function chitiet_truyen($ten){
+      $truyen = new Truyen();
+      $truyen = $truyen->get_ten_truyen($ten);
+      $truyen = json_decode($truyen);
+      $link =$truyen[0]->link_truyen;
+      $chitiet = file_get_html($link);
+      $tinhtrangtruyen = $truyen[0]->tinh_trang;
+      $truyen_id =  $truyen[0]->truyen_id;
+      session(['truyen_id' => $truyen_id]);
+      $tinhtrang = $chitiet ->find('.label-status',0)->plaintext;
+      if($tinhtrang=='Full' && $tinhtrangtruyen=='Còn tiếp'){
+        $chuong = new NoiDungChuong();
+        $chuong = $chuong -> get_new_chuong($truyen_id);
+        $chuong = json_decode($chuong);
+        $linkchuong=$chuong[0]->link_chuong;
+        $getchuong = file_get_html($linkchuong);
+        $check = true;
+        while($check){
+          $nextchuong =$getchuong ->find('.next',0)->href;
+          $tenchuong = $getchuong->find('.current-chapter',0)->plaintext;
+          if($nextchuong=='#')
+          {
+            $updatetruyen = new Truyen();
+            $updatetruyen = $updatetruyen->update_trangthai($ten);
+            $check=false;
+          }
+          else
+          {
+            $diachi = 'https://truyenplus.vn'.$nextchuong;
+            $addchuong = new NoiDungChuong();
+            $addchuong = $addchuong -> insert_chuong($tenchuong,$diachi,$truyen);
+            $getchuong= file_get_html($diachi);
+          }
+        }
+      }
+
+      $mucluc = new NoiDungChuong();
+      $mucluc = $mucluc -> get_noi_dung($truyen_id);
+      $mucluc = json_decode($mucluc);
+      $gioithieu = $chitiet ->find('#gioithieu',0);
+      return view('test',compact('mucluc','truyen','gioithieu'));
+
+    }
 
 }

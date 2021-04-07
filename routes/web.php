@@ -30,3 +30,4 @@ Route::post('inserttruyen','Noidung@add_truyen');
 Route::get('testtruyen',function () {return view('taotruyen');});
 Route::get('hi', function () {return view('layouttruyen');});
 Route::post('taotruyen','Noidung@checktruyen' );
+Route::get('truyen/{ten}','Noidung@chitiet_truyen');

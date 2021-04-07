@@ -17,9 +17,9 @@ class NoiDungChuong extends Model
         return $this -> belongsTo('App\Truyen','truyen_id','noi_dung_chuong_id');
     }
     
-    public function get_noi_dung(){
+    public function get_noi_dung($id){
         $noidung= DB::table('noi_dung_chuong')
-            ->where('noi_dung_chuong_id','=',1)
+            ->where('truyen_id','=',$id)
             ->get();
         return $noidung;
     }
@@ -37,5 +37,13 @@ class NoiDungChuong extends Model
                     'truyen_id' => $truyen,
                     'thu_tu_chuong' => $stt
                 ]);
-    }   
+    } 
+    public function get_new_chuong($id){
+        $chuong = DB::table('noi_dung_chuong')
+                    -> where('truyen_id','=',$id)
+                    ->orderByDesc('thu_tu_chuong')
+                    ->limit(1)
+                    ->get();
+                return $chuong;
+    }  
 }

@@ -1,18 +1,10 @@
 <?php 
- foreach ($tentruyen as $value) {
-        echo $value->truyen_id;
-        echo '<br><br>';
-        echo $value->ten_truyen;
-        echo '<br><br>';
-        echo $value->link_truyen;
-        echo '<br><br>';
-        echo $value->luot_doc;
-        echo '<br><br>';
-        echo $value->ten_tac_gia;
-        echo '<br><br>';
-    }
-
-
+echo $gioithieu;
+foreach ($mucluc as $value) {
+    echo 'muckuc. <br>';
+    echo $value->ten_chuong.'<br>';
+}
+echo $truyen[0]->ten_truyen;
 
  ?>
  {{-- <form action="{{URL::to('inserttruyen')}}" method="post">

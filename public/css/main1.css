@@ -11,7 +11,13 @@ html{
 text-align: center;
 height: 85px;
 }
-
+.infor-infor{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+}
 .book-item a{
     color: black;
     text-decoration: none;
@@ -34,6 +40,10 @@ height: 85px;
 
 .book-item-top{
     margin: 0;
+}
+.list{
+    display: flex;
+    flex-wrap: nowrap;
 }
 .img-cover-top{
     width: 50px;

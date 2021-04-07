@@ -95,6 +95,14 @@ class Truyen extends Model
         return $truyen;
     }
 
+    public function get_ten_truyen($ten){
+        $truyen = DB::table('truyen')
+                    -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+                    -> join('tag_truyen','truyen.truyen_id','=','tag_truyen.truyen_id')
+                    ->where('ten_truyen','=',$ten)       
+                    ->get();
+        return $truyen;
+    }
     public function get_all_truyen(){
         $truyen = DB::table('truyen')
                 -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')          
@@ -110,5 +118,37 @@ class Truyen extends Model
             $truyen = 'ok';
         }else{$truyen ='fail';}
         return $truyen;
+    }
+
+    public function get_new_truyen(){
+        $truyen = DB::table('truyen')
+                -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+                ->orderByDesc('ngay_tao')   
+                ->limit(12)       
+                ->get();
+        return $truyen;
+    }
+    public function get_view_truyen(){
+        $truyen = DB::table('truyen')
+                -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+                ->orderByDesc('luot_doc')   
+                ->limit(8)       
+                ->get();
+        return $truyen;
+    }
+    public function get_loai_truyen($id){
+        $loai = DB::table('truyen')
+                -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+                -> join('tag_truyen','truyen.truyen_id','=','tag_truyen.truyen_id')
+                ->where('the_loai_id','=',$id)
+                ->orderByDesc('luot_doc')   
+                ->limit(8)       
+                ->get();
+        return $loai;
+    }
+    public function update_trangthai($tentruyen){
+        DB::table('truyen')
+            ->where('ten_truyen','=',$tentruyen)
+            ->update(['tinh_trang'=>'Hoàn thành']);
     }
 }
