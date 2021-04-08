@@ -26,4 +26,12 @@ class TagTruyen extends Model
                 ]
             );
     }
+
+    public function get_loai($id){
+        $loai = DB::table('tag_truyen')
+                -> where('truyen_id','=',$id)
+                -> join('the_loai','the_loai.the_loai_id','=','tag_truyen.the_loai_id')
+                -> get();
+        return $loai;
+    }
 }

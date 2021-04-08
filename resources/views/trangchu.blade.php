@@ -8,7 +8,7 @@
       <div class="row">
         @foreach ($newtruyen as $truyen)
           <div class="book-item col-md-3">
-            <a href="" data-toggle="tooltip" data-placement="bottom" title=" <?php echo $truyen->ten_truyen;?>" >
+            <a href="/truyen/ <?php echo $truyen->ten_truyen;?> " data-toggle="tooltip" data-placement="bottom" title=" <?php echo $truyen->ten_truyen;?>" >
               <div class="img-cover">   
                 <img src="http://127.0.0.1:8000/hinhanh/<?php echo $truyen->hinh_anh?>">  
               </div>

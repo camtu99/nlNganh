@@ -1,7 +1,7 @@
 @extends('layouttruyen')
 @section('content')
 <div class="tennd">
-  <p>Truyện <i class="fa fa-angle-right" aria-hidden="true"> Bong bóng lên trời </i></p>
+  <p>Truyện <i class="fa fa-angle-right" aria-hidden="true">{{$truyen[0]->ten_truyen}} </i></p>
 </div>
 <div class="thong_tin">
   <div class="row">
@@ -12,28 +12,27 @@
             <img src="./truyen/Bong bóng lên trời/27.gif" alt="" style="width: 200px;height: 240px;"> 
           </div>
           <div class="detail_product">
-            <h2>Bong bóng lên trời</h2>
+            <h2>{{$truyen[0]->ten_truyen}}</h2>
             <div class="view-sach" style="display:flex;font-weight:100">
-              <p class="iconct"> <i class="fa fa-eye" aria-hidden="true" style="font-weight: 100;">4</i></p>
+              <p class="iconct"> <i class="fa fa-eye" aria-hidden="true" style="font-weight: 100;">{{$truyen[0]->luot_doc}}</i></p>
               <p class="iconct">   <i class="fa fa-comment" aria-hidden="true" style="font-weight: 100;">0</i></p>
-              <a href="" type="buttom" style="color:black">  <i class="fas fa-star    " style="font-weight: 100;" aria-hidden="true">0 </i></a>
             </div>
-            <p>Tên tác giả: <a href="timkiem.php?tacgia=TG2">Nhất Nhất</a></p>
+            <p>Tên tác giả: <a href="timkiem.php?tacgia=TG2"><?php echo $truyen[0]->ten_tac_gia;?></a></p>
             <p>Mới nhất: <a href="noidungchuong.php?chuong=52">Chương 2</a></p>   
-            <p>Thời gian đổi mới: 2020-12-24 14:59:36</p>
-            <p>Tình trạng: <a href="timkiem.php?tinhtrang=Hoàn thành">Hoàn thành</a></p>                           
+            <p>Thời gian đổi mới: {{$mucluc[0]->thoi_gian}}</p>
+            <p>Tình trạng: <a href="timkiem.php?tinhtrang=Hoàn thành">{{$truyen[0]->tinh_trang}}</a></p>                           
           </div>
         </div>
         <div class="thong-tin-1-2">
           <div>
-            <p> Thể loại : 
-              <a href="timkiem.php?theloai=Kinh dị">Kinh dị</a>
-              <a href="timkiem.php?theloai=Tuổi học trò">Tuổi học trò</a>
-              <a href="timkiem.php?theloai=Truyện ngắn">Truyện ngắn</a>                                
+            <p> Thể loại :&nbsp
+              @foreach ($theloai as $loai)
+                <a href="timkiem.php?theloai=Kinh dị">{{$loai->ten_the_loai}}</a>
+              @endforeach                                
             </p>
           </div>
           <div>
-            <p>Vì hoàn cảnh, Thường phải giúp mẹ bằng nghề bán kẹo kéo ngoài giờ học và làm quen với cuộc sống trên đường phố. Ở đó cậu đánh bạn với những người nghèo và hiểu thêm nhiều điều không có trong sáchvà nhà trường.</p>
+            <?php echo $gioithieu;?>
           </div>
           <div style="display: flex;padding:10px;">
             <div class="name1-1">
@@ -79,10 +78,12 @@
   </div>
   <div class="mucluc2">
     <ul>
-      <li class="mucluc2-2"><a href="noidungchuong.php?chuong=51">Chương 1</a></li>
-      <li class="mucluc2-2"><a href="noidungchuong.php?chuong=52">Chương 2</a></li>
-      <li class="mucluc2-2"><a href=""></a>&nbsp;</li>                
-    </ul>
+      @foreach ($mucluc as $item)
+        <li class="mucluc2-2"><a href="noidungchuong.php?chuong=51"><?php echo $item->ten_chuong;?></a></li>
+      @endforeach
+      
+    </ul> 
+{{$mucluc->links()}}         
   </div>
 </div>
 <div class="binhluan">         
@@ -101,4 +102,29 @@
     </div>
   </div>
 </div>
+<div class="listcmt">
+  <div class="m-avatar">
+      <div class="avatar">
+          <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+      </div> 
+  </div>
+  <div class="comment">
+      <div class="comment-box2">
+          <div class="cmt-name">
+              <b> Nguyễn Jordan</b>
+          </div>
+          <div class="cmt-nd">
+              <p>Mình vẫn thắc mắc chương khu vườn trên mây, tại sao nhà chung cư mà lại có sân, có vườn được nhỉ. Lại còn làm bằng tôn nữa. Có ban công thì còn hình dung ra chứ có vườn thì mình ko tài nào hình dung d</p>  
+              
+          </div>
+          <div class="cmt-rep">
+              <div style="margin-left: auto;">
+              <b>Cử báo</b>
+              <b>Trả lời</b>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
 @endsection

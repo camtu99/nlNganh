@@ -98,7 +98,6 @@ class Truyen extends Model
     public function get_ten_truyen($ten){
         $truyen = DB::table('truyen')
                     -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
-                    -> join('tag_truyen','truyen.truyen_id','=','tag_truyen.truyen_id')
                     ->where('ten_truyen','=',$ten)       
                     ->get();
         return $truyen;

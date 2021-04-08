@@ -21,4 +21,10 @@ class BinhLuan extends Model
         return $this -> hasMany('App\CuBaoUser','id_cu_bao','id_binh_luan');
     }
 
+    public function get_binh_luan_chitiet($id_truyen){
+        $binhluan = DB::table('binh_luan')
+                -> where('truyen_id','=',$id_truyen)
+                -> paginate(10);
+        return $binhluan;
+    }
 }

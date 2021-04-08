@@ -20,7 +20,7 @@
             @csrf
             <div>
                 <label for="">Tên Truyện: </label>
-                <input type="text" name='tentruyen' value='{{$tentruyen}}' readonly>
+                <input type="text" name='tentruyen' value='<?php echo $tentruyen;?>' readonly>
             </div>
             <div>
                 <label for="">Link: </label>
@@ -28,7 +28,7 @@
             </div>
             <div>
                 <label for="">Tác Giả: </label>
-                <input type="text" name='tacgia' value='{{$tacgia}}' readonly>
+                <input type="text" name='tacgia' value='<?php echo $tacgia;?>' readonly>
             </div>
             <div>
                 <div><label for="">Thể loại: </label></div>

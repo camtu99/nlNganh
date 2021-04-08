@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\BinhLuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\NoiDungChuong;
@@ -136,6 +138,9 @@ class Noidung extends Controller
       $tinhtrangtruyen = $truyen[0]->tinh_trang;
       $truyen_id =  $truyen[0]->truyen_id;
       session(['truyen_id' => $truyen_id]);
+      $theloai = new TagTruyen();
+      $theloai = $theloai -> get_loai($truyen_id);
+      $theloai = json_decode($theloai);
       $tinhtrang = $chitiet ->find('.label-status',0)->plaintext;
       if($tinhtrang=='Full' && $tinhtrangtruyen=='Còn tiếp'){
         $chuong = new NoiDungChuong();
@@ -165,9 +170,12 @@ class Noidung extends Controller
 
       $mucluc = new NoiDungChuong();
       $mucluc = $mucluc -> get_noi_dung($truyen_id);
-      $mucluc = json_decode($mucluc);
-      $gioithieu = $chitiet ->find('#gioithieu',0);
-      return view('test',compact('mucluc','truyen','gioithieu'));
+      $binhluan = new BinhLuan();
+      $binhluan = $binhluan ->get_binh_luan_chitiet($truyen_id);
+      $chitiet ->find('#gioithieu',0)->find('h2',0)->outertext='';
+      $chitiet ->load( $chitiet ->save());
+      $gioithieu=$chitiet ->find('#gioithieu',0);
+      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan'));
 
     }
 
