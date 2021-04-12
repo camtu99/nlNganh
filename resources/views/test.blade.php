@@ -1,13 +1,6 @@
-<?php 
-echo $gioithieu;
-foreach ($mucluc as $value) {
-    echo 'muckuc. <br>';
-    echo $value->ten_chuong.'<br>';
-}
-echo $truyen[0]->ten_truyen;
-
- ?>
- {{-- <form action="{{URL::to('inserttruyen')}}" method="post">
-    <input type="text"  name="li">
-    <input type="submit" value="Submit">
-</form> --}}
+<hr>
+<div class="form-group row mb-0">
+ <div class="col-md-8 offset-md-4">
+    <a href="{{ url('/redirect/facebook') }}" class="btn btn-primary"><i class="fa fa-facebook"></i> Facebook</a>
+</div>
+</div>

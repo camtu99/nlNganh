@@ -150,4 +150,27 @@ class Truyen extends Model
             ->where('ten_truyen','=',$tentruyen)
             ->update(['tinh_trang'=>'Hoàn thành']);
     }
+
+    public function cung_loai_truyen($limit,$id){
+        $truyen= DB::table('truyen')
+                ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                ->join('tag_truyen','tag_truyen.truyen_id','=','truyen.truyen_id')
+                ->where('the_loai_id','=',$id)
+                ->limit($limit)
+                ->get();
+                return $truyen;
+    }
+    public function cung_tacgia($tacgia){       
+                $truyen = DB::table('truyen')
+                ->where('tac_gia_id','=',$tacgia)           
+                ->get();
+                return $truyen;
+    }
+    public function soluong($tacgia){
+                $soluong = DB::table('truyen')
+                ->where('tac_gia_id','=',$tacgia)
+                ->count();
+        return $soluong;
+        
+    }
 }

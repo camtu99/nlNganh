@@ -6,14 +6,13 @@ use App\BinhLuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\NoiDungChuong;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Facades\Session;
 use App\Truyen;
 use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Util\Json;
-
 use function GuzzleHttp\json_decode;
 
 class Noidung extends Controller
@@ -79,7 +78,8 @@ class Noidung extends Controller
           $tag_truyen = new TagTruyen();
           $tag_truyen = $tag_truyen ->add_tagtruyen($truyen,$i);
         }
-      }$req->session()->flash('success','Nhúng truyện thành công!!!');
+      }
+      Session::flash('success','Nhúng truyện thành công!!!');
       return view('taotruyen');
     }
 
@@ -97,7 +97,7 @@ class Noidung extends Controller
       $check = new Truyen();
       $check = $check -> check_truyen($link);
       if($check=='fail'){
-        $req->session()->flash('error','Trang web đã có người nhúng!!!  Hãy nhúng trang khác nhé.');
+      Session::flash('error','Trang web đã có người nhúng!!!  Hãy nhúng trang khác nhé.');
         return redirect()->back();
       }else{
         $truyen = file_get_html($link);
@@ -137,7 +137,10 @@ class Noidung extends Controller
       $chitiet = file_get_html($link);
       $tinhtrangtruyen = $truyen[0]->tinh_trang;
       $truyen_id =  $truyen[0]->truyen_id;
-      session(['truyen_id' => $truyen_id]);
+      $tac_gia = $truyen[0]->tac_gia_id;
+      Session::put('id_truyen',$truyen_id);
+      Session::put('ten_truyen',$ten);
+      Session::put('id_tacgia',$tac_gia);
       $theloai = new TagTruyen();
       $theloai = $theloai -> get_loai($truyen_id);
       $theloai = json_decode($theloai);
@@ -170,12 +173,71 @@ class Noidung extends Controller
 
       $mucluc = new NoiDungChuong();
       $mucluc = $mucluc -> get_noi_dung($truyen_id);
+      $chuongmoi = new NoiDungChuong();
+      $chuongmoi = $chuongmoi -> get_new_chuong($truyen_id);
       $binhluan = new BinhLuan();
       $binhluan = $binhluan ->get_binh_luan_chitiet($truyen_id);
       $chitiet ->find('#gioithieu',0)->find('h2',0)->outertext='';
       $chitiet ->load( $chitiet ->save());
       $gioithieu=$chitiet ->find('#gioithieu',0);
-      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan'));
+      $cung_tacgia = new Truyen();
+      $cung_tacgia = $cung_tacgia->cung_tacgia($tac_gia);
+      $cung_tacgia=json_decode($cung_tacgia);
+      $soluong = new Truyen();
+      $soluong = $soluong->soluong($tac_gia);
+      $id_loai = $theloai[1]->the_loai_id;
+      
+      if($soluong<12){
+        $i=13-$soluong;
+        $cung_loaitruyen = new Truyen();
+        $cung_loaitruyen = $cung_loaitruyen->cung_loai_truyen($i,$id_loai);
+        $cung_loaitruyen = json_decode($cung_loaitruyen);
+      }
+     
+      
+      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong'));
+
+    }
+    function stt_chuong($id_truyen,$chuong){
+      $nd_chuong = new NoiDungChuong();
+      $nd_chuong = $nd_chuong->get_stt_chuong($id_truyen,$chuong);
+      $nd_chuong = json_decode($nd_chuong);
+      $stt = $nd_chuong->thu_tu_chuong;
+      $stt_cuoi =new NoiDungChuong();
+      $stt_cuoi = $stt_cuoi->get_new_chuong($id_truyen);
+      $stt_cuoi = json_decode($stt_cuoi);
+      if($stt==1){
+        $chuongke= new NoiDungChuong();
+        $chuongke = $chuongke->next_chuong($id_truyen,$stt+1);
+      }else if($stt == $stt_cuoi[0]->thu_tu_chuong){
+        $chuongtruoc= new NoiDungChuong();
+        $chuongtruoc = $chuongtruoc->next_chuong($id_truyen,$stt-1);
+      }else{
+        $chuongke= new NoiDungChuong();
+        $chuongke = $chuongke->next_chuong($id_truyen,$stt+1);
+        $chuongtruoc= new NoiDungChuong();
+        $chuongtruoc = $chuongtruoc->next_chuong($id_truyen,$stt-1);
+      }
+      return $stt;
+
+    }
+    function chitiet_nd_chuong($link){
+      $nd_chuong = file_get_html($link);
+      
+    }
+    public function chitiet_chuong($ten,$chuong){
+      $id_truyen=Session::get('id_truyen');
+      $id_tacgia=Session::get('id_tacgia');
+      $ten_truyen=Session::get('ten_truyen');
+      $nd_chuong = new NoiDungChuong();
+      $nd_chuong = $nd_chuong->get_chuong($id_truyen,$chuong);
+      $nd_chuong =json_decode($nd_chuong);
+      $link_chuong=$nd_chuong[0]->link_chuong;
+      $this->stt_chuong($id_truyen,$chuong);
+      $this->chitiet_nd_chuong($link_chuong);
+      $tacgia=new TacGia();
+      $tacgia=$tacgia->get_tacgia($id_tacgia);
+      return view('chitiet_chuong',compact('tacgia','nd_chuong','ten_truyen','chuongke','chuongtruoc'));
 
     }
 

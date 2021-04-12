@@ -9,7 +9,7 @@
       <div id="thongtintruyen" class="thong-tin-1">
         <div class="thong-tin-1-1">
           <div class="detail_img" style="margin: 20px;">
-            <img src="./truyen/Bong bóng lên trời/27.gif" alt="" style="width: 200px;height: 240px;"> 
+            <img src="http://127.0.0.1:8000/hinhanh/<?php echo $truyen[0]->hinh_anh;?>" alt="" style="width: 200px;height: 240px;"> 
           </div>
           <div class="detail_product">
             <h2>{{$truyen[0]->ten_truyen}}</h2>
@@ -18,7 +18,7 @@
               <p class="iconct">   <i class="fa fa-comment" aria-hidden="true" style="font-weight: 100;">0</i></p>
             </div>
             <p>Tên tác giả: <a href="timkiem.php?tacgia=TG2"><?php echo $truyen[0]->ten_tac_gia;?></a></p>
-            <p>Mới nhất: <a href="noidungchuong.php?chuong=52">Chương 2</a></p>   
+            <p>Mới nhất: <a href="noidungchuong.php?chuong=52">{{$chuongmoi[0]->ten_chuong}}</a></p>   
             <p>Thời gian đổi mới: {{$mucluc[0]->thoi_gian}}</p>
             <p>Tình trạng: <a href="timkiem.php?tinhtrang=Hoàn thành">{{$truyen[0]->tinh_trang}}</a></p>                           
           </div>
@@ -53,19 +53,45 @@
       <div id="cungloai" class="right">
         <div id="cungtheloai" class="right1">
           <ul id="hihi" style="overflow: scroll; height: 761.6px;">
-            <li><p>Cùng thể loại</p></li>
-            <li>
-              <div class="rr">
-                <a href="">
-                    <img src="./truyen/Tê kiến/te_kien.jpg" alt="">
-                </a>
-                <div class="rrr">
-                    <p class="ts"><a href="chitiettruyen.php?tentruyen=Tê kiến&amp;&amp;masach=MS5">Tê kiến</a></p>
-                    <p class="tacgia"><a href="timkiem.php?tacgia=TG2">Nhất Nhất</a></p>
-                    <p class="tinhtrang"><a href="timkiem.php?tinhtrang=Hoàn thành">Hoàn thành</a></p>
-                </div>
-              </div>
-            </li>
+            <li><p>Cùng thể loại </p></li>
+            @isset($cung_tacgia)
+              @if ($soluong!=1)
+                @foreach ($cung_tacgia as $cung_tg)
+                  @if ($cung_tg->truyen_id!=$truyen[0]->truyen_id)
+                    <li>
+                      <div class="rr">
+                        <a href="">
+                            <img src="http://127.0.0.1:8000/hinhanh/{{$cung_tg->hinh_anh}}" alt="">
+                        </a>
+                        <div class="rrr">
+                            <p class="ts"><a href="chitiettruyen.php?tentruyen=Tê kiếnmasach=MS5">{{$cung_tg->ten_truyen}}</a></p>
+                            <p class="tacgia"><a href="timkiem.php?tacgia=TG2"><?php echo $truyen[0]->ten_tac_gia;?></a></p>
+                            <p class="tinhtrang"><a href="timkiem.php?tinhtrang=Hoàn thành">{{$cung_tg->tinh_trang}}</a></p>
+                        </div>
+                      </div>
+                    </li>
+                  @endif
+                @endforeach
+              @endif   
+            @endisset
+            @isset($cung_loaitruyen)
+              @foreach ($cung_loaitruyen as $cung_loai)
+              @if ($cung_loai->truyen_id!=$truyen[0]->truyen_id)
+                <li>
+                  <div class="rr">
+                    <a href="">
+                        <img src="http://127.0.0.1:8000/hinhanh/{{$cung_loai->hinh_anh}}" alt="">
+                    </a>
+                    <div class="rrr">
+                        <p class="ts"><a href="chitiettruyen.php?tentruyen=Tê kiếnmasach=MS5">{{$cung_loai->ten_truyen}}</a></p>
+                        <p class="tacgia"><a href="timkiem.php?tacgia=TG2">{{$cung_loai->ten_tac_gia}}</a></p>
+                        <p class="tinhtrang"><a href="timkiem.php?tinhtrang=Hoàn thành">{{$cung_loai->tinh_trang}}</a></p>
+                    </div>
+                  </div>
+                </li>
+              @endif  
+              @endforeach
+            @endisset
           </ul>
         </div>
       </div>
@@ -79,7 +105,7 @@
   <div class="mucluc2">
     <ul>
       @foreach ($mucluc as $item)
-        <li class="mucluc2-2"><a href="noidungchuong.php?chuong=51"><?php echo $item->ten_chuong;?></a></li>
+        <li class="mucluc2-2"><a href="{{$truyen[0]->ten_truyen}}/{{$item->ten_chuong}}"><?php echo $item->ten_chuong;?></a></li>
       @endforeach
       
     </ul> 
@@ -101,30 +127,58 @@
       </form>
     </div>
   </div>
-</div>
-<div class="listcmt">
-  <div class="m-avatar">
-      <div class="avatar">
-          <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-      </div> 
-  </div>
-  <div class="comment">
-      <div class="comment-box2">
-          <div class="cmt-name">
-              <b> Nguyễn Jordan</b>
-          </div>
-          <div class="cmt-nd">
-              <p>Mình vẫn thắc mắc chương khu vườn trên mây, tại sao nhà chung cư mà lại có sân, có vườn được nhỉ. Lại còn làm bằng tôn nữa. Có ban công thì còn hình dung ra chứ có vườn thì mình ko tài nào hình dung d</p>  
-              
-          </div>
-          <div class="cmt-rep">
-              <div style="margin-left: auto;">
-              <b>Cử báo</b>
-              <b>Trả lời</b>
-              </div>
-          </div>
+  @foreach ($binhluan as $bl)
+    <div class="listcmt">
+      <div class="m-avatar">
+        <div class="avatar">
+            <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+        </div> 
       </div>
-  </div>
+      <div class="comment">
+        <div class="comment-box2">
+            <div class="cmt-name">
+                <b>{{$bl->ten_thanh_vien}}</b>
+            </div>
+            <div class="cmt-nd">
+                <p>{{$bl->nd_binh_luan}}</p>       
+            </div>
+            <div class="cmt-rep">
+                <div style="margin-left: auto;">
+                <b>Cử báo</b>
+                <b>Trả lời</b>
+                </div>
+            </div>
+        </div>
+        @foreach ($binhluan as $blcon)
+          @if ($blcon->id_binh_luan_con==$bl->id_binh_luan)
+            <div class="cmt-con">
+              <div class="m-avatar">
+                <div class="avatar">
+                    <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+                </div> 
+              </div>
+              <div class="comment-box3">
+                <div class="cmt-name">
+                    <b>{{$blcon->ten_thanh_vien}}</b>
+                </div>
+                <div class="cmt-nd">
+                    <p>{{$blcon->nd_binh_luan}}</p>       
+                </div>
+                <div class="cmt-rep">
+                    <div style="margin-left: auto;">
+                    <b>Cử báo</b>
+                    <b>Trả lời</b>
+                    </div>
+                </div>
+              </div>
+            </div>
+          @endif 
+        @endforeach
+      </div>
+    </div> 
+  @endforeach 
 </div>
+
+
 
 @endsection

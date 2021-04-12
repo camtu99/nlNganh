@@ -213,6 +213,7 @@ a:hover {
 .listcmt{
     display: flex;
     padding: 10px 0 10px 0;
+    width: 100%;
 }
 .cmt-rep{
     display: flex;
@@ -232,6 +233,12 @@ a:hover {
     padding: 15px;
     background-color: #87e3c42e;
 }
+.comment-box3{
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #87e3c42e;
+    width: 80%; 
+}
 .cmt-name{
     color: #27c6da;
     padding: 3px;
@@ -239,6 +246,7 @@ a:hover {
 .m-avatar{
     margin-left: auto;
     margin-right: auto;
+    width: 20%;
 }
 .comment{
     padding-right: 30px;
@@ -498,4 +506,24 @@ a:hover {
     white-space:nowrap;
     font-size: 0.8rem;
 }
-
+.cmt-con img{
+    width: 80px;
+    border-radius: 50%;
+    height: 80px;
+}
+.cmt-con{
+    width: 100%;
+    display: flex;
+    padding-top: 15px;
+}
+.page-item.active .page-link{
+    background-color: #78d3de;
+    border-color: #78d3de;
+}
+.page-link {
+color: #78d3de;
+}
+.pagination{
+    width: 650px;
+    margin: auto;
+}

@@ -20,7 +20,7 @@ class NoiDungChuong extends Model
     public function get_noi_dung($id){
         $noidung= DB::table('noi_dung_chuong')
             ->where('truyen_id','=',$id)
-            ->paginate(33);
+            ->paginate(99);
         return $noidung;
     }
 
@@ -29,7 +29,7 @@ class NoiDungChuong extends Model
                 ->where('truyen_id','=',$truyen)
                 ->get()
                 ->count();
-        $stt=$stt+1;$date = date('Y-m-d');
+        $stt=$stt+1;$date = date('Y-m-d  h:i:s');
         DB::table('noi_dung_chuong') 
             -> insertGetId([
                     'ten_chuong' => $tenchuong,
@@ -42,9 +42,30 @@ class NoiDungChuong extends Model
     public function get_new_chuong($id){
         $chuong = DB::table('noi_dung_chuong')
                     -> where('truyen_id','=',$id)
-                    ->orderByDesc('thu_tu_chuong')
+                    ->orderBy('thu_tu_chuong','desc')
                     ->limit(1)
                     ->get();
                 return $chuong;
     }  
+    public function get_chuong($id,$chuong){
+        $chuong = DB::table('noi_dung_chuong')
+                    ->where('truyen_id','=',$id)
+                    ->and('ten_chuong','=',$chuong)
+                    ->get();
+                    return $chuong;
+    }
+    public function get_stt_chuong($id,$chuong){
+        $chuong = DB::table('noi_dung_chuong')
+                    ->where('truyen_id','=',$id)
+                    ->and('ten_chuong','=',$chuong)
+                    ->select('thu_tu_chuong');
+                    return $chuong;
+    }
+    public function next_chuong($id,$stt){
+        $chuong = DB::table('noi_dung_chuong')
+                    ->where('truyen_id','=',$id)
+                    ->and('thu_tu_chuong','=',$stt)
+                    ->get();
+                    return $chuong;
+    }
 }

@@ -55,19 +55,24 @@
     <div class="modal fade" id="dangnhap">
       <div class="modal-dialog">
         <div class="modal-content">
-          <button type="button" class="close" data-dismiss="modal" >×</button>
+          <div class="modal-header">
+            <h4 class="modal-title">Đăng nhập</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
           <div class="modal-body">
             <form action="/action_page.php">
-              <div style="display:flex;">
-                <label for="fname">Đăng nhập:</label><br>
-                <input type="text" id="fname" name="fname" value="John"><br>
+              <div style="display:flex;margin:10px">
+                <label for="fname" style="width:30%;">Đăng nhập:</label><br>
+                <input type="text" id="fname" name="fname" value="John"style="width:80%">
               </div>
-              <div style="display:flex;"> 
-                <label for="lname">Mật khâu:</label><br>
-                <input type="text" id="lname" name="lname" value="Doe"><br><br>
+              <div style="display:flex;margin:10px"> 
+                <label for="lname" style="width:30%">Mật khâu:</label><br>
+                <input type="text" id="lname" name="lname" value="Doe"style="width:80%">
               </div>
-              <input type="submit" value="Submit">
+              <input type="submit" value="Submit" style="width:100%;margin-top:10px;">
             </form>
+            <button style="width:100%;margin:5px;">đăng nhập bằng gg</button>
+            <button style="width:100%;margin:5px;">đăng nhập bằng fb</button>
           </div>  
         </div>
       </div>

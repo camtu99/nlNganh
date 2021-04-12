@@ -34,4 +34,6 @@ class TagTruyen extends Model
                 -> get();
         return $loai;
     }
+
+    
 }

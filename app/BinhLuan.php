@@ -23,6 +23,7 @@ class BinhLuan extends Model
 
     public function get_binh_luan_chitiet($id_truyen){
         $binhluan = DB::table('binh_luan')
+                -> join('thanh_vien','thanh_vien.user_id','=','binh_luan.user_id')
                 -> where('truyen_id','=',$id_truyen)
                 -> paginate(10);
         return $binhluan;
