@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('provider_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('trang_thai')->default('thuong');
+            $table->integer('thanh_tich')->default(0);
+            $table->integer('phan_quyen')->default(0);
             $table->rememberToken()->nullable();
             $table->timestamps();
         });

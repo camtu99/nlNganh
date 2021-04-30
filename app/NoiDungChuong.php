@@ -35,8 +35,7 @@ class NoiDungChuong extends Model
                     'ten_chuong' => $tenchuong,
                     'link_chuong' => $linkchuong,
                     'truyen_id' => $truyen,
-                    'thu_tu_chuong' => $stt,
-                    'thoi_gian' => $date
+                    'thu_tu_chuong' => $stt
                 ]);
     } 
     public function get_new_chuong($id){
@@ -50,22 +49,30 @@ class NoiDungChuong extends Model
     public function get_chuong($id,$chuong){
         $chuong = DB::table('noi_dung_chuong')
                     ->where('truyen_id','=',$id)
-                    ->and('ten_chuong','=',$chuong)
+                    ->where('ten_chuong','=',$chuong)
                     ->get();
                     return $chuong;
     }
     public function get_stt_chuong($id,$chuong){
         $chuong = DB::table('noi_dung_chuong')
                     ->where('truyen_id','=',$id)
-                    ->and('ten_chuong','=',$chuong)
-                    ->select('thu_tu_chuong');
+                    ->where('ten_chuong','=',$chuong)
+                    -> get();
                     return $chuong;
     }
     public function next_chuong($id,$stt){
         $chuong = DB::table('noi_dung_chuong')
                     ->where('truyen_id','=',$id)
-                    ->and('thu_tu_chuong','=',$stt)
+                    ->where('thu_tu_chuong','=',$stt)
                     ->get();
                     return $chuong;
     }
+    public function sochuong($id){
+        $chuong =DB::table('noi_dung_chuong')
+                    ->where('truyen_id','=',$id)
+                    ->count();
+                    return $chuong;
+
+    }
+    
 }

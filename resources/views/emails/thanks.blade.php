@@ -1,0 +1,4 @@
+@extends('layouttruyen')
+@section('')
+	
+@endsection

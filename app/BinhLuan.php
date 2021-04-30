@@ -10,15 +10,15 @@ class BinhLuan extends Model
     protected $table = "binh_luan";
 
     public function thanh_vien(){
-        return $this -> belongsTo('App\ThanhVien','user_id','id_binh_luan');
+        return $this -> belongsTo('App\User','id','user_id');
     }
 
     public function truyen(){
-        return $this -> belongsTo('App\Truyen','truyen_id','id_binh_luan');
+        return $this -> belongsTo('App\Truyen','truyen_id','truyen_id');
     }
 
     public function cu_bao_user(){
-        return $this -> hasMany('App\CuBaoUser','id_cu_bao','id_binh_luan');
+        return $this -> hasMany('App\Review','id_review','id_review');
     }
 
     public function get_binh_luan_chitiet($id_truyen){
@@ -27,5 +27,12 @@ class BinhLuan extends Model
                 -> where('truyen_id','=',$id_truyen)
                 -> paginate(10);
         return $binhluan;
+    }
+    public function bl_review(){
+        $binhluan = DB::table('binh_luan')
+            ->join('users','users.id','=','binh_luan.user_id')
+            ->join('review','review.id_review','=','binh_luan.id_review')
+            ->get();
+            return $binhluan;      
     }
 }

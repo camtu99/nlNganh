@@ -44,24 +44,29 @@ class Truyen extends Model
     public function tac_gia(){
         return $this -> hasMany('App\TacGia','truyen_id','truyen_id');
     }
-   
-    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao)
+    public function user(){
+        return $this -> hasMany('App\User','user_id','id');
+    }
+    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao,$trangnhung)
     {
         $check =DB::table('truyen') 
                     -> where('ten_truyen','=',$ten)
                     ->doesntExist();
         if($check){
             DB::table('truyen')
-            -> insertGetId([
+            -> insert([
                 'ten_truyen' => $ten,
                 'link_truyen' => $link,
                 'hinh_anh' => $hinhanh,
                 'tinh_trang' => $tinhtrang,
                 'tac_gia_id' => $tacgia,
                 'ngay_tao' => $ngaytao,
-                'luot_doc'=> 0
+                'luot_doc'=> 0,
+                'user_id'=>21,
+                'trang_nhung'=>$trangnhung
             ]);
         }
+        return $check;
     }
 
     public function get_id_truyen($tentruyen){
@@ -147,7 +152,7 @@ class Truyen extends Model
     }
     public function update_trangthai($tentruyen){
         DB::table('truyen')
-            ->where('ten_truyen','=',$tentruyen)
+            ->where('truyen_id','=',$tentruyen)
             ->update(['tinh_trang'=>'Hoàn thành']);
     }
 
@@ -172,5 +177,12 @@ class Truyen extends Model
                 ->count();
         return $soluong;
         
+    }
+    public function get_truyen_user($id){
+        $truyen = DB::table('truyen')
+            ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+            ->where('user_id','=',$id)
+            ->get();
+            return $truyen;
     }
 }

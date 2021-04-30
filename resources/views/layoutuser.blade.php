@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>Convert truyện</title>
-    <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link rel="stylesheet" href="{{asset('css/user.css')}}">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,57 +20,138 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- menu -->
-    <nav class="navbar navbar-expand-md navbar-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>    
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>    
-          </ul>
-        </div>  
-      </nav>
+    <div>
+      <div>
+        <nav class="navbar navbar-expand-sm navbar-dark" style="background-image: url({!! asset('hinhanh/logo5.jpg') !!});">
+          <div class="container">
+            <a class="navbar-brand" href="index.php"><img src="{!! asset('hinhanh/logo4.PNG') !!}" alt="" style="height: 45px;width: 160px;"> </a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="width:100%">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Thể loại</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Tác giả</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Tìm truyện</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{URL::to('/review')}}">Review</a>
+                </li>
+                @if (Session::has('email_tk'))
+                <li class="nav-item" style="margin-left: auto;">
+                  <a href="/user/{{Session::get('email_tk')}}">{{Session::get('email_tk')}}</a>
+                </li>
+                <li class="nav-item" style="padding: 0 10px;">
+                  <a href="/user/logout">Đăng xuất</a>
+                </li>
+              @else
+                <li class="nav-item" style="margin-left: auto;"data-toggle="modal" data-target="#dangnhap">
+                  Đăng nhập
+                </li>
+                <li class="nav-item" style="padding: 0 10px;"data-toggle="modal" data-target="#dangki">
+                  Đăng kí
+                </li>
+              @endif
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="modal fade" id="dangnhap">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Đăng nhập</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="{{URL::to('user/login')}}" method="post">
+              @csrf
+              <div style="display:flex;margin:10px">
+                <label for="fname" style="width:30%;">Đăng nhập email:</label><br>
+                <input type="email" id="fname" name="email"style="width:80%">
+              </div>
+              <div style="display:flex;margin:10px"> 
+                <label for="lname" style="width:30%">Mật khẩu:</label><br>
+                <input type="password" id="lname" name="matkhau"style="width:80%">
+              </div>
+              <input type="submit" value="Submit" style="width:100%;margin-top:10px;">
+            </form>
+            <a href="/quenmatkhau">Quên mật khẩu ???</a>
+          </div>  
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="dangki">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Đăng kí</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="/dangki" method="post">
+              @csrf
+              <div style="display:flex;margin:10px">
+                <label for="fname" style="width:30%;">Email:</label><br>
+                <input type="email" id="fname" name="email"style="width:80%">
+              </div>
+              <div style="display:flex;margin:10px"> 
+                <label for="lname" style="width:30%">Mật khẩu:</label><br>
+                <input type="password" id="lname" name="pass" style="width:80%">
+              </div>
+              <div style="display:flex;margin:10px"> 
+                <label for="lname" style="width:30%">Nhập lại mật khẩu:</label><br>
+                <input type="password" id="lname" name="repass"style="width:80%">
+              </div>
+              <input type="submit" value="Submit" style="width:100%;margin-top:10px;">
+            </form>
+          </div>  
+        </div>
+      </div>
+    </div>
     <div class="thongtin">
         <div class="avatar">
             <div class="avatar-img">
-                <img class="img-avatar" src="http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" alt="">
+              @if (substr_count($user[0]->avatar,'http')>0)
+                        <img src="{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+                    @else
+                        <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+                    @endif
             </div>
-            <h1 class="name">mẫu text</h1>
+            <h1 class="name">{{$user[0]->name}}</h1>
         </div>
         <div class="capdo">
             <div class="capdo2">
                 <div class="capdo1">
-                    <p>13</p>
-                    <p>Following</p>
+                  @if ($following)
+                    <p>{{count($following)}}</p>
+                  @else
+                    <p>0</p>
+                  @endif  
+                  <p>Following</p>
                 </div>
                 <div class="capdo1">
-                    <p>134</p>
-                    <p>Follower</p>
+                  @if ($follower)
+                    <p>{{count($follower)}}</p>
+                  @else
+                    <p>0</p>
+                  @endif
+                  <p>Follower</p>
                 </div>
                 <div class="capdo1">
-                    <p>14563</p>
+                    <p>{{$user[0]->thanks}}</p>
                     <p>Thanks</p>
                 </div>
                 <div class="capdo1">
-                    <p>7</p>
+                    <p>{{$user[0]->thanh_tich}}</p>
                     <p>Level</p>
                 </div>
             </div>
@@ -80,25 +161,49 @@
         <div class="container">
             <div class="row">
                 <div class="thanh-dkh">
-                    <div class="col-md-8">
-                        <div style="margin: auto;"><ul class="nav nav-tabs thanh-dieu-khien">
-                            <li class="thanh-dk-1"><a href="{{url('gioithieu')}}">Giới thiệu</a></li>
-                            <li class="thanh-dk-1"><a href="{{url('hoatdong')}}">Hoạt động</a></li>
-                            <li class="thanh-dk-1"><a href="{{url('thuvien')}}" >Thư viện</a></li>
-                            <li class="thanh-dk-1"><a href="" >Works</a></li>
-                            <li class="thanh-dk-1"><a href="{{url('review')}}" >Review</a></li>
-                        </ul></div>
+                  <div class="col-md-8">
+                    <div style="margin: auto;">
+                      <ul class="nav nav-tabs thanh-dieu-khien">
+                        <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/{{$user[0]->email}}">Giới thiệu</a></li>
+                        <li class="thanh-dk-1"><a href='http://127.0.0.1:8000/user/thuvien/{{$user[0]->email}}'>Thư viện</a></li>
+                        <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/congviec/{{$user[0]->email}}" >Works</a></li>
+                        <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/review/{{$user[0]->email}}" >Review</a></li>
+                        @if (Session::get('email_tk')==$user[0]->email)
+                          <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/bookmark/user" >Bookmark</a></li>
+                          <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/taotruyen/user">Nhúng link</a></li>  
+                        @endif
+                      </ul>
                     </div>
-                    <div class="col-md-4">
-                        <ul class="nav">
-                            <li class="thanh-dk-1 caidat" style="margin-left: auto;"><i class="fas fa-plus"></i> Follow</li>
-                            <li class="thanh-dk-1 caidat"> <i class="fas fa-tools"></i></li>
-                        </ul>
-                    </div>
+                  </div>
+                  <div class="col-md-4">
+                      <ul class="nav">
+                        @if (Session::get('email_tk')!=$user[0]->email||!Session::has('id_tk'))
+                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><i class="fas fa-plus"></i> Follow</li>
+                          <div class="dropdown" >
+                            <li type="button" data-toggle="dropdown" class="thanh-dk-1 caidat"><i class="fas fa-tools"></i></li>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#">Báo cáo</a>
+                            </div>
+                          </div>
+                        @else
+                          <div class="dropdown" style="margin-left: auto;">
+                            <li type="button" data-toggle="dropdown" class="thanh-dk-1 caidat"><i class="fas fa-tools"></i></li>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="/setup/{{Session::get('id_tk')}}">Thay đổi thông tin</a>
+                            </div>
+                          </div> 
+                        @endif 
+                      </ul>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
     <div style="height: 50px;width: 100%;"></div>
-    @section('content')
-    @show
+    <div class="" style="background-color:rgb(115 223 247 / 27%);padding: 50px 30px;">
+    <div class="container">
+        @section('content')
+        @show
+
+      </div>
+    </div>

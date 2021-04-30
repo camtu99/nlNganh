@@ -21,3 +21,10 @@
   $('#success').modal('show');
 </script>
 @endif
+@if (\Session::has('thongbao'))
+<script type="text/javascript">
+var r = {{\Session::get('thongbao')}};
+  alert(r);
+</script>
+    
+@endif
