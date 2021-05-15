@@ -8,7 +8,11 @@
                 @foreach ($review as $item)
                     <div class="group-review">
                         <div class="avater-review">
-                            <img src="http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" alt="">
+                            @if (substr_count($user[0]->avatar,'http')>0)
+                             <img src="{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+                            @else
+                             <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+                            @endif
                         </div>
                         <div class="khung-review">
                             <p style="font-size:20px; font-weight: bold;color:#27c6da">{{$user[0]->name}}</p>

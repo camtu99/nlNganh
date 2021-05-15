@@ -49,7 +49,7 @@
                     <a href="/user/{{Session::get('email_tk')}}">{{Session::get('email_tk')}}</a>
                   </li>
                   <li class="nav-item" style="padding: 0 10px;">
-                    <a href="user/logout">Đăng xuất</a>
+                    <a href="/user/logout">Đăng xuất</a>
                   </li>
                 @else
                   <li class="nav-item" style="margin-left: auto;"data-toggle="modal" data-target="#dangnhap">
@@ -142,6 +142,10 @@
       @show   
     </div>
 
-   
+    <script>
+      function baoloi() {
+        alert("Bạn chưa đăng nhập");
+      }
+      </script>
   </body>
 </html>

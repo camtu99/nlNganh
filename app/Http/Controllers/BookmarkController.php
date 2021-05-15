@@ -21,12 +21,20 @@ class BookmarkController extends Controller
         $bookmark =new Bookmarks();
         $bookmark = $bookmark->get_bookmark($id);
         return view('bookmark',compact('user','follower','following','bookmark'));
- }
- public function xoa_bookmark($id){
-    $xoa = new Bookmarks();
-    $xoa = $xoa->xoa_bookmark($id);
-    Session::flash('success','Bạn đã xóa thành công!');
-    return redirect()->back();
-       
- }
+    }
+    public function xoa_bookmark($id){
+        $xoa = new Bookmarks();
+        $xoa = $xoa->xoa_bookmark($id);
+        Session::flash('success','Bạn đã xóa thành công!');
+        return redirect()->back();
+        
+    }
+    public function them_bookmark($id){
+        $xoa = new Bookmarks();
+        $id_user = Session::get('id_tk');
+        $xoa = $xoa->xoa_bookmark($id_user,$id);
+        Session::flash('success','Bạn đã thêm thành công!');
+        return redirect()->back();
+        
+    }
 }

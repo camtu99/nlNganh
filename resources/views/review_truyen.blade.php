@@ -28,7 +28,11 @@
                     @foreach ($review as $item)
                         <div class="group-review">
                             <div class="avater-review" style="width: 10%;">
-                                <img src="http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" alt="">
+                                @if (substr_count($item->avatar,'http')>0)
+                                    <img src="{{$item->avatar}}" alt="" >
+                                @else
+                                    <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$item->avatar}}" alt="" >
+                                @endif
                             </div>
                             <div  style="width: 73%;">
                                 <div class="khung-review">
@@ -63,7 +67,11 @@
                                 <div id="traloi{{$item->id_review}}" class="collapse">
                                     <div style="display: flex; width: 100%;padding: 20px 0 20px 10px;">
                                         <div class="avater-review">
-                                            <img src="http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" alt="">
+                                            @if (Session::has('avatar_tk'))
+                                            <img src="{{Session::get('avatar_tk')}}" alt="">
+                                           @else
+                                            <img src="http://127.0.0.1:8000/hinhanh/avatar/{{Session::get('avatar_tk')}}" alt="" >
+                                           @endif
                                         </div>
                                         <div style="width: 100%;">
                                             <form action="review/binhluan/{{Session::get('id_tk')}}/{{$item->id_review}}" method="post">
@@ -77,7 +85,11 @@
                                    @if ($bl->id_review==$item->id_review)
                                         <div style="display: flex;padding: 20px 0 20px 10px;">
                                             <div class="avater-review">
-                                                <img src="http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg" alt="">
+                                                @if (substr_count($bl->avatar,'http')>0)
+                                                    <img src="{{$bl->avatar}}" alt="" >
+                                                @else
+                                                    <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$bl->avatar}}" alt="" >
+                                                @endif
                                             </div>
                                             <div class="khung-review">
                                                 <p style="font-size:20px; font-weight: bold;color:#27c6da">{{$bl->name}}</p>
@@ -113,10 +125,12 @@
                                 @endforeach
                             </div>
                             <div class="decu" style="width: 17%;">
-                                <img src="http://127.0.0.1:8000/hinhanh/{{$item->hinh_anh}}" alt="">
-                                <p style="font-weight: bold;font-size: 13px;">{{$item->ten_truyen}}</p>
-                                <p style="font-size: 10px;">{{$item->ten_tac_gia}}</p>
-                                <p style="font-size: 11px;"><i class="fa fa-eye" aria-hidden="true">{{$item->luot_doc}}  lượt đọc</i></p>
+                                <a href="/truyen/{{$item->truyen_id}}" style="color: black">
+                                    <img src="http://127.0.0.1:8000/hinhanh/{{$item->hinh_anh}}" alt="">
+                                    <p style="font-weight: bold;font-size: 13px;">{{$item->ten_truyen}}</p>
+                                    <p style="font-size: 10px;">{{$item->ten_tac_gia}}</p>
+                                    <p style="font-size: 11px;"><i class="fa fa-eye" aria-hidden="true">{{$item->luot_doc}}  lượt đọc</i></p>
+                                </a>                              
                             </div>
                         </div>
                     @endforeach       

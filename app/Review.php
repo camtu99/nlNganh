@@ -33,6 +33,7 @@ class Review extends Model
              ->join('truyen','truyen.truyen_id','=','review.truyen_id')
              ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
              ->join('users','users.id','=','review.user_id')
+             ->orderBy('ngay_rv','desc')
              ->paginate(2);
              return $review;
 
@@ -45,5 +46,22 @@ class Review extends Model
                 'user_id'=>$id_user,
                 'nd_review'=>$nd
             ]);
+            $tichphan=DB::table('users')
+            ->where('id','=',$id_user)
+            ->get();
+        $cong = $tichphan[0]->thanh_tich + 3;
+        $congtichphan = DB::table('users')
+                            ->where('id','=',$id_user)
+                            ->update(['thanh_tich'=>$cong]); 
+     }
+     public function get_review_truyen($id_truyen){
+         $review = DB::table('review')
+                    ->join('truyen','truyen.truyen_id','=','review.truyen_id')
+                    ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                    ->join('users','users.id','=','review.user_id')
+                    ->where('review.truyen_id','=',$id_truyen)
+                    ->orderBy('ngay_rv','desc')
+                    ->paginate(2);
+                    return $review;
      }
 }

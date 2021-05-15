@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 // use Symfony\Component\HttpFoundation\Request;
 
 use App\Bookmarks;
+use App\CuBaoUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -66,7 +67,15 @@ class UserController extends Controller
         $following = $following->get_following($id);
         $noidung = new Truyen();
         $noidung = $noidung -> get_truyen_user($id);
-        return view('users',compact('user','follower','following','noidung'));
+        $follow ='check';
+        if(Session::get('id_tk')){
+            foreach ($follower as  $follow) {
+                if($follow->id==Session::get('id_tk')) {
+                    $follow = 'ok';
+                }
+            }
+        }
+        return view('users',compact('user','follower','following','noidung','follow'));
  }
  public function taotruyen(){
     if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
@@ -78,7 +87,15 @@ class UserController extends Controller
     $follower = $follower->get_follower($id);
     $following = new Follow();
     $following = $following->get_following($id);
-    return view('taotruyen',compact('user','follower','following'));
+    $follow ='check';
+        if(Session::get('id_tk')){
+            foreach ($follower as  $follow) {
+                if($follow->id==Session::get('id_tk')) {
+                    $follow = 'ok';
+                }
+            }
+        }
+    return view('taotruyen',compact('user','follower','following','follow'));
  }
  public function thuvien($name){
     $user = new User();
@@ -92,7 +109,15 @@ class UserController extends Controller
     $thuvien = $thuvien->get_thuvien($id);
     $truyentv = new TruyenThuVien();
     $truyentv = $truyentv ->get_truyenthuvien($id);
-    return view('thuvien',compact('user','follower','following','thuvien','truyentv'));
+    $follow ='check';
+        if(Session::get('id_tk')){
+            foreach ($follower as  $follow) {
+                if($follow->id==Session::get('id_tk')) {
+                    $follow = 'ok';
+                }
+            }
+        }
+    return view('thuvien',compact('user','follower','following','thuvien','truyentv','follow'));
  }
  
     public function login(Request $req){
@@ -108,8 +133,10 @@ class UserController extends Controller
                 $id = $id->get_id($email);
                 $idw = $id[0]->id;
                 $ten = $id[0]->name;
+                $avatar = $id[0]->avatar;
                 Session::put('id_tk',$idw);
                 Session::put('ten_tk',$ten);
+                Session::put('avatar_tk',$avatar);             
                 return redirect()->back();
             }else{
                 Session::flash('error','Bạn vẫn chưa xác thực email !! Hãy xác thực email ');
@@ -134,7 +161,15 @@ class UserController extends Controller
         $follower = $follower->get_follower($id);
         $following = new Follow();
         $following = $following->get_following($id);
-        return view('setup_thongtin',compact('user','follower','following'));
+        $follow ='check';
+        if(Session::get('id_tk')){
+            foreach ($follower as  $follow) {
+                if($follow->id==Session::get('id_tk')) {
+                    $follow = 'ok';
+                }
+            }
+        }
+        return view('setup_thongtin',compact('user','follower','following','follow'));
     }
     public function setanh(Request $req){
         if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
@@ -166,6 +201,36 @@ class UserController extends Controller
         }
         return redirect()->back();
     }
+    public function setanhbia(Request $req){
+        if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
+        $hinhanh='';
+        if(isset($req->hinhanh)){
+            $this->validate($req, 
+              [
+                'hinhanh' => 'mimes:jpg,jpeg,png,gif|max:2048',
+              ],			
+              [
+                'hinhanh.mimes' => 'Chỉ chấp nhận hình thẻ với đuôi .jpg .jpeg .png .gif',
+              ]
+            );
+            $hinhanh = $req->file('hinhanh');
+            $gethinhanh = time().'_'.$hinhanh->getClientOriginalName();
+            $Path = public_path('hinhanh');
+            $hinhanh->move($Path, $gethinhanh);
+            $id = Session::get('id_tk');
+            $suaanh = new User();
+            $suaanh = $suaanh -> sua_anh_bia($id,$gethinhanh);
+            Session::flash('success','Cập nhật ảnh thành công');
+        }
+        if(isset($req->urlanh)){
+            $hinhanh = $req->urlanh;
+            $id = Session::get('id_tk');
+            $suaanh = new User();
+            $suaanh = $suaanh -> sua_anh_bia($id,$hinhanh);
+            Session::flash('success','Cập nhật ảnh thành công');
+        }
+        return redirect()->back();
+    }
     public function set_thongtin(Request $req){
         if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
         if(isset($req->password)){
@@ -186,6 +251,46 @@ class UserController extends Controller
             Session::flash('success','Đã cập nhật thông tin');
             return redirect()->back();
         }
+    }
+    public function baocao(Request $req,$id){
+        if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
+        if($req->spam){
+            $noidung = 'Spam';
+            $baocao = new CuBaoUsers();
+            $baocao = $baocao ->insert_cubao_user($id,$noidung);
+        }
+        if($req->thotuc){
+            $noidung = 'Ngôn ngữ thô tục, quấy rối';
+            $baocao = new CuBaoUsers();
+            $baocao = $baocao ->insert_cubao_user($id,$noidung);
+        }
+        if($req->khac){
+            $noidung = 'Khác';
+            $baocao = new CuBaoUsers();
+            $baocao = $baocao ->insert_cubao_user($id,$noidung);
+        }
+        if($req->lydo!=''){
+            $noidung = $req->lydo;
+            $baocao = new CuBaoUsers();
+            $baocao = $baocao ->insert_cubao_user($id,$noidung);
+        }
+        Session::flash('success','Đã báo cáo thành viên này thành công');
+        return redirect()->back();
+
+    }
+    public function huy_follow($id){
+        $id_follow = Session::get('id_tk');
+        $huy_follow = new Follow();
+        $huy_follow = $huy_follow->huy_follow($id_follow,$id);
+        Session::flash('success','Đã hủy thành công');
+        return redirect()->back();
+    }
+    public function them_follow($id){
+        $id_follow = Session::get('id_tk');
+        $them_follow = new Follow();
+        $them_follow = $them_follow->them_follow($id_follow,$id);
+        Session::flash('success','Đã thêm thành công');
+        return redirect()->back();
     }
 
 }

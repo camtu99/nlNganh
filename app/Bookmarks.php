@@ -31,4 +31,11 @@ class Bookmarks extends Model
             ->where('id_bookmark','=',$id)
             ->delete();
     }
+    public function them_bookmark($id,$id_bk){
+        DB::table('bookmarks')
+            -> insert([
+                'user_id'=>$id,
+                'noi_dung_chuong_id'=>$id_bk
+            ]);
+    }
 }

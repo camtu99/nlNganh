@@ -23,7 +23,6 @@ use Whoops\Run;
 //Truyện
 Route::get('/','Noidung@trangchu');
 Route::post('inserttruyen','Noidung@add_truyen');
-Route::get('testtruyen',function () {return view('taotruyen');});
 Route::post('taotruyen','Noidung@checktruyen' );
 Route::get('truyen/{id}','Noidung@chitiet_truyen');
 Route::get('truyen/{id}/{chuong}','Noidung@chitiet_chuong');
@@ -51,8 +50,12 @@ Route::get('profile', function () {
 Route::get('user/{name}','UserController@index');
 Route::get('/setup/{id}','UserController@setup_user');
 Route::post('/setup/anh','UserController@setanh');
+Route::post('/setup/anhbia','UserController@setanhbia');
 Route::post('/setup/thongtin','UserController@set_thongtin');
 Route::get('taotruyen/user','UserController@taotruyen');
+Route::post('/baocao/{id}','UserController@baocao');
+Route::get('/follow/huy/{id}','UserController@huy_follow');
+Route::get('/follow/them/{id}','UserController@them_follow');
 //thuvien,bookmark,review,công việc, hoạt đọng
 Route::get('user/thuvien/{name}','UserController@thuvien');
 Route::get('/bookmark/user','BookmarkController@bookmark');
@@ -60,11 +63,13 @@ Route::get('user/review/{name}','ReviewController@review');
 Route::get('review','ReviewController@get_review');
 Route::post('reviewtruyen','ReviewController@insert_review');
 Route::get('/bookmark/xoa/{id}','BookmarkController@xoa_bookmark');
+Route::get('/bookmark/{id}','BookmarkController@them_bookmark');
 Route::get('/user/congviec/{name}','CongViecController@congviec');
-
+Route::post('/thuvien/them','CongViecController@themthuvien');
+Route::get('/review/truyen/{name}','ReviewController@review_truyen');
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
-
+Route::post('/baoloi/{id}','Noidung@baoloitruyen');
 //test 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');

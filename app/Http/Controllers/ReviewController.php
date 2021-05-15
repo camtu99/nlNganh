@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Follow;
+use App\Truyen;
+
 class ReviewController extends Controller
 {
     public function get_review(){
@@ -27,6 +29,18 @@ class ReviewController extends Controller
         Session::flash('success','Đã thêm review thành công');
         return redirect()->back();
     }
+    public function check_follow($follower){
+        $check = 'no';
+        if(Session::get('id_tk')){
+            foreach ($follower as  $follow) {
+                if($follow->id==Session::get('id_tk')) {
+                    $check = 'ok';
+                    return $check;
+                }
+            }
+        }
+        return $check;
+    }
     public function review($name){
         $user = new User();
         $user = $user ->get_id($name);
@@ -37,6 +51,22 @@ class ReviewController extends Controller
         $following = $following->get_following($id);
         $review = new Review();
         $review = $review->get_review($id);
-        return view('review',compact('user','follower','following','review'));
+        $follow = $this->check_follow($follower);
+        return view('review',compact('user','follower','following','review','follow'));
+    }
+    public function review_truyen($name){
+        $truyen = new Truyen();
+        $truyen = $truyen->get_ten_truyen($name);
+        $truyen_id = $truyen[0]->truyen_id;
+        $review = new Review();
+        $review = $review->get_review_truyen($truyen_id);
+        $binhluan = new BinhLuan();
+        $binhluan = $binhluan ->bl_review();
+        if($review){
+            return view('review_truyen',compact('review','binhluan'));
+        }else{
+        Session::flash('error','Truyện chưa có review');
+        return redirect()->back();
+        }
     }
 }

@@ -12,7 +12,7 @@
               {{$loaitv->ten_thu_vien}}
             </a>
           </div>
-          <div id="collapse{{$loaitv->id_thu_vien}}" class="collapse show" data-parent="#accordion">
+          <div id="collapse{{$loaitv->id_thu_vien}}" class="collapse" data-parent="#accordion">
             <div class="card-body">
               <div style="display: flex;flex-wrap: wrap;width:100%">
                 @foreach ($truyentv as $truyenct)

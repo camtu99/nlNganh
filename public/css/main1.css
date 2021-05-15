@@ -137,7 +137,7 @@ a:hover {
 .mucluc1{
     background-color: #78d3de;
     text-align: center;
-    height: 30px;
+    padding: 12px;
     font-size: larger;
 }
 .rr {
@@ -535,6 +535,7 @@ color: #78d3de;
 .dropdown1 {
     position: relative;
     display: inline-block;
+    margin-left: auto;
   }
   
   .dropdown-content1 {
@@ -563,4 +564,15 @@ color: #78d3de;
   }
   .gim{
       padding: 0 5px;
+  }
+  .nguoidang{
+    background-color: white;
+    margin: 40px 0;
+  }
+  .themds{
+    text-decoration: none;
+    color: #fff;
+    background-color: #00bcd4;
+    text-align: center;
+    letter-spacing: .5px;
   }

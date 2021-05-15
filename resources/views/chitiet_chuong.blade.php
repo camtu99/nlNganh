@@ -5,17 +5,17 @@
         <div class="tieude">
             <div class="tieude1">
                 <p>
-                {{$ten}} &lt;  {{$chuong}}
+                {{$ten}}>>{{$chuong}}
                 </p>
-                <div class="muclucchuong">
+                {{-- <div class="muclucchuong">
                     @if (isset($chuongtruoc))
-                        <a href="{{$chuongtruoc[0]->ten_chuong}}">&lt; &lt;Chương trước</a>
+                        <a href="{{$chuongtruoc[0]->ten_chuong}}">Chương trước</a>
                     @endif
                     <a href="chitiettruyen.php">Mục lục</a>
                     @if (isset($chuongke))
                         <a href="{{$chuongke[0]->ten_chuong}}">Chương sau</a>
                     @endif            
-                </div>
+                </div> --}}
                 <div class="dropdown1">
                     <span>Aa</span>
                     <div class="dropdown-content1">
@@ -32,7 +32,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="gim"><a href=""><i class="fa fa-plus" aria-hidden="true"></i></a></div>
+                @if (Session::has('email_tk'))
+                 <div class="gim"><a href="/bookmark/{{$nd_chuong[0]->noi_dung_chuong_id}}"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
+                @else
+                    <div class="gim"><a href="" type="button"  onclick="myFunction()"><i class="fa fa-plus" aria-hidden="true"></i></a></div> 
+                @endif
             </div>
             <div class="tentua">
                 <b class="tentua1">{{$ten}}</b>
@@ -47,11 +51,11 @@
             <div>
                 <div class="cuoi">
                     @if (isset($chuongtruoc))
-                        <a class="ct" href="{{$chuongtruoc[0]->ten_chuong}}"> &lt; Chương trước </a>
+                        <a class="ct" href="{{$chuongtruoc[0]->ten_chuong}}">Chương trước </a>
                     @endif
                     <a class="ct" href="chitiettruyen.php">Mục lục</a>
                     @if (isset($chuongke))
-                        <a class="ct" href="{{$chuongke[0]->ten_chuong}}"> &lt; Chương sau </a>
+                        <a class="ct" href="{{$chuongke[0]->ten_chuong}}">Chương sau </a>
                     @endif  
                 </div>
             </div>
@@ -160,5 +164,8 @@
         div.style.background = "#e9f8fd";
       
     };
+    function myFunction() {
+        alert("Bạn chưa đăng nhập");
+    }
 </script>
 @endsection

@@ -20,4 +20,11 @@ class ThuVien extends Model
             ->get();
         return $thuvien;
     }
+    public function them_thu_vien($ten,$id_user){
+        DB::table('thu_vien')
+            ->insert([
+                'ten_thu_vien'=>$ten,
+                'user_id'=>$id_user
+            ]);
+    }
 }

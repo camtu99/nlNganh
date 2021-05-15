@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\BaoCaoTruyen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\BinhLuan;
@@ -13,6 +15,7 @@ use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
 use App\Follow;
+use App\ThuVien;
 use App\User;
 use Illuminate\Support\Collection;
 
@@ -66,8 +69,9 @@ class Noidung extends Controller
       $id_tacgia = new TacGia();
       $id_tacgia = json_decode($id_tacgia -> get_id_tac_gia($tac_gia));
       $tacgia=$id_tacgia[0]->tac_gia_id;
+      $user = Session::get('id_tk');
       $inserttruyen = new Truyen();
-      $inserttruyen = $inserttruyen ->insert_truyen($ten_truyen,$chuyenlink,$gethinhanh,$tinhtrang,$tacgia,$ngaytao,$trangnhung);
+      $inserttruyen = $inserttruyen ->insert_truyen($ten_truyen,$chuyenlink,$gethinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung);
       $id_truyen = new Truyen();
       $id_truyen = json_decode($id_truyen -> get_id_truyen($ten_truyen));
       $truyen=$id_truyen[0]->truyen_id;
@@ -89,8 +93,9 @@ class Noidung extends Controller
         }
       }
       Session::flash('success',$themchuong);
+      $id_tk = Session::get('id_tk');
       $user = new User();
-    $user = $user ->get_id('quanngoctran1208@gmail.com');
+    $user = $user ->get_users($id_tk);
     $id = $user[0]->id;
     $follower = new Follow();
     $follower = $follower->get_follower($id);
@@ -107,14 +112,40 @@ class Noidung extends Controller
       $update = $update -> update_ten_truyen($id,$ten_truyen,$link);
       return view();//để vô thông báo
     }
-
+    public function check_truyen_link($link){
+      if(substr_count($link,'www.ruochenwx.com')==1 || substr_count($link,'www.sxyxht.com')==1 || substr_count($link,'www.mbtxt.la')==1){
+        if(substr_count($link,'www.ruochenwx.com')==1){
+          $chuyenlink ='http://dichtienghoa.com/translate/www.ruochenwx.com?u='.$link.'&t=vi';
+          $check =  new Truyen();
+          $check = $check->check_truyen($chuyenlink);
+        }
+        if(substr_count($link,'www.sxyxht.com')==1){
+          $chuyenlink ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
+          $check =  new Truyen();
+          $check = $check->check_truyen($chuyenlink);
+        }
+        if(substr_count($link,'www.mbtxt.la')==1){
+          $chuyenlink ='http://dichtienghoa.com/translate/www.mbtxt.la?u='.$link.'&t=vi';
+          $check =  new Truyen();
+          $check = $check->check_truyen($chuyenlink);
+        }
+        return $check;
+      }else{
+        $check = 'khac';
+        return $check;
+      }
+    }
     public function checktruyen(Request $req){
       $link = $req -> input('li');
-      $check = new Truyen();
-      $check = $check -> check_truyen($link);
-      if($check=='fail'){
-      Session::flash('error','Trang web đã có người nhúng!!!  Hãy nhúng trang khác nhé.');
-        return redirect()->back();
+      $check = $this -> check_truyen_link($link);
+      if($check=='fail' || $check =='khac'){
+        if($check =='fail'){
+          Session::flash('error','Trang web đã có người nhúng!!!  Hãy nhúng trang khác nhé.');
+          return redirect()->back();
+        }else{
+          Session::flash('error','Trang web phải là 1 trong các trang được quy định.');
+          return redirect()->back();
+        } 
       }else{
         if(substr_count($link,'www.sxyxht.com')==1){
           $chuyenlink ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
@@ -138,8 +169,9 @@ class Noidung extends Controller
         $theloai = $theloai ->get_all_theloai();
         $theloai = json_decode($theloai);
         $taotruyen='Tạo truyện';
+        $id_tk = Session::get('id_tk');
         $user = new User();
-        $user = $user ->get_id('quanngoctran1208@gmail.com');
+        $user = $user ->get_users($id_tk);
         $id = $user[0]->id;
         $follower = new Follow();
         $follower = $follower->get_follower($id);
@@ -257,7 +289,7 @@ class Noidung extends Controller
       $cung_tacgia=json_decode($cung_tacgia);
       $soluong = new Truyen();
       $soluong = $soluong->soluong($tac_gia);
-      $id_loai = $theloai[1]->the_loai_id;
+      $id_loai = $theloai[0]->the_loai_id;
       
       if($soluong<12){
         $i=13-$soluong;
@@ -265,9 +297,13 @@ class Noidung extends Controller
         $cung_loaitruyen = $cung_loaitruyen->cung_loai_truyen($i,$id_loai);
         $cung_loaitruyen = json_decode($cung_loaitruyen);
       }
-     
-      
-      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong'));
+      $thuvien='';
+      if(Session::has('id_tk')){
+        $id_user = Session::get('id_tk');
+        $thuvien=new ThuVien();
+        $thuvien = $thuvien->get_thuvien($id_user);
+      }
+      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien'));
 
     }
     function stt_chuong($id_truyen,$chuong){
@@ -340,10 +376,10 @@ class Noidung extends Controller
       $tacgia=new TacGia();
       $tacgia=$tacgia->get_tacgia($id_tacgia);
       if(isset($chuongke)&&isset($chuongtruoc)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia'));
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong'));
       }else if(isset($chuongke)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia'));
-      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia'));}
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia','nd_chuong'));
+      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia','nd_chuong'));}
 
     }
     public function trangchu(){
@@ -400,7 +436,14 @@ class Noidung extends Controller
       
     }
 
-
+    public function baoloitruyen(Request $req,$id){
+      $id_user = Session::get('id_tk');
+      $baocao = new BaoCaoTruyen();
+      $noidung = $req->baoloi;
+      $baocao = $baocao->add_baoloi($id,$id_user,$noidung);
+      Session::flash('success','Báo lỗi truyện thành công');
+      return redirect()->back();
+    }
 
     
 }

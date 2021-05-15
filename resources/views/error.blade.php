@@ -22,8 +22,9 @@
 </script>
 @endif
 @if (\Session::has('thongbao'))
+
 <script type="text/javascript">
-var r = {{\Session::get('thongbao')}};
+var r = Session::has('thongbao');
   alert(r);
 </script>
     

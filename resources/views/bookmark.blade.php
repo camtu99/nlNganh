@@ -1,6 +1,5 @@
 @extends('layoutuser')
 @section('content')
-    @include('error')
     <div>
         <div>
             <h3>Đánh dấu chương</h3>

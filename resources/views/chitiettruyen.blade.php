@@ -42,14 +42,30 @@
               <div class="name1-1">
                 <a href="" class="name1">Name</a>
                 <a href="" class="name1"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
-                <a href="" class="name1">Review</a>
+                <a href="/review/truyen/{{$truyen[0]->ten_truyen}}" class="name1">Review</a>
               </div>
               <div class="name1-2">
-                <a href="" class="name2">Name</a>
-                <a href="" class="name2"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
-                <a href="" class="name2">Review</a>
+                <p class="name2" data-toggle="modal" data-target="#baoloi"type="button"><i class="fas fa-exclamation"></i></p>
+                @if (Session::has('id_tk'))
+                  <div class="dropdown">
+                    <p class="name2" type="button" data-toggle="dropdown"><i class="fas fa-plus"></i>
+                    </p>
+                    <ul class="dropdown-menu">
+                      @if($thuvien)
+                          @foreach ($thuvien as $tv)
+                              <a href="/thuvien/them/{{$tv->id_thu_vien}}/{{$truyen[0]->truyen_id}}">{{$tv->ten_thu_vien}}</a>
+                          @endforeach
+                      @endif
+                      <p data-toggle="modal" data-target="#add-ds"type="button">Tạo danh sách đọc</p>
+                    </ul>
+                  </div>
+                @else
+                <p class="name2" type="button" onclick="baoloi()"><i class="fas fa-plus"></i>
+                @endif
+                <a href="{{$truyen[0]->truyen_id}}/{{$mucluc[0]->ten_chuong}}" class="name2" style="color: white;">Đọc</a>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -68,7 +84,7 @@
                               <img src="http://127.0.0.1:8000/hinhanh/{{$cung_tg->hinh_anh}}" alt="">
                           </a>
                           <div class="rrr">
-                              <p class="ts"><a href="chitiettruyen.php?tentruyen=Tê kiếnmasach=MS5">{{$cung_tg->ten_truyen}}</a></p>
+                              <p class="ts"><a href="/truyen/{{$cung_tg->truyen_id}}">{{$cung_tg->ten_truyen}}</a></p>
                               <p class="tacgia"><a href="timkiem.php?tacgia=TG2"><?php echo $truyen[0]->ten_tac_gia;?></a></p>
                               <p class="tinhtrang"><a href="timkiem.php?tinhtrang=Hoàn thành">{{$cung_tg->tinh_trang}}</a></p>
                           </div>
@@ -87,7 +103,7 @@
                           <img src="http://127.0.0.1:8000/hinhanh/{{$cung_loai->hinh_anh}}" alt="">
                       </a>
                       <div class="rrr">
-                          <p class="ts"><a href="chitiettruyen.php?tentruyen=Tê kiếnmasach=MS5">{{$cung_loai->ten_truyen}}</a></p>
+                          <p class="ts"><a href="/truyen/{{$cung_loai->truyen_id}}">{{$cung_loai->ten_truyen}}</a></p>
                           <p class="tacgia"><a href="timkiem.php?tacgia=TG2">{{$cung_loai->ten_tac_gia}}</a></p>
                           <p class="tinhtrang"><a href="timkiem.php?tinhtrang=Hoàn thành">{{$cung_loai->tinh_trang}}</a></p>
                       </div>
@@ -102,9 +118,22 @@
       </div>
     </div>
   </div>
+  <div class="nguoidang">
+    <div style="    padding: 10px;text-align: center;">
+      <p style="margin: 0">Người đăng</p>
+      <a href="/user/{{$truyen[0]->email}}" style="color: black">
+        @if (substr_count($truyen[0]->avatar,'http')>0)
+          <img src="{{$truyen[0]->avatar}}" alt="" style=" width: 90px;height: 90px;border-radius: 50%;margin: 5px">
+        @else
+          <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$truyen[0]->avatar}}" alt="" style=" width: 90px;height: 90px;border-radius: 50%;margin: 5px">
+        @endif
+        <p>{{$truyen[0]->name}}</p>
+      </a>
+    </div>
+  </div>
   <div class="mucluc">
     <div class="mucluc1">
-      <p>Mục Lục</p>
+      Mục Lục
     </div>
     <div class="mucluc2">
       <ul>
@@ -113,7 +142,7 @@
         @endforeach
         
       </ul> 
-  {{$mucluc->links()}}         
+      {{$mucluc->links()}}         
     </div>
   </div>
   <div class="binhluan">         
@@ -131,57 +160,98 @@
         </form>
       </div>
     </div>
-    @foreach ($binhluan as $bl)
-      <div class="listcmt">
-        <div class="m-avatar">
-          <div class="avatar">
-              <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-          </div> 
-        </div>
-        <div class="comment">
-          <div class="comment-box2">
-              <div class="cmt-name">
-                  <b>{{$bl->ten_thanh_vien}}</b>
-              </div>
-              <div class="cmt-nd">
-                  <p>{{$bl->nd_binh_luan}}</p>       
-              </div>
-              <div class="cmt-rep">
-                  <div style="margin-left: auto;">
-                  <b>Cử báo</b>
-                  <b>Trả lời</b>
-                  </div>
-              </div>
+    @isset($binhluan)
+      @foreach ($binhluan as $bl)
+        <div class="listcmt">
+          <div class="m-avatar">
+            <div class="avatar">
+                <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+            </div> 
           </div>
-          @foreach ($binhluan as $blcon)
-            @if ($blcon->id_binh_luan_con==$bl->id_binh_luan)
-              <div class="cmt-con">
-                <div class="m-avatar">
-                  <div class="avatar">
-                      <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-                  </div> 
+          <div class="comment">
+            <div class="comment-box2">
+                <div class="cmt-name">
+                    <b>{{$bl->ten_thanh_vien}}</b>
                 </div>
-                <div class="comment-box3">
-                  <div class="cmt-name">
-                      <b>{{$blcon->ten_thanh_vien}}</b>
+                <div class="cmt-nd">
+                    <p>{{$bl->nd_binh_luan}}</p>       
+                </div>
+                <div class="cmt-rep">
+                    <div style="margin-left: auto;">
+                    <b>Cử báo</b>
+                    <b>Trả lời</b>
+                    </div>
+                </div>
+            </div>
+            @foreach ($binhluan as $blcon)
+              @if ($blcon->id_binh_luan_con==$bl->id_binh_luan)
+                <div class="cmt-con">
+                  <div class="m-avatar">
+                    <div class="avatar">
+                        <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+                    </div> 
                   </div>
-                  <div class="cmt-nd">
-                      <p>{{$blcon->nd_binh_luan}}</p>       
-                  </div>
-                  <div class="cmt-rep">
-                      <div style="margin-left: auto;">
-                      <b>Cử báo</b>
-                      <b>Trả lời</b>
-                      </div>
+                  <div class="comment-box3">
+                    <div class="cmt-name">
+                        <b>{{$blcon->ten_thanh_vien}}</b>
+                    </div>
+                    <div class="cmt-nd">
+                        <p>{{$blcon->nd_binh_luan}}</p>       
+                    </div>
+                    <div class="cmt-rep">
+                        <div style="margin-left: auto;">
+                        <b>Cử báo</b>
+                        <b>Trả lời</b>
+                        </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            @endif 
-          @endforeach
-        </div>
-      </div> 
-    @endforeach 
+              @endif 
+            @endforeach
+          </div>
+        </div> 
+      @endforeach 
+    @endisset
+   
   </div>  
+</div>
+<div class="modal fade" id="baoloi" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tôi muốn báo lỗi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="/baoloi/{{$truyen[0]->truyen_id}}" method="post">
+          @csrf
+          <textarea name="baoloi" id="" style="width:100%;" rows="10" placeholder="Lý do báo lỗi ..."></textarea>
+      </div>
+      <div class="modal-footer">
+       @if (Session::has('id_tk'))
+       <button type="submit" class="btn btn-success">Đồng ý</button>
+      </form> 
+       @else
+       <p onclick="baoloi()"  class="btn btn-success">Đồng ý</p>
+       @endif
+      </div>
+    </div>  
+  </div>
+</div>
+<div class="modal fade" id="add-ds" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="    width: 280px;">
+      <div class="modal-body" style="text-align: center">
+        <form action="/thuvien/them/" method="post">
+          @csrf
+          <label for="">Tên:</label>
+          <input type="text" name="danhsachdoc">
+   
+      <button class="themds" type="submit">Thêm</button>
+      <button type="button"class="themds" data-dismiss="modal">Hủy</button></form> 
+      </div>
+    </div>  
+  </div>
 </div>
 
 @endsection

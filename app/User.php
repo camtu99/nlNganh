@@ -117,6 +117,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('id','=',$id)
             ->update(['avatar' => $anh]);
     }
+    public function sua_anh_bia($id,$anh){
+        DB::table('users')
+        ->where('id','=',$id)
+        ->update(['anh_bia' => $anh]);
+    }
     public function upload_thongtin($id,$ten,$pass,$thongtin){
         DB::table('users')
             ->where('id','=',$id)

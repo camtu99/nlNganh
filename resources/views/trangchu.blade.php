@@ -36,7 +36,7 @@
             <ul class="list-top-ul">
               @foreach ($viewtruyen as $view)
                 <li class="list-top-li">
-                  <a href="chitiettruyen.php?masach='.$row['ma_sach'].'">
+                  <a href="/truyen/{{$view->truyen_id}}">
                     <div class="list-top-img">
                       <img src="http://127.0.0.1:8000/hinhanh/<?php echo $view->hinh_anh?>" style="height=70px;width:50px;">
                     </div>

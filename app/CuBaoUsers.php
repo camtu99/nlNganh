@@ -28,4 +28,11 @@ class CuBaoUsers extends Model
                 'nd_cu_bao'=>$noidung
             ]);
     }
+    public function insert_cubao_user($id_tk,$noidung){
+        DB::table('cu_bao_user')
+            ->insert([
+                'user_id'=>$id_tk,
+                'nd_cu_bao'=>$noidung
+            ]);
+    }
 }

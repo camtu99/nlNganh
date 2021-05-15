@@ -45,10 +45,10 @@
                 </li>
                 @if (Session::has('email_tk'))
                 <li class="nav-item" style="margin-left: auto;">
-                  <a href="/user/{{Session::get('email_tk')}}">{{Session::get('email_tk')}}</a>
+                  <a href="/user/{{Session::get('email_tk')}}">{{Session::get('ten_tk')}}</a>
                 </li>
                 <li class="nav-item" style="padding: 0 10px;">
-                  <a href="/user/logout">Đăng xuất</a>
+                  <a href="{{URL::to('user/logout')}}">Đăng xuất</a>
                 </li>
               @else
                 <li class="nav-item" style="margin-left: auto;"data-toggle="modal" data-target="#dangnhap">
@@ -117,45 +117,89 @@
         </div>
       </div>
     </div>
-    <div class="thongtin">
-        <div class="avatar">
-            <div class="avatar-img">
-              @if (substr_count($user[0]->avatar,'http')>0)
-                        <img src="{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+    @if (substr_count($user[0]->anh_bia,'http')>0)
+      <div class="thongtin" style="background-image: url({{$user[0]->anh_bia}})">
+    @else
+      <div class="thongtin" style="background-image: url(http://127.0.0.1:8000/hinhanh/{{$user[0]->anh_bia}})"> 
+    @endif   
+      <div class="avatar">
+          <div class="avatar-img">
+            @if (substr_count($user[0]->avatar,'http')>0)
+              <img src="{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+            @else
+              <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+            @endif
+          </div>
+          <h1 class="name">{{$user[0]->name}}</h1>
+      </div>
+      <div class="capdo">
+          <div class="capdo2">
+              <div class="capdo1" @if ($following)  type="button" data-toggle="collapse" data-target="#follwing" @endif>
+                @if ($following)
+                  <p>{{count($following)}}</p>
+                @else
+                  <p>0</p>
+                @endif  
+                <p>Following</p>
+              </div>
+              <div class="capdo1" @if ($follower)  type="button" data-toggle="collapse" data-target="#follwer" @endif>
+                @if ($follower)
+                  <p>{{count($follower)}}</p>
+                @else
+                  <p>0</p>
+                @endif
+                <p>Follower</p>
+              </div>
+              <div class="capdo1">
+                  <p>{{$user[0]->thanks}}</p>
+                  <p>Thanks</p>
+              </div>
+              <div class="capdo1">
+                  <p>{{$user[0]->thanh_tich}}</p>
+                  <p>Tích phân</p>
+              </div>
+          </div>
+      </div>
+      <div style="background-color: white;">
+        <div class="container">
+          <div id="follwer" class="collapse">
+            @if ($follower)
+            <div  style="display: flex;flex-wrap: wrap;padding: 20px 0;">
+              @foreach ($follower as $follower_id)
+                <div class="follow">
+                  <a href="/user/{{$follower_id->email}}">
+                    @if (substr_count($follower_id->avatar,'http')>0)
+                      <img src="{{$follower_id->avatar}}" alt="" >
                     @else
-                        <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$user[0]->avatar}}" alt="" style=" width: 160px;height: 160px;border-radius: 50%;margin: 30px">
+                      <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$follower_id->avatar}}" alt="" >
                     @endif
+                    <p class="ten_user">{{$follower_id->name}}</p>
+                  </a>
+                </div>
+               @endforeach
             </div>
-            <h1 class="name">{{$user[0]->name}}</h1>
-        </div>
-        <div class="capdo">
-            <div class="capdo2">
-                <div class="capdo1">
-                  @if ($following)
-                    <p>{{count($following)}}</p>
-                  @else
-                    <p>0</p>
-                  @endif  
-                  <p>Following</p>
+            @endif
+          </div>
+          <div id="follwing" class="collapse">
+            @if ($following)
+            <div style="display: flex;flex-wrap: wrap;padding: 20px 0;">
+              @foreach ($following as $following_id)
+                <div class="follow">
+                  <a href="/user/{{$following_id->email}}">
+                    @if (substr_count($following_id->avatar,'http')>0)
+                      <img src="{{$following_id->avatar}}" alt="">
+                    @else
+                      <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$following_id->avatar}}" alt="" >
+                    @endif
+                    <p class="ten_user">{{$following_id->name}}</p>
+                  </a>
                 </div>
-                <div class="capdo1">
-                  @if ($follower)
-                    <p>{{count($follower)}}</p>
-                  @else
-                    <p>0</p>
-                  @endif
-                  <p>Follower</p>
-                </div>
-                <div class="capdo1">
-                    <p>{{$user[0]->thanks}}</p>
-                    <p>Thanks</p>
-                </div>
-                <div class="capdo1">
-                    <p>{{$user[0]->thanh_tich}}</p>
-                    <p>Level</p>
-                </div>
+              @endforeach
             </div>
+            @endif
+          </div>
         </div>
+      </div>
     </div>
     <div class="dieukhien">
         <div class="container">
@@ -177,12 +221,16 @@
                   </div>
                   <div class="col-md-4">
                       <ul class="nav">
-                        @if (Session::get('email_tk')!=$user[0]->email||!Session::has('id_tk'))
-                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><i class="fas fa-plus"></i> Follow</li>
+                        @if (Session::get('email_tk')!=$user[0]->email)
+                          @if (isset($follow)&&$follow=='ok')
+                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a href="/follow/huy/{{$user[0]->id}}">Hủy Follow</a></li>
+                          @else
+                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a href="/follow/them/{{$user[0]->id}}"><i class="fas fa-plus"></i> Follow</a></li>
+                          @endif     
                           <div class="dropdown" >
                             <li type="button" data-toggle="dropdown" class="thanh-dk-1 caidat"><i class="fas fa-tools"></i></li>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="#">Báo cáo</a>
+                              <p class="dropdown-item" type="button"  data-toggle="modal" data-target="#baocao">Báo cáo</p>
                             </div>
                           </div>
                         @else
@@ -200,6 +248,7 @@
         </div>
     </div>
     <div style="height: 50px;width: 100%;"></div>
+    @include('error')
     <div class="" style="background-color:rgb(115 223 247 / 27%);padding: 50px 30px;">
     <div class="container">
         @section('content')
@@ -207,3 +256,50 @@
 
       </div>
     </div>
+    {{-- báo cáo user --}}
+    @if (Session::get('email_tk')!=$user[0]->email)
+      <div class="modal " id="baocao">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 class="modal-title">Báo cáo thành viên</h6>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div style="padding:10px 0;">
+                <p style="color: #4b95e8;font-weight: 800;">Lý do báo cáo:</p>
+                <form action="/baocao/{{$user[0]->id}}/" method="post" style="width:100%;">
+                  @csrf
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="spam" name="spam">Spam
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="thotuc" name="thotuc">Ngôn ngữ thô tục, quấy rối
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input" value="khac" name="khac">Khác
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <textarea class="form-control" rows="5" id="comment" name="lydo" placeholder="Mô tả ..."></textarea>
+                  </div>             
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" data-dismiss="modal">Đóng</button><button style="width: 130px;" class="btn btn-info" type="submit">Báo cáo</button></form>
+            </div>
+            
+          </div>
+        </div>
+      </div>    
+    @endif
+    <script>
+      function baoloi() {
+        alert("Bạn chưa đăng nhập");
+      }
+      </script>

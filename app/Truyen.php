@@ -47,7 +47,7 @@ class Truyen extends Model
     public function user(){
         return $this -> hasMany('App\User','user_id','id');
     }
-    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao,$trangnhung)
+    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung)
     {
         $check =DB::table('truyen') 
                     -> where('ten_truyen','=',$ten)
@@ -62,10 +62,17 @@ class Truyen extends Model
                 'tac_gia_id' => $tacgia,
                 'ngay_tao' => $ngaytao,
                 'luot_doc'=> 0,
-                'user_id'=>21,
+                'user_id'=>$user,
                 'trang_nhung'=>$trangnhung
             ]);
         }
+        $tichphan=DB::table('users')
+            ->where('id','=',$user)
+            ->get();
+        $cong = $tichphan[0]->thanh_tich + 5;
+        $congtichphan = DB::table('users')
+                            ->where('id','=',$user)
+                            ->update(['thanh_tich'=>$cong]);    
         return $check;
     }
 
@@ -95,6 +102,7 @@ class Truyen extends Model
     public function get_truyen($id){
         $truyen = DB::table('truyen')
                     -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+                    ->join('users','users.id','=','truyen.user_id')
                     -> where ('truyen_id','=',$id)
                     ->get();
         return $truyen;
@@ -185,4 +193,5 @@ class Truyen extends Model
             ->get();
             return $truyen;
     }
+    
 }
