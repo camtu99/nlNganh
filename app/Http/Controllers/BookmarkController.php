@@ -26,13 +26,12 @@ class BookmarkController extends Controller
         $xoa = new Bookmarks();
         $xoa = $xoa->xoa_bookmark($id);
         Session::flash('success','Bạn đã xóa thành công!');
-        return redirect()->back();
-        
+        return redirect()->back();      
     }
     public function them_bookmark($id){
-        $xoa = new Bookmarks();
+        $them = new Bookmarks();
         $id_user = Session::get('id_tk');
-        $xoa = $xoa->xoa_bookmark($id_user,$id);
+        $them = $them->them_bookmark($id_user,$id);
         Session::flash('success','Bạn đã thêm thành công!');
         return redirect()->back();
         

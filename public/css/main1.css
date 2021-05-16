@@ -576,3 +576,12 @@ color: #78d3de;
     text-align: center;
     letter-spacing: .5px;
   }
+  .tacgia_ds li{
+    list-style-type: none;padding: 6px;
+  }
+  .tacgia_ds{
+    background-color: #c9f6fc;padding: 0;
+  }
+ .tacgia_ds li:nth-child(even){
+    background-color: #e9fbff;
+  }

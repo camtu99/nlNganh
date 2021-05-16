@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use Illuminate\Routing\Route as RoutingRoute;
 use uth\VerificationController;
 use Whoops\Run;
 
@@ -26,7 +27,13 @@ Route::post('inserttruyen','Noidung@add_truyen');
 Route::post('taotruyen','Noidung@checktruyen' );
 Route::get('truyen/{id}','Noidung@chitiet_truyen');
 Route::get('truyen/{id}/{chuong}','Noidung@chitiet_chuong');
-
+Route::post('suatruyen/{id}','Noidung@tinhtrang_truyen');
+Route::post('/suatruyen/theloai/{id}','Noidung@theloai_truyen');
+//tìm kiếm truyện theo tac giả. tên, thể loại, nâng cao
+Route::get('/trangthai/{tinhtrang}','CongViecController@tinhtrang');
+Route::get('/tacgia/{tentacgia}','CongViecController@timkiem_tacgia');
+Route::get('/theloai/{loai}','CongViecController@tim_theloai');
+Route::get('/tacgia','CongViecController@tacgia');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
@@ -67,6 +74,8 @@ Route::get('/bookmark/{id}','BookmarkController@them_bookmark');
 Route::get('/user/congviec/{name}','CongViecController@congviec');
 Route::post('/thuvien/them','CongViecController@themthuvien');
 Route::get('/review/truyen/{name}','ReviewController@review_truyen');
+Route::get('/thuvien/them/{thuvien}/{id}','CongViecController@truyen_thuvien');
+
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');

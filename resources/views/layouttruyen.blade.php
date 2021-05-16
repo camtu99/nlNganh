@@ -36,7 +36,7 @@
                     <a class="nav-link" href="#">Thể loại</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Tác giả</a>
+                  <a class="nav-link" href="/tacgia/">Tác giả</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Tìm truyện</a>

@@ -62,7 +62,7 @@ class ReviewController extends Controller
         $review = $review->get_review_truyen($truyen_id);
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->bl_review();
-        if($review){
+        if($review!=''){
             return view('review_truyen',compact('review','binhluan'));
         }else{
         Session::flash('error','Truyện chưa có review');

@@ -193,5 +193,23 @@ class Truyen extends Model
             ->get();
             return $truyen;
     }
+    public function tim_tinh_trang($tinhtrang){
+        $truyen = DB::table('truyen')
+        ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+        ->where('tinh_trang','=',$tinhtrang)
+       ->get();
+        return $truyen;
+    }
+    public function sua_tinhtrang($id,$tinhtrang,$id_user){
+        DB::table('truyen')
+            ->where('truyen_id','=',$id)
+            ->update(['tinh_trang'=>$tinhtrang]);
+        DB::table('lich_su')
+            ->insert([
+                'user_id'=>$id_user,
+                'nd_congviec'=>'Cập nhật truyện',
+                'truyen_id'=>$id
+            ]);
+    }
     
 }

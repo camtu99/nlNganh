@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\User;
 use App\Follow;
+use App\TacGia;
+use App\TagTruyen;
 use App\ThuVien;
 use App\Truyen;
-
+use App\TruyenThuVien;
 class CongViecController extends Controller
 {
     public function check_follow($follower){
@@ -42,5 +44,33 @@ class CongViecController extends Controller
         $add_tv = $add_tv->them_thu_vien($ten_tv,$id_user);
         Session::flash('success','Thêm thư viên thành công');
         return redirect()->back();
+    }
+    public function timkiem_tacgia($tentacgia){
+        $truyen = new TacGia();
+        $truyen = $truyen -> get_truyen_ten($tentacgia);
+        return view('timkiem',compact('truyen'));
+    }
+    public function tinhtrang($tinhtrang){
+       $truyen = new Truyen();
+       $truyen = $truyen->tim_tinh_trang($tinhtrang);
+       return view('timkiem',compact('truyen'));
+
+    }
+    public function tim_theloai($loai){
+       $truyen = new TagTruyen();
+       $truyen = $truyen->tim_theloai($loai);
+        return view('timkiem',compact('truyen'));
+    }
+    public function truyen_thuvien($thuvien,$id){
+        $id_user = Session::get('id_tk');
+        $truyen_them = new TruyenThuVien();
+        $truyen_them = $truyen_them->truyen_thuvien($id,$thuvien,$id_user);
+        Session::flash('success','Thêm vào thư viện thành công');
+        return redirect()->back();
+    }
+    public function tacgia(){
+        $tacgia = new TacGia();
+        $tacgia = $tacgia->all_tac_gia();
+        return view('danhsach',compact('tacgia'));
     }
 }

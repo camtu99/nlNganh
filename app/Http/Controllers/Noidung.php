@@ -85,7 +85,7 @@ class Noidung extends Controller
       if($kiemtra==3){
         $themchuong =$this->add_chuong_ruochenwx($link,$truyen);
       }
-      for($i=1;$i<=6;$i++){
+      for($i=1;$i<=16;$i++){
         if($req->input($i)!==null)
         {
           $tag_truyen = new TagTruyen();
@@ -303,7 +303,12 @@ class Noidung extends Controller
         $thuvien=new ThuVien();
         $thuvien = $thuvien->get_thuvien($id_user);
       }
-      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien'));
+      $dstheloai='';
+      if($truyen[0]->user_id==Session::get('id_tk')){
+        $dstheloai = new TheLoai();
+        $dstheloai = $dstheloai->get_all_theloai();
+      }
+      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai'));
 
     }
     function stt_chuong($id_truyen,$chuong){
@@ -444,6 +449,29 @@ class Noidung extends Controller
       Session::flash('success','Báo lỗi truyện thành công');
       return redirect()->back();
     }
-
+    public function tinhtrang_truyen(Request $req,$id){
+      $tinhtrang = $req->tinhtrang;
+      $id_user = Session::get('id_tk');
+      $truyen=new Truyen();
+      $truyen = $truyen->sua_tinhtrang($id,$tinhtrang,$id_user);
+      Session::flash('success','Đã cập nhật');
+      return redirect()->back();
+    }
+    public function theloai_truyen(Request $req,$id){
+      $id_user = Session::get('id_tk');
+      $xoatheloai = new TagTruyen();
+      $xoatheloai = $xoatheloai->xoa_tag($id,$id_user);
+      $theloai = new TheLoai();
+      $theloai = $theloai->get_all_theloai();
+      for($i=1;$i<=count($theloai);$i++){
+        if($req->input($i)!==null){
+          $tag = new TagTruyen();
+          $tag = $tag->add_tagtruyen($id,$req->input($i));
+        }
+      }
+      Session::flash('success','Cập nhật thành công');
+      return redirect()->back();
+      
+    }
     
 }

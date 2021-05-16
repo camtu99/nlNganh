@@ -23,4 +23,18 @@ class TruyenThuVien extends Model
             ->get();
             return $truyen;
     }
+    public function truyen_thuvien($id,$id_thuvien,$id_user){
+        DB::table('truyen_thu_vien')
+            ->insert([
+                'truyen_id'=>$id,
+                'user_id'=>$id_user,
+                'id_thu_vien' =>$id_thuvien
+            ]);
+                DB::table('lich_su')
+                    ->insert([
+                        'user_id'=>$id_user,
+                        'nd_congviec'=>'Thêm vào thư viện truyện',
+                        'truyen_id'=>$id
+                    ]);
+    }
 }

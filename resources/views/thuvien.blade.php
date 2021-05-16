@@ -17,6 +17,7 @@
               <div style="display: flex;flex-wrap: wrap;width:100%">
                 @foreach ($truyentv as $truyenct)
                   @if ($truyenct->id_thu_vien==$loaitv->id_thu_vien)
+                  <a href="/truyen/{{$truyenct->truyen_id}}" style="color: black">
                     <div class="hin">
                       <img src="http://127.0.0.1:8000/hinhanh/{{$truyenct->hinh_anh}}" style="width: 165px; height: 250px;" alt="">
                       <p class="tentruyentv"  data-toggle="tooltip" data-placement="left" title="{{$truyenct->ten_truyen}}">{{$truyenct->ten_truyen}}</p>
@@ -24,6 +25,7 @@
                       <p>{{$truyenct->tinh_trang}}</p>
                       <p>{{$truyenct->luot_doc}} lượt đọc </p>
                     </div>
+                  </a>
                   @endif
                 @endforeach
               </div>

@@ -12,9 +12,11 @@
                             <img src="http://127.0.0.1:8000/hinhanh/{{$item->hinh_anh}}" alt="">
                         </div>
                         <div style="padding: 2px 15px;">
-                            <p><a class="teude" href=""> {{$item->ten_truyen}}</a></p>
-                            <p>Tác giả: <a href="">{{$item->ten_tac_gia}}</a></p>
-                            <p>Chương:  <a href=""><span>{{$item->ten_chuong}}</span></a></p>
+                            <a href="/truyen/{{$item->truyen_id}}/{{$item->ten_chuong}}">
+                                <p class="teude" > {{$item->ten_truyen}}</p>
+                                <p>Tác giả: {{$item->ten_tac_gia}}</p>
+                                <p>Chương:  <span>{{$item->ten_chuong}}</span></p>
+                            </a>        
                         </div>
                         <div class="btn-xoa">
                             <a type="button"  class="btn btn-light"href="/bookmark/xoa/{{$item->id_bookmark}}">Xóa</a>
