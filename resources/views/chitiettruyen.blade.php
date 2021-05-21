@@ -27,7 +27,7 @@
           <div class="thong-tin-1-2">
             <div>
               <p> Thể loại :&nbsp
-                @foreach ($theloai as $loai)
+                @foreach ($theloaitruyen as $loai)
                   <a href="/theloai/{{$loai->ten_the_loai}}">{{$loai->ten_the_loai}}</a>
                 @endforeach                                
               </p>

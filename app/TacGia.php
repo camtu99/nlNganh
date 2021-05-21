@@ -45,7 +45,7 @@ class TacGia extends Model
                     return $truyen;
     }
     public function all_tac_gia(){
-        $tacgia = DB::select('SELECT ten_tac_gia, COUNT(ten_tac_gia) as sotruyen FROM `tac_gia` JOIN truyen ON tac_gia.tac_gia_id=truyen.tac_gia_id GROUP by tac_gia.ten_tac_gia ');
+        $tacgia = DB::select('SELECT ten_tac_gia, COUNT(ten_tac_gia) as sotruyen FROM `tac_gia` JOIN truyen ON tac_gia.tac_gia_id=truyen.tac_gia_id GROUP by tac_gia.ten_tac_gia order by sotruyen desc');
         return $tacgia;
     }
 }

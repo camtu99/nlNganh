@@ -76,6 +76,8 @@ class Noidung extends Controller
       $id_truyen = json_decode($id_truyen -> get_id_truyen($ten_truyen));
       $truyen=$id_truyen[0]->truyen_id;
       //thêm thể loại
+      $theloai = new TheLoai();
+      $theloai = $theloai->get_all_theloai();
       if($kiemtra==1){
         $themchuong =$this->add_chuong_sxyxht($link,$truyen);
       }
@@ -85,7 +87,7 @@ class Noidung extends Controller
       if($kiemtra==3){
         $themchuong =$this->add_chuong_ruochenwx($link,$truyen);
       }
-      for($i=1;$i<=16;$i++){
+      for($i=1;$i<=count($theloai);$i++){
         if($req->input($i)!==null)
         {
           $tag_truyen = new TagTruyen();
@@ -101,7 +103,7 @@ class Noidung extends Controller
     $follower = $follower->get_follower($id);
     $following = new Follow();
     $following = $following->get_following($id);
-      return view('taotruyen',compact('user','follower','following'));
+      return view('taotruyen',compact('user','theloai','follower','following'));
     }
 
     public function update_ten_truyen(Request $req){
@@ -209,8 +211,8 @@ class Noidung extends Controller
       Session::put('id_truyen',$truyen_id);
       Session::put('ten_truyen',$ten);
       Session::put('id_tacgia',$tac_gia);
-      $theloai = new TagTruyen();
-      $theloai = $theloai -> get_loai($truyen_id);
+      $theloaitruyen = new TagTruyen();
+      $theloaitruyen = $theloaitruyen -> get_loai($truyen_id);
       if($tinhtrangtruyen=='Còn tiếp'){
         if($trangnhung==1){
           $chuong= $noidung->find('.inner',2)->find('dd');
@@ -289,7 +291,7 @@ class Noidung extends Controller
       $cung_tacgia=json_decode($cung_tacgia);
       $soluong = new Truyen();
       $soluong = $soluong->soluong($tac_gia);
-      $id_loai = $theloai[0]->the_loai_id;
+      $id_loai = $theloaitruyen[0]->the_loai_id;
       
       if($soluong<12){
         $i=13-$soluong;
@@ -308,7 +310,9 @@ class Noidung extends Controller
         $dstheloai = new TheLoai();
         $dstheloai = $dstheloai->get_all_theloai();
       }
-      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai'));
+      $theloai = new TheLoai();
+      $theloai = $theloai->get_all_theloai();
+      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai'));
 
     }
     function stt_chuong($id_truyen,$chuong){
@@ -380,11 +384,13 @@ class Noidung extends Controller
       $noidung=$this->chitiet_nd_chuong($link_chuong);
       $tacgia=new TacGia();
       $tacgia=$tacgia->get_tacgia($id_tacgia);
+      $theloai = new TheLoai();
+      $theloai = $theloai->get_all_theloai();
       if(isset($chuongke)&&isset($chuongtruoc)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong'));
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong','theloai'));
       }else if(isset($chuongke)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia','nd_chuong'));
-      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia','nd_chuong'));}
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia','nd_chuong','theloai'));
+      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia','nd_chuong','theloai'));}
 
     }
     public function trangchu(){
@@ -396,7 +402,9 @@ class Noidung extends Controller
       $hiendai = $hiendai->cung_loai_truyen(12,1);
       $cotrang = new Truyen();
       $cotrang = $cotrang->cung_loai_truyen(12,2);
-      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang'));
+      $theloai = new TheLoai();
+      $theloai = $theloai->get_all_theloai();
+      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang','theloai'));
     }
     public function add_chuong_sxyxht($link,$id_truyen){
       $link ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
@@ -473,5 +481,20 @@ class Noidung extends Controller
       return redirect()->back();
       
     }
-    
+    public function hientrang_truyen($id,$trang){
+      if(!Session::has('tk_admin')){ 
+        Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
+        return view('login');
+      }
+      if($trang==0){
+        $id_truyen =$id;
+        $tinhtrang =new Truyen();
+        $tinhtrang = $tinhtrang->update_hientrang($id_truyen,1);
+        return redirect()->back();
+      }else{
+        $tinhtrang =new Truyen();   $id_truyen =$id;
+        $tinhtrang = $tinhtrang->update_hientrang($id_truyen,0);
+        return redirect()->back();
+      }
+    }
 }

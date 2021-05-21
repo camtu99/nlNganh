@@ -7,6 +7,8 @@ use App\User;
 use App\Bookmarks;
 use App\NoiDungChuong;
 use App\Follow;
+use App\TheLoai;
+
 class BookmarkController extends Controller
 {
     public function bookmark(){
@@ -20,7 +22,9 @@ class BookmarkController extends Controller
         $following = $following->get_following($id);
         $bookmark =new Bookmarks();
         $bookmark = $bookmark->get_bookmark($id);
-        return view('bookmark',compact('user','follower','following','bookmark'));
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('bookmark',compact('user','follower','following','bookmark','theloai'));
     }
     public function xoa_bookmark($id){
         $xoa = new Bookmarks();

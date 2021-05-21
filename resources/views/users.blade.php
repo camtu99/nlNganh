@@ -31,8 +31,8 @@
                                         <p>Lượt đọc : {{$item->luot_doc}}  lần</p>
                                     </div>
                                     <div class="doc" style="display: flex;">
-                                        <p style="margin-left: auto;">Đọc</p>
-                                        <p >+</p>
+                                        <p style="margin-left: auto;"><a style="color: black" href="/truyen/{{$item->truyen_id}}">Đọc</a></p>
+                                        <p>+</p>
                                     </div>
                                 </div>  
                             </div>

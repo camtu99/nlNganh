@@ -16,6 +16,7 @@ use App\Follow;
 use App\NoiDungChuong;
 use App\Review;
 use App\TagTruyen;
+use App\TheLoai;
 use App\ThuVien;
 use App\Truyen;
 use App\TruyenThuVien;
@@ -50,12 +51,16 @@ class UserController extends Controller
         $repassword = new User();
         $repassword = $repassword ->doimatkhau($email,$pass);
         Session::flash('success','Đã đổi password thành công. Vui lòng đăng nhập lại');
-        return view('matkhau');
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('matkhau',compact('theloai'));
  }
  public function repass($id){
      $user = new User();
      $user = $user->get_users($id);
-     return view('matkhau',compact('user'));
+     $theloai = new TheLoai();
+     $theloai = $theloai->get_all_theloai();
+     return view('matkhau',compact('user','theloai'));
  }
  public function index($name){
         $user = new User();
@@ -75,7 +80,9 @@ class UserController extends Controller
                 }
             }
         }
-        return view('users',compact('user','follower','following','noidung','follow'));
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('users',compact('user','theloai','follower','following','noidung','follow'));
  }
  public function taotruyen(){
     if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
@@ -95,7 +102,9 @@ class UserController extends Controller
                 }
             }
         }
-    return view('taotruyen',compact('user','follower','following','follow'));
+    $theloai = new TheLoai();
+    $theloai = $theloai->get_all_theloai();
+    return view('taotruyen',compact('user','theloai','follower','following','follow'));
  }
  public function thuvien($name){
     $user = new User();
@@ -117,9 +126,11 @@ class UserController extends Controller
                 }
             }
         }
-    return view('thuvien',compact('user','follower','following','thuvien','truyentv','follow'));
+    $theloai = new TheLoai();
+    $theloai = $theloai->get_all_theloai();
+    return view('thuvien',compact('user','theloai','follower','following','thuvien','truyentv','follow'));
  }
- 
+
     public function login(Request $req){
         $email = $req->email;
         $mk =$req->matkhau;
@@ -134,6 +145,7 @@ class UserController extends Controller
                 $idw = $id[0]->id;
                 $ten = $id[0]->name;
                 $avatar = $id[0]->avatar;
+                if($id[0]->phan_quyen==2){Session::put('tk_admin',$idw);}
                 Session::put('id_tk',$idw);
                 Session::put('ten_tk',$ten);
                 Session::put('avatar_tk',$avatar);             
@@ -169,7 +181,9 @@ class UserController extends Controller
                 }
             }
         }
-        return view('setup_thongtin',compact('user','follower','following','follow'));
+        $theloai =new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('setup_thongtin',compact('theloai','user','follower','following','follow'));
     }
     public function setanh(Request $req){
         if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
@@ -292,5 +306,20 @@ class UserController extends Controller
         Session::flash('success','Đã thêm thành công');
         return redirect()->back();
     }
-
+    public function phanquyen($id,$khoa){
+        if(!Session::has('tk_admin')){ 
+            Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
+            return view('login');
+          }
+          if($khoa==0){
+            $id_truyen =$id;
+            $thanhvien = new User();
+            $thanhvien = $thanhvien->phanquyen_admin($id,1);
+            return redirect()->back();
+          }else{
+            $thanhvien = new User();
+            $thanhvien = $thanhvien->phanquyen_admin($id,0);
+            return redirect()->back();
+          }
+    }
 }

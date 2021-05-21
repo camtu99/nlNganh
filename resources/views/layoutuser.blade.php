@@ -32,13 +32,22 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Thể loại</a>
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Thể loại</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                        @foreach ($theloai as $tl)
+                          <p><a href="/theloai/{{$tl->ten_the_loai}}">{{$tl->ten_the_loai}}</a></p>
+                        @endforeach
+                      </div>                
+                    </div>
+                  </div>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Tác giả</a>
+                  <a class="nav-link" href="/tacgia/">Tác giả</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Tìm truyện</a>
+                  <a class="nav-link" href="/tim-kiem-nang-cao">Tìm truyện</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{URL::to('/review')}}">Review</a>
@@ -212,6 +221,7 @@
                         <li class="thanh-dk-1"><a href='http://127.0.0.1:8000/user/thuvien/{{$user[0]->email}}'>Thư viện</a></li>
                         <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/congviec/{{$user[0]->email}}" >Works</a></li>
                         <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/review/{{$user[0]->email}}" >Review</a></li>
+                        <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/hoatdong/{{$user[0]->email}}" >Hoạt động</a></li>
                         @if (Session::get('email_tk')==$user[0]->email)
                           <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/bookmark/user" >Bookmark</a></li>
                           <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/taotruyen/user">Nhúng link</a></li>  

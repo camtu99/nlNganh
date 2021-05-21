@@ -33,13 +33,23 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Thể loại</a>
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Thể loại</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                        @foreach ($theloai as $tl)
+                          <p><a href="/theloai/{{$tl->ten_the_loai}}">{{$tl->ten_the_loai}}</a></p>
+                        @endforeach
+                      </div>                
+                    </div>
+                  </div>
+                   
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/tacgia/">Tác giả</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Tìm truyện</a>
+                  <a class="nav-link" href="/tim-kiem-nang-cao">Tìm truyện</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{URL::to('/review')}}">Review</a>

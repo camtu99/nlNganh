@@ -72,7 +72,13 @@ class Truyen extends Model
         $cong = $tichphan[0]->thanh_tich + 5;
         $congtichphan = DB::table('users')
                             ->where('id','=',$user)
-                            ->update(['thanh_tich'=>$cong]);    
+                            ->update(['thanh_tich'=>$cong]); 
+        $lichsu = DB::table('lich_su')
+                    ->insert([
+                        'user_id'=>$user,
+                        'nd_congviec'=>'Tạo truyện',
+                        'hd_khac'=>'tao'
+                    ]);
         return $check;
     }
 
@@ -131,7 +137,13 @@ class Truyen extends Model
         }else{$truyen ='fail';}
         return $truyen;
     }
-
+    public function all_truyen_admin(){
+        $truyen = DB::table('truyen')
+                    ->join('users','users.id','=','truyen.user_id')
+                    ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                    ->paginate(30);
+                    return $truyen;
+    }
     public function get_new_truyen(){
         $truyen = DB::table('truyen')
                 -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
@@ -144,14 +156,14 @@ class Truyen extends Model
         $truyen = DB::table('truyen')
                 -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
                 ->orderByDesc('luot_doc')   
-                ->limit(8)       
+                ->limit(8)     
                 ->get();
         return $truyen;
     }
     public function get_loai_truyen($id){
         $loai = DB::table('truyen')
                 -> join('tac_gia','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
-                -> join('tag_truyen','truyen.truyen_id','=','tag_truyen.truyen_id')
+                -> join('tagtruyen','truyen.truyen_id','=','tagtruyen.truyen_id')
                 ->where('the_loai_id','=',$id)
                 ->orderByDesc('luot_doc')   
                 ->limit(8)       
@@ -167,7 +179,7 @@ class Truyen extends Model
     public function cung_loai_truyen($limit,$id){
         $truyen= DB::table('truyen')
                 ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
-                ->join('tag_truyen','tag_truyen.truyen_id','=','truyen.truyen_id')
+                ->join('tagtruyen','tagtruyen.truyen_id','=','truyen.truyen_id')
                 ->where('the_loai_id','=',$id)
                 ->limit($limit)
                 ->get();
@@ -210,6 +222,19 @@ class Truyen extends Model
                 'nd_congviec'=>'Cập nhật truyện',
                 'truyen_id'=>$id
             ]);
+    }
+    public function timkiem_truyen($tim){
+        $truyen = DB::table('truyen')
+                     ->join('users','users.id','=','truyen.user_id')
+                    ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                    ->where('ten_truyen','like','%'.$tim.'%')
+                    ->paginate(20);
+                    return $truyen;
+    }
+    public function update_hientrang($id,$tinhtrang){
+        DB::table('truyen')
+                ->where('truyen_id','=',$id)
+                ->update(['hien_trang'=>$tinhtrang]);
     }
     
 }

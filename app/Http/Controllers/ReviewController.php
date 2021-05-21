@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Follow;
+use App\TheLoai;
 use App\Truyen;
 
 class ReviewController extends Controller
@@ -17,7 +18,9 @@ class ReviewController extends Controller
         $review = $review ->all_review();
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->bl_review();
-        return view('review_truyen',compact('review','binhluan'));
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('review_truyen',compact('theloai','review','binhluan'));
     }
     public function insert_review(Request $req){
         $link = $req->linkreview;
@@ -52,7 +55,9 @@ class ReviewController extends Controller
         $review = new Review();
         $review = $review->get_review($id);
         $follow = $this->check_follow($follower);
-        return view('review',compact('user','follower','following','review','follow'));
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('review',compact('user','theloai','follower','following','review','follow'));
     }
     public function review_truyen($name){
         $truyen = new Truyen();
@@ -62,8 +67,10 @@ class ReviewController extends Controller
         $review = $review->get_review_truyen($truyen_id);
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->bl_review();
+        $theloai =new TheLoai();
+        $theloai = $theloai->get_all_theloai();
         if($review!=''){
-            return view('review_truyen',compact('review','binhluan'));
+            return view('review_truyen',compact('theloai','review','binhluan'));
         }else{
         Session::flash('error','Truyện chưa có review');
         return redirect()->back();

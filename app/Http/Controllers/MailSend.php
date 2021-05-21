@@ -6,6 +6,7 @@ use App\Follow;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use \App\Mail\SendMail;
+use App\TheLoai;
 use Illuminate\Support\Facades\Mail;
 use App\User;
 class MailSend extends Controller
@@ -22,7 +23,9 @@ class MailSend extends Controller
 
         Mail::to($email)->send(new SendMail($details));
         Session::flash('Success','Đã gửi đến email '.$email);
-        return view('emails.xacthuc_email',compact('email','id'));
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('emails.xacthuc_email',compact('email','id','theloai'));
     }
 
     public function xacthuc($id){

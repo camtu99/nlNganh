@@ -87,6 +87,13 @@ class User extends Authenticatable implements MustVerifyEmail
                     'password' =>$pass
                 ]);
         }
+        $user =DB::table('users')->orderByDesc('created_at')->get();
+        DB::table('lich_su')
+            ->insert([
+                'user_id'=>$user[0]->id,
+                'nd_congviec'=>'Đã tạo tài khoản',
+                'hd_khac'=>3
+            ]);
         return $check;
     }
 
@@ -95,6 +102,10 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->where('id','=',$id)
                 ->get();
             return $user;
+    }
+    public function all_user(){
+        $user = DB::table('users')->paginate(20);
+        return $user;
     }
     public function get_id($email){
         $id = DB::table('users')
@@ -146,5 +157,16 @@ class User extends Authenticatable implements MustVerifyEmail
         $follow = DB::table('follow')
                     ->where('follower_id','=',$id)
                     ->get();
+    }
+    public function timkiem_thanhvien($tim){
+        $thanhvien = DB::table('users')
+                        ->where('name','like','%'.$tim.'%')
+                        ->paginate(20);
+                        return $thanhvien;
+    }
+    public function phanquyen_admin($id,$quyen){
+        DB::table('users')
+                ->where('id','=',$id)
+                ->update(['phan_quyen'=>$quyen]);
     }
 }

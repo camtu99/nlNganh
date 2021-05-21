@@ -29,11 +29,15 @@ Route::get('truyen/{id}','Noidung@chitiet_truyen');
 Route::get('truyen/{id}/{chuong}','Noidung@chitiet_chuong');
 Route::post('suatruyen/{id}','Noidung@tinhtrang_truyen');
 Route::post('/suatruyen/theloai/{id}','Noidung@theloai_truyen');
+Route::get('/truyen/hientrang/{id}/{trang}','Noidung@hientrang_truyen');
 //tìm kiếm truyện theo tac giả. tên, thể loại, nâng cao
 Route::get('/trangthai/{tinhtrang}','CongViecController@tinhtrang');
 Route::get('/tacgia/{tentacgia}','CongViecController@timkiem_tacgia');
 Route::get('/theloai/{loai}','CongViecController@tim_theloai');
 Route::get('/tacgia','CongViecController@tacgia');
+Route::get('/tim-kiem-nang-cao','CongViecController@timkiemnangcao');
+Route::post('/truyen/timnangcao','CongViecController@timkiemcao');
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
@@ -63,6 +67,7 @@ Route::get('taotruyen/user','UserController@taotruyen');
 Route::post('/baocao/{id}','UserController@baocao');
 Route::get('/follow/huy/{id}','UserController@huy_follow');
 Route::get('/follow/them/{id}','UserController@them_follow');
+Route::get('user/phanquyen/{id}/{khoa}','UserController@phanquyen');
 //thuvien,bookmark,review,công việc, hoạt đọng
 Route::get('user/thuvien/{name}','UserController@thuvien');
 Route::get('/bookmark/user','BookmarkController@bookmark');
@@ -75,10 +80,20 @@ Route::get('/user/congviec/{name}','CongViecController@congviec');
 Route::post('/thuvien/them','CongViecController@themthuvien');
 Route::get('/review/truyen/{name}','ReviewController@review_truyen');
 Route::get('/thuvien/them/{thuvien}/{id}','CongViecController@truyen_thuvien');
+Route::get('/user/hoatdong/{name}','CongViecController@hoatdong');
 
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');
+Route::get('/baocao/tinhtrang/{id}','CubaoController@tinhtrang_baocaotruyen');
+
+//admin
+Route::get('/admin/thongtin','CongViecController@admin');
+Route::get('/admin/truyen','CongViecController@truyen');
+Route::post('admin/truyen/timkiem','CongViecController@timkiem_truyen');
+Route::post('/admin/thanhvien/timkiem','CongViecController@timkiem_user');
+Route::get('/admin/cubao/truyen','CubaoController@baocaotruyen');
+
 //test 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');

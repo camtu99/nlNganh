@@ -24,4 +24,16 @@ class BaoCaoTruyen extends Model
                 'nd_bao_cao'=>$noidung
             ]);
     }
+    public function all_baocao(){
+        $baocao = DB::table('bao_cao_truyen')
+                        ->join('users','users.id','=','bao_cao_truyen.user_id')
+                        ->join('truyen','truyen.truyen_id','=','bao_cao_truyen.truyen_id')
+                        ->paginate(20);
+                        return $baocao;
+    }
+    public function update_tinhtrangtruyen($id,$tinhtrang){
+        DB::table('bao_cao_truyen')
+            ->where('id_bao_cao','=',$id)
+            ->update(['tinh_trang_bc'=>$tinhtrang]);
+    }
 }
