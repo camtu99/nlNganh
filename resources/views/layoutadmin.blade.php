@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
+
+</head>
   <body>
       
     <!-- Optional JavaScript -->
@@ -22,6 +23,7 @@
 
     {{-- Khung hộp thoại --}}
     <div>
+        @include('error')
         <div class="row admin">
             <div class="col-md-2" style="padding-right: 0">
                 <div class=" khung-admin">
@@ -29,11 +31,9 @@
                     <p class="khung-item"><a href="/admin/truyen">Quản lý truyện</a></p>
                     <p class="khung-item"type="button" ><a href="#cubao"data-toggle="collapse" aria-expanded="false">Cử báo</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/truyen">Cử báo truyện</a></p>
-                    <p class="khung-item" type="button" id="cubao"class="collapse"><a href="">Cử báo tài khoản</a></p>
+                    <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/taikhoan">Cử báo tài khoản</a></p>
                     <p class="khung-item"><a href="">Quản lí thông báo</a></p>
-                    <p class="khung-item"><a href="">Thống kê</a></p>
-                    <p class="khung-item"><a href="">Thống kê truyện</a></p>
-                    <p class="khung-item"><a href="">Thống kê hoạt động</a></p>
+                    <p class="khung-item"><a href="/admin/thongke">Thống kê</a></p>
                 </div>
             </div>
             <div class="col-md-10">

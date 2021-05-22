@@ -36,4 +36,12 @@ class BaoCaoTruyen extends Model
             ->where('id_bao_cao','=',$id)
             ->update(['tinh_trang_bc'=>$tinhtrang]);
     }
+    public function get_truyen_ngay($date){
+        $baocao = DB::table('bao_cao_truyen')
+                    ->join('users','users.id','=','bao_cao_truyen.user_id')
+                    ->join('truyen','truyen.truyen_id','=','bao_cao_truyen.truyen_id')
+                    ->whereDate('ngay_bc',$date)
+                    ->paginate(20);
+                    return $baocao;
+    }
 }

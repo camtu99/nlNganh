@@ -21,7 +21,7 @@
             </tr>
             @foreach ($truyen as $item)
             <tr>
-                <td style="text-align: left;padding-left:10px"><a href="/truyen/{{$item->truyen_id}}">{{$item->ten_truyen}}</a></td>
+                <td style="text-align: left;padding-left:10px"><a href="/chuyentrang/truyen/{{$item->truyen_id}}">{{$item->ten_truyen}}</a></td>
                 <td>{{$item->ten_tac_gia}}</td>
                 <td>{{$item->name}}</td>
                 <td>

@@ -64,4 +64,18 @@ class Review extends Model
                     ->paginate(2);
                     return $review;
      }
+     public function top_review($ngay){
+         $review =  DB::select("SELECT date(`ngay_rv`) as ngay,COUNT(DAY(`ngay_rv`)) AS sl_review FROM `review` WHERE MONTH(`ngay_rv`)= ".$ngay." GROUP BY `ngay_rv`");
+         return $review;
+     }
+     public function get_rv_id($id){
+        $review = DB::table('review')
+        ->join('truyen','truyen.truyen_id','=','review.truyen_id')
+        ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+        ->join('users','users.id','=','review.user_id')
+        ->where('id_review','=',$id)
+        ->paginate(2);
+        return $review;
+
+     }
 }

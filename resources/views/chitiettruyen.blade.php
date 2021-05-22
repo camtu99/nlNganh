@@ -44,9 +44,9 @@
                 <a href="#comment" class="name1"><i class="fas fa-comments"></i></a>
                 <a href="/review/truyen/{{$truyen[0]->ten_truyen}}" class="name1">Review</a>
               </div>
-              <div class="name1-2">
+              <div class="name1-2">               
                 <p class="name2" data-toggle="modal" data-target="#baoloi"type="button"><i class="fas fa-exclamation"></i></p>
-                @if ($truyen[0]->user_id==Session::get('id_tk'))
+                @if ($truyen[0]->user_id==Session::get('id_tk')||Session::has('tk_admin'))
                 <div >
                   <div class="dropdown">
                     <p class="name2" type="button" data-toggle="dropdown"><i class="fas fa-users"></i>
@@ -167,7 +167,8 @@
     <div class="binhluan1">
       <i class="far fa-comment-dots" aria-hidden="true" style="font-size:100px;margin:auto;color:#c9c9c9"></i><p></p>
       <div class="binhluan1-1">
-        <form action="xulibinhluan.php">
+        <form action="/binhluan/{{Session::get('id_tk')}}/{{$truyen[0]->truyen_id}}" method="POST">
+          @csrf
             <textarea name="message" style="width:100%; height:150px;"></textarea>
             <br>
             <input type="submit" style="float: right;">
@@ -176,54 +177,123 @@
     </div>
     @isset($binhluan)
       @foreach ($binhluan as $bl)
+        @if (!$bl->id_binh_luan_con)
         <div class="listcmt">
           <div class="m-avatar">
             <div class="avatar">
-                <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-            </div> 
+              @if (substr_count($bl->avatar,'http')>0)
+                <img src="{{$bl->avatar}}" alt="" >
+              @else
+                <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$bl->avatar}}" alt="" >
+              @endif
+            </div>
           </div>
           <div class="comment">
             <div class="comment-box2">
-                <div class="cmt-name">
-                    <b>{{$bl->ten_thanh_vien}}</b>
-                </div>
-                <div class="cmt-nd">
-                    <p>{{$bl->nd_binh_luan}}</p>       
-                </div>
-                <div class="cmt-rep">
-                    <div style="margin-left: auto;">
-                    <b>Cử báo</b>
-                    <b>Trả lời</b>
+              <div class="cmt-name">
+                  <b>{{$bl->name}}</b>
+              </div>
+              <div class="cmt-nd">
+                  <p>{{$bl->nd_binh_luan}}</p>       
+              </div>
+              {{-- <div class="cmt-rep">
+                  <div style="margin-left: auto;">
+                  <b>Cử báo</b>
+                  <b>Trả lời</b>
+                  </div>
+              </div> --}}
+              @if (Session::has('id_tk'))
+                <div class="r123" style="display:flex">
+                  <div style="margin-left: auto;margin-right:10px;" class="dropdown  dropright">
+                    <p type="button" class="dropdown-toggle" data-toggle="dropdown">
+                        Cử báo
+                    </p>
+                    <div class="dropdown-menu">
+                        <label>Lý do cử báo:</label>
+                      <a class="dropdown-item" href="review/cubao/{{$bl->id}}/{{$bl->id_binh_luan}}/chinhtri">Đề cập đến chính trị</a>
+                      <a class="dropdown-item" href="review/cubao/{{$bl->id}}/{{$bl->id_binh_luan}}/chuiboi">Chửi bới, sỉ nhục thành viên khác</a>
+                      <a class="dropdown-item" href="review/cubao/{{$bl->id}}/{{$bl->id_binh_luan}}/chuithe">Chửi thề nói tục</a>
+                      <a class="dropdown-item" href="review/cubao/{{$bl->id}}/{{$bl->id_binh_luan}}/saisuthat">Quảng bá thông tin sai sự thật</a>
+                      <a class="dropdown-item" href="review/cubao/{{$bl->id}}/{{$bl->id_binh_luan}}/lamdung">Lạm dụng ngôn ngữ chat</a>
                     </div>
+                  </div>                                           
+                  <p type='button' data-toggle="collapse" data-target="#traloi{{$bl->id_binh_luan}}"> Trả lời </p>
                 </div>
+              @else
+                <div class="r123" style="display:flex">
+                    <p  type='button' data-toggle="modal" data-target="#dangnhap"style="margin-right:10px;margin-left: auto;">Cử báo</p>
+                    <p type='button' data-toggle="modal" data-target="#dangnhap"> Trả lời </p>
+                </div>
+              @endif 
+              
+            </div>
+            <div id="traloi{{$bl->id_binh_luan}}" class="collapse">
+              <div style="display: flex; width: 100%;padding: 20px 0 20px 10px;">
+                <div class="avater-review">
+                  @if (Session::has('avatar_tk'))
+                   <img src="{{Session::get('avatar_tk')}}" alt="">
+                  @else
+                   <img src="http://127.0.0.1:8000/hinhanh/avatar/{{Session::get('avatar_tk')}}" alt="" >
+                  @endif
+                </div>
+                <div style="width: 100%;">
+                  <form action="/binhluan/binhluan/{{Session::get('id_tk')}}/{{$bl->id_binh_luan}}/{{$truyen[0]->truyen_id}}" method="post">
+                    @csrf
+                    <textarea name="traloi" id="" cols="30" rows="10" style="    width: 100%;"></textarea>
+                    <button>Trả lời</button>
+                  </form>                           
+                </div>
+              </div>
             </div>
             @foreach ($binhluan as $blcon)
               @if ($blcon->id_binh_luan_con==$bl->id_binh_luan)
                 <div class="cmt-con">
                   <div class="m-avatar">
                     <div class="avatar">
-                        <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
+                      @if (substr_count($blcon->avatar,'http')>0)
+                        <img src="{{$blcon->avatar}}" alt="">
+                      @else
+                        <img src="http://127.0.0.1:8000/hinhanh/avatar/{{$blcon->avatar}}" alt="" >
+                      @endif
                     </div> 
                   </div>
                   <div class="comment-box3">
                     <div class="cmt-name">
-                        <b>{{$blcon->ten_thanh_vien}}</b>
+                        <b>{{$blcon->name}}</b>
                     </div>
                     <div class="cmt-nd">
                         <p>{{$blcon->nd_binh_luan}}</p>       
                     </div>
-                    <div class="cmt-rep">
-                        <div style="margin-left: auto;">
-                        <b>Cử báo</b>
-                        <b>Trả lời</b>
-                        </div>
+                    @if (Session::has('id_tk'))
+                <div class="r123" style="display:flex">
+                  <div style="margin-left: auto;margin-right:10px;" class="dropdown  dropright">
+                    <p type="button" class="dropdown-toggle" data-toggle="dropdown">
+                        Cử báo
+                    </p>
+                    <div class="dropdown-menu">
+                        <label>Lý do cử báo:</label>
+                      <a class="dropdown-item" href="/binhluan/cubao/{{$blcon->id}}/{{$blcon->id_binh_luan}}/chinhtri">Đề cập đến chính trị</a>
+                      <a class="dropdown-item" href="/binhluan/cubao/{{$blcon->id}}/{{$blcon->id_binh_luan}}/chuiboi">Chửi bới, sỉ nhục thành viên khác</a>
+                      <a class="dropdown-item" href="/binhluan/cubao/{{$blcon->id}}/{{$blcon->id_binh_luan}}/chuithe">Chửi thề nói tục</a>
+                      <a class="dropdown-item" href="/binhluan/cubao/{{$blcon->id}}/{{$blcon->id_binh_luan}}/saisuthat">Quảng bá thông tin sai sự thật</a>
+                      <a class="dropdown-item" href="/binhluan/cubao/{{$blcon->id}}/{{$blcon->id_binh_luan}}/lamdung">Lạm dụng ngôn ngữ chat</a>
                     </div>
+                  </div>                                           
+                  <p type='button' data-toggle="collapse" data-target="#traloi{{$bl->id_binh_luan}}"> Trả lời </p>
+                </div>
+              @else
+                <div class="r123" style="display:flex">
+                    <p  type='button' data-toggle="modal" data-target="#dangnhap"style="margin-right:10px;margin-left: auto;">Cử báo</p>
+                    <p type='button' data-toggle="modal" data-target="#dangnhap"> Trả lời </p>
+                </div>
+              @endif 
                   </div>
                 </div>
               @endif 
             @endforeach
           </div>
         </div> 
+        @endif
       @endforeach 
     @endisset
    

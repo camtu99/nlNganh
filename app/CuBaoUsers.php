@@ -28,6 +28,14 @@ class CuBaoUsers extends Model
                 'nd_cu_bao'=>$noidung
             ]);
     }
+    public function insert_cubao_binhluan($id_tk,$id_binhluan,$noidung){
+        DB::table('cu_bao_user')
+            ->insert([
+                'user_id'=>$id_tk,
+                'id_binh_luan'=>$id_binhluan,
+                'nd_cu_bao'=>$noidung
+            ]);
+    }
     public function insert_cubao_user($id_tk,$noidung){
         DB::table('cu_bao_user')
             ->insert([
@@ -35,4 +43,25 @@ class CuBaoUsers extends Model
                 'nd_cu_bao'=>$noidung
             ]);
     }
+    public function all_baocao_user(){
+        $user = DB::table('cu_bao_user')
+                    ->join('users','users.id','=','cu_bao_user.user_id')
+                    ->paginate(20);
+                    return $user;
+    }
+    public function get_tim_user($ten){
+        $user = DB::table('cu_bao_user')
+                ->join('users','users.id','=','cu_bao_user.user_id')
+                ->where('name','like','%'.$ten.'%')
+                ->paginate(20);
+                return $user;
+    }
+    public function get_tim_user_ngay($ngay){
+        $user = DB::table('cu_bao_user')
+                    ->join('users','users.id','=','cu_bao_user.user_id')
+                    ->whereDate('ngay_cb',$ngay)
+                    ->paginate(20);
+                    return $user;
+    }
+    
 }

@@ -76,4 +76,13 @@ class ReviewController extends Controller
         return redirect()->back();
         }
     }
+    public function baocao_review($id){
+        $review = new Review();
+        $review = $review ->get_rv_id($id);
+        $binhluan = new BinhLuan();
+        $binhluan = $binhluan ->bl_review();
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('review_truyen',compact('theloai','review','binhluan'));
+    }
 }

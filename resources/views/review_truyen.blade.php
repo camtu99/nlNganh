@@ -75,6 +75,7 @@
                                         </div>
                                         <div style="width: 100%;">
                                             <form action="review/binhluan/{{Session::get('id_tk')}}/{{$item->id_review}}" method="post">
+                                                @csrf
                                                 <textarea name="traloi" id="" cols="30" rows="10" style="    width: 100%;"></textarea>
                                                 <button>Trả lời</button>
                                             </form>                           

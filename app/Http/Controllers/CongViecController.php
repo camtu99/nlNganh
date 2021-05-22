@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\BinhLuan;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\User;
 use App\Follow;
 use App\Lichsu;
+use App\Review;
 use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
@@ -221,7 +224,83 @@ class CongViecController extends Controller
         $thanhvien = $thanhvien->timkiem_thanhvien($tenthanhvien);
         return view('cubaotruyen',compact('thanhvien'));
     }
-    public function cubaotruyen(){
-        
+    public function thongke(){
+        $thang = date('m');
+        $review = new Review();
+        $review = $review->top_review($thang);
+        $binhluan = new BinhLuan();
+        $binhluan = $binhluan->topbinhluan($thang);
+        $ngay = date('m');
+        if($ngay == 1 ||$ngay == 3||$ngay == 5||$ngay == 7||$ngay == 8||$ngay == 10||$ngay == 12){
+            $songay = 31;
+        }else{
+            $songay=30;
+        }
+        for ($i=1; $i<=$songay ; $i++) { 
+            $check_rv[$i]=2;$check_bl[$i]=2;
+            if($i<=9){$ngayi = date('Y').'-'.date('m').'-0'.$i;}else{$ngayi = date('Y').'-'.date('m').'-'.$i;}
+            foreach($review as $rv){
+                if($rv->ngay==$ngayi){
+                    $thongke[$i]=",['".$rv->ngay."',  ".$rv->sl_review.", ";
+                    $check_rv[$i]=1;
+                }
+            }
+            foreach($binhluan as $bl){
+
+                if($bl->ngay==$ngayi){
+                    if($check_rv[$i]==1){
+                        $thongke[$i]=$thongke[$i].$bl->sl_binhluan."]";
+                        $check_bl[$i]=1;
+                    }else{
+                        $thongke[$i]=",['".$bl->ngay."',  0, ".$bl->sl_binhluan."]";
+                        $check_bl[$i]=1;  
+                    }
+                }
+            }
+            if($check_bl[$i]==2){
+                if($check_rv[$i]==2){
+                    $thongke[$i]=",['".$ngayi."',  0, 0]";
+                }else{
+                    $thongke[$i]=$thongke[$i]."0]"; 
+                }
+            }
+        }
+        $tke='';
+        foreach($thongke as $tk){
+            $tke = $tke.$tk;
+        }
+        $thongke1 = " <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script><script type='text/javascript'>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+    
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Ngày', 'Bình Luận', 'Review']".
+              
+             $tke
+              
+           . "]);
+    
+            var options = {
+              title: 'Bảng thống kê lượt Bình luận, Review',
+              hAxis: {title: 'Ngày',  titleTextStyle: {color: '#333'}},
+              vAxis: {minValue: 0}
+            };
+    
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        </script>";
+   
+        return view('thongke',compact('thongke1'));
+    }
+    public function chuyentrang($id){
+        $thongbao ="<script>
+
+        window.open('http://127.0.0.1:8000/truyen/".$id."');
+      
+      </script>";
+      Session::flash('chuyentrang',$thongbao);
+      return redirect()->back();
     }
 }

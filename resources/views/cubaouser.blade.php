@@ -2,7 +2,7 @@
 @section('content')
 <div style="    display: flex;    margin: 23px; width:100%;font-weight: 500;">
     <div >
-        <form action="/admin/baocao/timkiem" method="post">
+        <form action="/admin/baocao/user/timkiem" method="post">
             @csrf
             <label for="">Nhập tên thành viên: </label>
             <input type="text"name="timkiem">
@@ -10,7 +10,7 @@
         </form>
     </div>
     <div style="margin-left: auto;margin-right:50px;">
-        <form action="/admin/baocao/ngay" method="post">
+        <form action="/admin/baocao/user/ngay" method="post">
             @csrf
             <label for="">Ngày</label>
             <input type="date" name="ngay" id="">
@@ -25,26 +25,34 @@
             <tr>
                 <th>Id</th>
                 <th>Tên thành viên</th>
-                <th>Truyện</th>
+                <th>Thể loại</th>
                 <th>Nội dung báo cáo</th>
                 <th>Ngày báo cáo</th>
                 <th>Tình trạng</th>
             </tr>
-            @foreach ($baocao as $item)
+            @foreach ($taikhoan as $item)
                 <tr>
-                    <td>{{$item->id_bao_cao}}</td>
-                    <td style="text-align: left;padding-left:10px">{{$item->name}}</td>
+                    <td>{{$item->id_cu_bao}}</td>
+                    <td style="text-align: left;padding-left:10px;    font-weight: 500;">{{$item->name}}</td>
                     <td>
-                        <a href="/chuyentrang/truyen/{{$item->truyen_id}}">{{$item->ten_truyen}}</a>
+                        @if ($item->id_binh_luan)
+                            <a style="color: coral;" href="/chuyentrang/baocao/binhluan/{{$item->id_binh_luan}}">Bình luận</a>
+                        @else
+                            @if ($item->id_review)
+                                <a style="color: blue" href="/chuyentrang/baocao/review/{{$item->id_review}}">Review</a>
+                            @else
+                                <a style="color: deeppink;" href="/baocao/user/{{$item->user_id}}">Thành viên</a>
+                            @endif
+                        @endif                      
                     </td>
-                    <td>{{$item->nd_bao_cao}}</td>
+                    <td>{{$item->nd_cu_bao}}</td>
                     <td>
-                        {{$item->ngay_bc}}      
+                        {{$item->ngay_cb}}      
                     </td>
                     <td>
-                        @if ($item->tinh_trang_bc=='Chưa giải quyết')
+                        @if ($item->trang_thai_cu_bao=='Chưa giải quyết')
                             <div>
-                                <form action="/baocao/tinhtrang/{{$item->id_bao_cao}}" method="get" style="display: flex;width: 100%;">
+                                <form action="/cubao/tinhtrang/{{$item->id_cu_bao}}" method="get" style="display: flex;width: 100%;">
                                     
                                     <div class="form-group" style="width: 100%;margin: 10px;">
                                         <select class="form-control" id="sel1" name="tinhtrang">
@@ -57,7 +65,7 @@
                             </div>
                         @else
                             <div>
-                                <form action="/baocao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">
+                                <form action="/cubao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">
                                    
                                     <div class="form-group"style="width: 100%;margin: 10px;">
                                         <select class="form-control" id="sel1"  name='tinhtrang'>
@@ -74,7 +82,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="muc-luc-admin">{{$baocao->links()}}</div>
+    <div class="muc-luc-admin">{{$taikhoan->links()}}</div>
 
 </div>    
 @endsection

@@ -64,11 +64,10 @@ Route::post('/setup/anh','UserController@setanh');
 Route::post('/setup/anhbia','UserController@setanhbia');
 Route::post('/setup/thongtin','UserController@set_thongtin');
 Route::get('taotruyen/user','UserController@taotruyen');
-Route::post('/baocao/{id}','UserController@baocao');
 Route::get('/follow/huy/{id}','UserController@huy_follow');
 Route::get('/follow/them/{id}','UserController@them_follow');
 Route::get('user/phanquyen/{id}/{khoa}','UserController@phanquyen');
-//thuvien,bookmark,review,công việc, hoạt đọng
+//thuvien,bookmark,review,công việc, hoạt đọng,bình luận
 Route::get('user/thuvien/{name}','UserController@thuvien');
 Route::get('/bookmark/user','BookmarkController@bookmark');
 Route::get('user/review/{name}','ReviewController@review');
@@ -81,11 +80,19 @@ Route::post('/thuvien/them','CongViecController@themthuvien');
 Route::get('/review/truyen/{name}','ReviewController@review_truyen');
 Route::get('/thuvien/them/{thuvien}/{id}','CongViecController@truyen_thuvien');
 Route::get('/user/hoatdong/{name}','CongViecController@hoatdong');
+Route::post('/review/binhluan/{id}/{id_review}','BinhluanController@review_bl');
+Route::get('/baocao/review/{id}','ReviewController@baocao_review');
+Route::post('/binhluan/{id}/{id_truyen}','BinhluanController@add_binhluan');
+Route::post('/binhluan/binhluan/{id}/{id_bl}/{id_truyen}','BinhluanController@binhluan_bl');
 
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');
 Route::get('/baocao/tinhtrang/{id}','CubaoController@tinhtrang_baocaotruyen');
+Route::post('/admin/baocao/ngay','CubaoController@baocao_truyenngay');
+Route::post('/baocao/{id}','UserController@baocao');
+Route::get('/binhluan/cubao/{id}/{id_bl}/{nd}','CubaoController@baocao_binhluan');
+Route::get('/binhluan/cubao/{id_tk}/{id_bl}/{noidung}','CubaoController@cubao_bl');
 
 //admin
 Route::get('/admin/thongtin','CongViecController@admin');
@@ -93,7 +100,13 @@ Route::get('/admin/truyen','CongViecController@truyen');
 Route::post('admin/truyen/timkiem','CongViecController@timkiem_truyen');
 Route::post('/admin/thanhvien/timkiem','CongViecController@timkiem_user');
 Route::get('/admin/cubao/truyen','CubaoController@baocaotruyen');
-
+Route::get('/admin/cubao/taikhoan','CubaoController@baocaotaikhoan');
+Route::post('/admin/baocao/user/timkiem','CubaoController@timkiem_user');
+Route::post('/admin/baocao/user/ngay','CubaoController@timkiem_ngay');
+Route::get('/admin/thongke','CongViecController@thongke');
+Route::get('/chuyentrang/truyen/{id}','CongViecController@chuyentrang');
+Route::get('/chuyentrang/baocao/review/{id}','CubaoController@baocao_review');
+Route::get('/chuyentrang/baocao/binhluan/{id}','CubaoController@bc_binhluan');
 //test 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');

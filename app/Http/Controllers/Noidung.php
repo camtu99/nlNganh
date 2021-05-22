@@ -274,8 +274,15 @@ class Noidung extends Controller
       $mucluc = $mucluc -> get_noi_dung($truyen_id);
       $chuongmoi = new NoiDungChuong();
       $chuongmoi = $chuongmoi -> get_new_chuong($truyen_id);
-      $binhluan = new BinhLuan();
-      $binhluan = $binhluan ->get_binh_luan_chitiet($truyen_id);
+      if(Session::has('cubao_bl')){
+        $bc_bl = Session::get('cubao_bl');
+        $binhluan = new BinhLuan();
+        $binhluan = $binhluan ->get_binh_luan_chitiet_cubao($truyen_id,$bc_bl);
+        Session::forget('cubao_bl');
+      }else{
+        $binhluan = new BinhLuan();
+        $binhluan = $binhluan ->get_binh_luan_chitiet($truyen_id);
+      }
     //  giới thiệu nội dung truyện
       if($trangnhung==1){
         $gioithieu= $noidung->find('.intro',0);

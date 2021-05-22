@@ -21,11 +21,7 @@
   $('#success').modal('show');
 </script>
 @endif
-@if (\Session::has('thongbao'))
 
-<script type="text/javascript">
-var r = Session::has('thongbao');
-  alert(r);
-</script>
-    
+@if (\Session::has('chuyentrang'))
+ <?php echo Session::get('chuyentrang');?>
 @endif
