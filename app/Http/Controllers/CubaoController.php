@@ -8,6 +8,7 @@ use App\BaoCaoTruyen;
 use App\CuBaoUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Truycap;
 
 class CubaoController extends Controller
 {
@@ -45,6 +46,8 @@ class CubaoController extends Controller
         return redirect()->back();
     }
     public function baocaotruyen(){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $baocao =new BaoCaoTruyen();
         $baocao = $baocao->all_baocao();
         return view('baocaotruyen',compact('baocao'));
@@ -64,23 +67,31 @@ class CubaoController extends Controller
         }
     }
     public function baocao_truyenngay(Request $req){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $ngayn = $req->ngay;
         $baocao = new BaoCaoTruyen();
         $baocao = $baocao->get_truyen_ngay($ngayn);
         return view('baocaotruyen',compact('baocao'));
     }
     public function baocaotaikhoan(){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $taikhoan = new CuBaoUsers();
         $taikhoan = $taikhoan->all_baocao_user();
         return view('cubaouser',compact('taikhoan'));
     }
     public function timkiem_user(Request $req){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $user = $req->timkiem;
         $taikhoan = new CuBaoUsers();
         $taikhoan = $taikhoan->get_tim_user($user);
         return view('cubaouser',compact('taikhoan'));
     }
     public function timkiem_ngay(Request $req){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $ngay_cb = $req->ngay;
         $taikhoan = new CuBaoUsers();
         $taikhoan = $taikhoan->get_tim_user_ngay($ngay_cb);

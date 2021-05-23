@@ -20,6 +20,7 @@ use App\TheLoai;
 use App\ThuVien;
 use App\Truyen;
 use App\TruyenThuVien;
+use App\Truycap;
 
 class UserController extends Controller
 {
@@ -46,6 +47,8 @@ class UserController extends Controller
      return redirect()->back();
  }
  public function doimatkhau(Request $req,$email){
+    $truycap = new Truycap();
+    $truycap = $truycap->truycap();
         $repass = $req->pass;
         $pass = Hash::make($repass);
         $repassword = new User();
@@ -56,6 +59,8 @@ class UserController extends Controller
         return view('matkhau',compact('theloai'));
  }
  public function repass($id){
+    $truycap = new Truycap();
+    $truycap = $truycap->truycap();
      $user = new User();
      $user = $user->get_users($id);
      $theloai = new TheLoai();
@@ -63,6 +68,8 @@ class UserController extends Controller
      return view('matkhau',compact('user','theloai'));
  }
  public function index($name){
+    $truycap = new Truycap();
+    $truycap = $truycap->truycap();
         $user = new User();
         $user = $user ->get_id($name);
         $id = $user[0]->id;
@@ -86,7 +93,8 @@ class UserController extends Controller
  }
  public function taotruyen(){
     if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
-     $id = Session::get('id_tk');
+     $id = Session::get('id_tk'); $truycap = new Truycap();
+     $truycap = $truycap->truycap();
     $user = new User();
     $user = $user ->get_users($id);
   //  $id = $user[0]->id;
@@ -107,7 +115,8 @@ class UserController extends Controller
     return view('taotruyen',compact('user','theloai','follower','following','follow'));
  }
  public function thuvien($name){
-    $user = new User();
+    $user = new User(); $truycap = new Truycap();
+    $truycap = $truycap->truycap();
     $user = $user ->get_id($name);
     $id = $user[0]->id;
     $follower = new Follow();
@@ -131,7 +140,8 @@ class UserController extends Controller
     return view('thuvien',compact('user','theloai','follower','following','thuvien','truyentv','follow'));
  }
 
-    public function login(Request $req){
+    public function login(Request $req){ $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $email = $req->email;
         $mk =$req->matkhau;
         if (Auth::attempt(['email' => $email, 'password' => $mk])) {
@@ -167,7 +177,8 @@ class UserController extends Controller
   
     public function setup_user($id){
         if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
-        $user = new User();
+        $user = new User(); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $user = $user ->get_users($id);
         $follower = new Follow();
         $follower = $follower->get_follower($id);

@@ -51,7 +51,14 @@ class NoiDungChuong extends Model
                     ->where('truyen_id','=',$id)
                     ->where('ten_chuong','=',$chuong)
                     ->get();
+                    $doc1 = DB::table('truyen')->where('truyen_id','=',$id)->get();
+                    $doc = $doc1[0]->luot_doc;
+                    $truyen = DB::table('truyen') 
+                                ->where('truyen_id','=',$id)
+                                ->update(['luot_doc'=> $doc+1]);
+                    DB::table('truycap')->insert(['luot_truycap'=>1]);
                     return $chuong;
+                
     }
     public function get_stt_chuong($id,$chuong){
         $chuong = DB::table('noi_dung_chuong')

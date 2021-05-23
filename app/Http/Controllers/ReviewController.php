@@ -10,10 +10,13 @@ use App\User;
 use App\Follow;
 use App\TheLoai;
 use App\Truyen;
+use App\Truycap;
 
 class ReviewController extends Controller
 {
-    public function get_review(){
+    public function get_review(){ 
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $review = new Review();
         $review = $review ->all_review();
         $binhluan = new BinhLuan();
@@ -56,7 +59,8 @@ class ReviewController extends Controller
         $review = $review->get_review($id);
         $follow = $this->check_follow($follower);
         $theloai = new TheLoai();
-        $theloai = $theloai->get_all_theloai();
+        $theloai = $theloai->get_all_theloai(); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         return view('review',compact('user','theloai','follower','following','review','follow'));
     }
     public function review_truyen($name){
@@ -68,7 +72,8 @@ class ReviewController extends Controller
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->bl_review();
         $theloai =new TheLoai();
-        $theloai = $theloai->get_all_theloai();
+        $theloai = $theloai->get_all_theloai(); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         if($review!=''){
             return view('review_truyen',compact('theloai','review','binhluan'));
         }else{
@@ -82,7 +87,8 @@ class ReviewController extends Controller
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->bl_review();
         $theloai = new TheLoai();
-        $theloai = $theloai->get_all_theloai();
+        $theloai = $theloai->get_all_theloai(); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         return view('review_truyen',compact('theloai','review','binhluan'));
     }
 }

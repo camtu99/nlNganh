@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
 
 class BinhLuan extends Model
 {
@@ -64,6 +65,13 @@ class BinhLuan extends Model
             'user_id'=>$id
         ]);
     }
+    public function add_cam($nd,$id){
+        DB::table('binh_luan')
+                ->insert([
+                    'nd_binh_luan'=>$nd,
+                    'user_id'=>$id
+                ]);
+    }
     public function bl_id($id){
         $bl = DB::table('binh_luan')
                 -> join('users','users.id','=','binh_luan.user_id')
@@ -78,5 +86,13 @@ class BinhLuan extends Model
             'truyen_id'=>$id_truyen,
             'user_id'=>$id
         ]);
+    }
+    public function cam_nhung(){
+        $ds = DB::table('binh_luan')
+                -> join('users','users.id','=','binh_luan.user_id')
+                ->where('truyen_id','=',Null)
+                ->where('id_review','=',null)
+                ->get();
+                return $ds;
     }
 }

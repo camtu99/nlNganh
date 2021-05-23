@@ -48,11 +48,11 @@
                                                 </p>
                                                 <div class="dropdown-menu">
                                                     <label>Lý do cử báo:</label>
-                                                  <a class="dropdown-item" href="review/cubao/{{$item->id}}/{{$item->id_review}}/chinhtri">Đề cập đến chính trị</a>
-                                                  <a class="dropdown-item" href="review/cubao/{{$item->id}}/{{$item->id_review}}/chuiboi">Chửi bới, sỉ nhục thành viên khác</a>
-                                                  <a class="dropdown-item" href="review/cubao/{{$item->id}}/{{$item->id_review}}/chuithe">Chửi thề nói tục</a>
-                                                  <a class="dropdown-item" href="review/cubao/{{$item->id}}/{{$item->id_review}}/saisuthat">Quảng bá thông tin sai sự thật</a>
-                                                  <a class="dropdown-item" href="review/cubao/{{$item->id}}/{{$item->id_review}}/lamdung">Lạm dụng ngôn ngữ chat</a>
+                                                  <a class="dropdown-item" href="/review/cubao/{{$item->id}}/{{$item->id_review}}/chinhtri">Đề cập đến chính trị</a>
+                                                  <a class="dropdown-item" href="/review/cubao/{{$item->id}}/{{$item->id_review}}/chuiboi">Chửi bới, sỉ nhục thành viên khác</a>
+                                                  <a class="dropdown-item" href="/review/cubao/{{$item->id}}/{{$item->id_review}}/chuithe">Chửi thề nói tục</a>
+                                                  <a class="dropdown-item" href="/review/cubao/{{$item->id}}/{{$item->id_review}}/saisuthat">Quảng bá thông tin sai sự thật</a>
+                                                  <a class="dropdown-item" href="/review/cubao/{{$item->id}}/{{$item->id_review}}/lamdung">Lạm dụng ngôn ngữ chat</a>
                                                 </div>
                                               </div>                                           
                                             <p type='button' data-toggle="collapse" data-target="#traloi{{$item->id_review}}"> Trả lời </p>
@@ -74,7 +74,7 @@
                                            @endif
                                         </div>
                                         <div style="width: 100%;">
-                                            <form action="review/binhluan/{{Session::get('id_tk')}}/{{$item->id_review}}" method="post">
+                                            <form action="/review/binhluan/{{Session::get('id_tk')}}/{{$item->id_review}}" method="post">
                                                 @csrf
                                                 <textarea name="traloi" id="" cols="30" rows="10" style="    width: 100%;"></textarea>
                                                 <button>Trả lời</button>

@@ -107,6 +107,14 @@ Route::get('/admin/thongke','CongViecController@thongke');
 Route::get('/chuyentrang/truyen/{id}','CongViecController@chuyentrang');
 Route::get('/chuyentrang/baocao/review/{id}','CubaoController@baocao_review');
 Route::get('/chuyentrang/baocao/binhluan/{id}','CubaoController@bc_binhluan');
+Route::get('/admin/thongbao','CongViecController@thongbao');
+Route::post('/admin/thongbao/quangcao','CongViecController@update_qc');
+Route::post('/admin/thongbao/thongbao/{id}','CongViecController@update_thongbao');
+Route::get('/admin/thongketruycap','CongViecController@thongketruycap');
+//topic, quy định
+Route::get('/topic/cam-nhung','BinhluanController@cam_nhung');
+Route::post('/topic/cam-nhung/create','BinhluanController@add_camnhung');
+Route::get('/quydinh', 'CongViecController@quydinh');
 //test 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');

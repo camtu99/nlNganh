@@ -8,11 +8,14 @@ use App\Bookmarks;
 use App\NoiDungChuong;
 use App\Follow;
 use App\TheLoai;
+use App\Truycap;
 
 class BookmarkController extends Controller
 {
     public function bookmark(){
         if(!Session::has('id_tk')){Session::flash('error','Bạn chưa đăng nhập');return view('dangnhap');}
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $id = Session::get('id_tk');
         $user = new User();
         $user = $user ->get_users($id);

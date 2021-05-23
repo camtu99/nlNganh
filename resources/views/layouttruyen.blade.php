@@ -21,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <div>
+     
       @include('error')
       <div>
         <nav class="navbar navbar-expand-sm navbar-dark" style="background-image: url({!! asset('hinhanh/logo5.jpg') !!});">
@@ -130,12 +131,13 @@
     </div>
     <div style="padding: 1rem;">
       <div style="text-align: center;color:#007bff;font-weight:700">
-        <div style="text-align:left;display:inline-block">
-        <i class="fas fa-caret-right    "></i><u>Hướng dẫn nạp thẻ</u><br>
-        <i class="fas fa-caret-right    "> </i><u>Hướng dẫn báo cáo truyện lỗi</u><br>
-        <i class="fas fa-caret-right    "></i><u>Danh sách ngôn tình đề cử tháng 12</u><br>
-        <i class="fas fa-caret-right    "></i> <u>Danh sách ngôn đam mỹ cử tháng 12</u>
-        </div>
+        @isset($thongbao)
+          <div style="text-align:left;display:inline-block">
+            @foreach ($thongbao as $item)
+               <a href="{{$item->link_topic}}"><i class="fas fa-caret-right    "></i><u>{{$item->ten_topic}}</u><br></a> 
+            @endforeach
+          </div> 
+        @endisset
       </div>
     </div>
     <div class="container">
@@ -151,7 +153,20 @@
         
       @show   
     </div>
-
+    @isset($quangcao)
+    <div id="ads-left">
+      <div style="margin:0 0 5px 0; padding:0;width:300px;position:fixed; left:50%;margin-left: 590px; top:0;">
+        <a href="{{$quangcao[0]->link_topic}}" >
+          <img  height="800" src="{{$quangcao[0]->hinh_anh_topic}}" width="300"/>      
+        </a>
+      </div>
+    </div>
+    <div id="ads-right">
+      <div style="margin:0 0 5px 0; padding:0;width:300px;position:fixed; right:50%;margin-right: 590px; top:0;">
+        <a href="{{$quangcao[0]->link_topic}}"><img  height="800" src="{{$quangcao[0]->hinh_anh_topic}}" width="300"/></a>
+      </div>
+    </div>
+    @endisset
     <script>
       function baoloi() {
         alert("Bạn chưa đăng nhập");

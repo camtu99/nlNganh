@@ -29,11 +29,11 @@
                 <div class=" khung-admin">
                     <p class="khung-item"><a href="/admin/thongtin">Quản lý tài khoản</a></p>
                     <p class="khung-item"><a href="/admin/truyen">Quản lý truyện</a></p>
-                    <p class="khung-item"type="button" ><a href="#cubao"data-toggle="collapse" aria-expanded="false">Cử báo</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/truyen">Cử báo truyện</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/taikhoan">Cử báo tài khoản</a></p>
-                    <p class="khung-item"><a href="">Quản lí thông báo</a></p>
-                    <p class="khung-item"><a href="/admin/thongke">Thống kê</a></p>
+                    <p class="khung-item"><a href="/admin/thongbao">Quản lí thông báo</a></p>
+                    <p class="khung-item"><a href="/admin/thongke">Thống kê Review,bình luận</a></p>
+                    <p class="khung-item"><a href="/admin/thongketruycap">Thống kê Lượt truy cập</a></p>
                 </div>
             </div>
             <div class="col-md-10">

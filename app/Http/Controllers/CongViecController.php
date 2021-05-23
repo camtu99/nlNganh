@@ -13,6 +13,8 @@ use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
 use App\ThuVien;
+use App\topic;
+use App\Truycap;
 use App\Truyen;
 use App\TruyenThuVien;
 use Illuminate\Http\Resources\MergeValue;
@@ -33,6 +35,8 @@ class CongViecController extends Controller
         return $check;
     }
     public function congviec($name){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $user = new User();
         $user = $user ->get_id($name);
         $id = $user[0]->id;
@@ -48,6 +52,8 @@ class CongViecController extends Controller
         return view('congviec',compact('truyen','theloai','user','follower','following','follow'));
     }
     public function themthuvien(Request $req){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $id_user = Session::get('id_tk');
         $ten_tv = $req->danhsachdoc;
         $add_tv = new ThuVien();
@@ -56,6 +62,8 @@ class CongViecController extends Controller
         return redirect()->back();
     }
     public function timkiem_tacgia($tentacgia){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $truyen = new TacGia();
         $truyen = $truyen -> get_truyen_ten($tentacgia);
         $theloai = new TheLoai();
@@ -63,6 +71,8 @@ class CongViecController extends Controller
         return view('timkiem',compact('truyen','theloai'));
     }
     public function tinhtrang($tinhtrang){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
        $truyen = new Truyen();
        $truyen = $truyen->tim_tinh_trang($tinhtrang);
        $theloai = new TheLoai();
@@ -71,6 +81,8 @@ class CongViecController extends Controller
 
     }
     public function tim_theloai($loai){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $theloai= new TheLoai();
         $theloai = $theloai->get_all_theloai();
        $truyen = new TagTruyen();
@@ -85,6 +97,8 @@ class CongViecController extends Controller
         return redirect()->back();
     }
     public function tacgia(){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $tacgia = new TacGia();
         $tacgia = $tacgia->all_tac_gia();
         $theloai = new TheLoai();
@@ -111,17 +125,23 @@ class CongViecController extends Controller
                 }
             }
         }
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $hdtaotk =new Lichsu();
         $hdtaotk = $hdtaotk->get_lstk_id($id);
         return view('hoatdong',compact('theloai','user','follower','following','hoatdong','hdtaotk'));
     }
     public function timkiemnangcao(){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $theloai = new TheLoai();
         $theloai = $theloai->get_all_theloai();
         return view('timtruyen',compact('theloai'));
 
     }
     public function timkiemcao(Request $req){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $theloai = new TheLoai();
         $theloai = $theloai->get_all_theloai();
         $check = 2;$check1=0;$a=0;$check2=0;$check3=0;
@@ -190,6 +210,8 @@ class CongViecController extends Controller
             Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
             return view('login');
         }
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $thanhvien = new User();
         $thanhvien = $thanhvien->all_user();
         return view('cubaotruyen',compact('thanhvien'));
@@ -199,6 +221,8 @@ class CongViecController extends Controller
             Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
             return view('login');
         }
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $truyen = new Truyen();
         $truyen = $truyen->all_truyen_admin();
         return view('truyen_admin',compact('truyen'));
@@ -209,6 +233,8 @@ class CongViecController extends Controller
             Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
             return view('login');
         }
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $tenTruyen = $req->timkiem;
         $truyen = new Truyen();
         $truyen = $truyen->timkiem_truyen($tenTruyen);
@@ -219,6 +245,8 @@ class CongViecController extends Controller
             Session::flash('error','Bạn chưa đăng nhập quản lý!!!');
             return view('login');
         }
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         $tenthanhvien = $req->timkiem;
         $thanhvien = new User();
         $thanhvien = $thanhvien->timkiem_thanhvien($tenthanhvien);
@@ -302,5 +330,89 @@ class CongViecController extends Controller
       </script>";
       Session::flash('chuyentrang',$thongbao);
       return redirect()->back();
+    }
+    public function quydinh(){
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('quydinh',compact('theloai'));
+    }
+    public function thongbao(){
+        $quangcao = new topic();
+        $quangcao = $quangcao->get_topic_qc();
+        $thongbao = new topic();
+        $thongbao = $thongbao->get_topic_thongbao();
+        $truycap = new Truycap();
+        $truycap = $truycap->truycap();
+        return view('thongbao',compact('quangcao','thongbao'));
+    }
+    public function update_qc(Request $req){
+        $ten_qc = $req->ten_topic;
+        $link_qc = $req->link_topic;
+        $hinhanh_qc = $req->hinh_anh_topic;
+        $quangcao = new topic();
+        $quangcao = $quangcao->update_qc($ten_qc,$link_qc,$hinhanh_qc);
+        Session::flash('success','Đã cập nhật');
+        return redirect()->back();
+    }
+    public function update_thongbao($id,Request $req){
+        $ten_qc = $req->ten_topic;
+        $link_qc = $req->link_topic;
+        $quangcao = new topic();
+        $quangcao = $quangcao->update_thongbao($id,$ten_qc,$link_qc);
+        Session::flash('success','Đã cập nhật');
+        return redirect()->back();
+    }
+    public function thongketruycap(){
+        $truy_cap = new Truycap();$ngay = date('m');
+        $truy_cap = $truy_cap->All_truycap($ngay );
+        $ngay = date('m');
+        if($ngay == 1 ||$ngay == 3||$ngay == 5||$ngay == 7||$ngay == 8||$ngay == 10||$ngay == 12){
+            $songay = 31;
+        }else{
+            $songay=30;
+        }
+        for ($i=1; $i<=$songay ; $i++) { 
+            $check_truycap[$i]=2;
+            if($i<=9){$ngayi = date('Y').'-'.date('m').'-0'.$i;}else{$ngayi = date('Y').'-'.date('m').'-'.$i;}
+                foreach($truy_cap as $tc){
+                    if($tc->ngay_truycap==$ngayi){
+                        $truycap1[$i]=",['".$tc->ngay_truycap."',".$tc->sl."]";
+                        $check_truycap[$i]=4;
+                    }
+                }
+                if($check_truycap[$i]==2){
+                    $truycap1[$i]=",['".$ngayi."',0]";
+                }
+        }   
+        $tke='';
+        foreach($truycap1 as $tk){
+            $tke = $tke.$tk;
+        }
+        $truycap = " <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script><script type='text/javascript'>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+    
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Ngày', 'Lượt truy cập']".
+              
+             $tke
+              
+           . "]);
+    
+            var options = {
+              title: 'Bảng thống kê lượt Truy cập website',
+              hAxis: {title: 'Ngày',  titleTextStyle: {color: '#333'}},
+              vAxis: {minValue: 0}
+            };
+    
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        </script>";
+   
+        return view('thongke',compact('truycap'));
     }
 }

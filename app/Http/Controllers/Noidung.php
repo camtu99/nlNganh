@@ -17,6 +17,8 @@ use App\TheLoai;
 use App\Follow;
 use App\ThuVien;
 use App\User;
+use App\topic;
+use App\Truycap;
 use Illuminate\Support\Collection;
 
 use Exception;
@@ -103,11 +105,14 @@ class Noidung extends Controller
     $follower = $follower->get_follower($id);
     $following = new Follow();
     $following = $following->get_following($id);
+    $truycap = new Truycap();
+    $truycap = $truycap->truycap();
       return view('taotruyen',compact('user','theloai','follower','following'));
     }
 
     public function update_ten_truyen(Request $req){
-      $id = $req -> input('id_truyen');
+      $id = $req -> input('id_truyen'); $truycap = new Truycap();
+      $truycap = $truycap->truycap();
       $link = $req -> input('link');
       $ten_truyen = $req -> input('ten_truyen');
       $update = new Truyen();
@@ -178,7 +183,8 @@ class Noidung extends Controller
         $follower = new Follow();
         $follower = $follower->get_follower($id);
         $following = new Follow();
-        $following = $following->get_following($id);
+        $following = $following->get_following($id); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
         return view('taotruyen',compact('tentruyen','tacgia','theloai','taotruyen','link','user','follower','following'));
       }
     }
@@ -318,7 +324,8 @@ class Noidung extends Controller
         $dstheloai = $dstheloai->get_all_theloai();
       }
       $theloai = new TheLoai();
-      $theloai = $theloai->get_all_theloai();
+      $theloai = $theloai->get_all_theloai(); $truycap = new Truycap();
+      $truycap = $truycap->truycap();
       return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai'));
 
     }
@@ -393,14 +400,18 @@ class Noidung extends Controller
       $tacgia=$tacgia->get_tacgia($id_tacgia);
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai();
+      $quangcao = new topic();
+        $quangcao = $quangcao->get_topic_qc(); $truycap = new Truycap();
+        $truycap = $truycap->truycap();
       if(isset($chuongke)&&isset($chuongtruoc)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong','theloai'));
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong','theloai','quangcao'));
       }else if(isset($chuongke)){
-        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia','nd_chuong','theloai'));
-      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia','nd_chuong','theloai'));}
+        return view('chitiet_chuong',compact('ten','chuong','noidung','chuongke','tacgia','nd_chuong','theloai','quangcao'));
+      }else{ return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','tacgia','nd_chuong','theloai','quangcao'));}
 
     }
     public function trangchu(){
+
       $newtruyen = new Truyen();
       $newtruyen = $newtruyen->get_new_truyen();
       $viewtruyen = new Truyen();
@@ -411,7 +422,10 @@ class Noidung extends Controller
       $cotrang = $cotrang->cung_loai_truyen(12,2);
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai();
-      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang','theloai'));
+      $thongbao = new topic();
+      $thongbao = $thongbao->get_topic_thongbao(); $truycap = new Truycap();
+      $truycap = $truycap->truycap();
+      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang','theloai','thongbao'));
     }
     public function add_chuong_sxyxht($link,$id_truyen){
       $link ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
