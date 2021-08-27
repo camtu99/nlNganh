@@ -67,7 +67,7 @@ Route::get('taotruyen/user','UserController@taotruyen');
 Route::get('/follow/huy/{id}','UserController@huy_follow');
 Route::get('/follow/them/{id}','UserController@them_follow');
 Route::get('user/phanquyen/{id}/{khoa}','UserController@phanquyen');
-//thuvien,bookmark,review,công việc, hoạt đọng,bình luận, gửi thư
+//thuvien,bookmark,review,công việc, hoạt đọng,bình luận, gửi thư, diễn đàn
 Route::get('user/thuvien/{name}','UserController@thuvien');
 Route::get('/bookmark/user','BookmarkController@bookmark');
 Route::get('user/review/{name}','ReviewController@review');
@@ -85,6 +85,7 @@ Route::get('/baocao/review/{id}','ReviewController@baocao_review');
 Route::post('/binhluan/{id}/{id_truyen}','BinhluanController@add_binhluan');
 Route::post('/binhluan/binhluan/{id}/{id_bl}/{id_truyen}','BinhluanController@binhluan_bl');
 Route::post('/messenger/{email}/{id}','UserController@messenger');
+Route::get('/diendan','DienDanController@index');
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');

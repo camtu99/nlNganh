@@ -53,6 +53,9 @@
                   <a class="nav-link" href="{{URL::to('/review')}}">Review</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="{{URL::to('/diendan')}}">Diễn đàn</a>
+                </li>
+                <li class="nav-item">
                   <div class="dropdown1">
                     <span><a class="nav-link" href="#">Thông tin</a></span>
                     <div class="dropdown-content1">
