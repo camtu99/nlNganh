@@ -60,6 +60,10 @@
     width: 100%;
     margin-top: 0.7rem;
     margin-bottom: 0.7rem;
+
+}
+.thanh-dkh a:hover{
+    text-decoration: none;
 }
 .thanh-dk-1{
     margin-right: 10px;
@@ -68,6 +72,7 @@
     border: solid 2px #2e82dd;
     border-radius: 15px;
     padding: 0 10px;
+    color: cornflowerblue;
 }
 .thanh-dieu-khien{
     border: 0;

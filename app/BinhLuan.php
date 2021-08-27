@@ -49,6 +49,14 @@ class BinhLuan extends Model
         return $binhluan;
     }
     public function add_review_bl($id,$id_rv,$nd_bl){
+        $tichphan=DB::table('users')
+            ->where('id','=',$id)
+            ->get();
+        $cong = $tichphan[0]->thanh_tich + 3;
+        $congtichphan = DB::table('users')
+                            ->where('id','=',$id)
+                            ->update(['thanh_tich'=>$cong]); 
+                                
         DB::table('binh_luan')
                 ->insert([
                     'nd_binh_luan'=>$nd_bl,
@@ -57,6 +65,13 @@ class BinhLuan extends Model
                 ]);
     }
     public function add_binhluan_bl($id,$id_bl,$nd_bl,$id_truyen){
+        $tichphan=DB::table('users')
+        ->where('id','=',$id)
+        ->get();
+    $cong = $tichphan[0]->thanh_tich + 5;
+    $congtichphan = DB::table('users')
+                        ->where('id','=',$id)
+                        ->update(['thanh_tich'=>$cong]);
         DB::table('binh_luan')
         ->insert([
             'nd_binh_luan'=>$nd_bl,
@@ -80,6 +95,13 @@ class BinhLuan extends Model
                 return $bl;
     }
     public function add_truyen_bl($id,$nd,$id_truyen){
+        $tichphan=DB::table('users')
+        ->where('id','=',$id)
+        ->get();
+    $cong = $tichphan[0]->thanh_tich + 3;
+    $congtichphan = DB::table('users')
+                        ->where('id','=',$id)
+                        ->update(['thanh_tich'=>$cong]);
         DB::table('binh_luan')
         ->insert([
             'nd_binh_luan'=>$nd,

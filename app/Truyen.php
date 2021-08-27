@@ -73,11 +73,14 @@ class Truyen extends Model
         $congtichphan = DB::table('users')
                             ->where('id','=',$user)
                             ->update(['thanh_tich'=>$cong]); 
+                                $truyen = DB::table('truyen')->where('ten_truyen','=',$ten)->get();
+                                $truyen_id = $truyen[0]->truyen_id;
         $lichsu = DB::table('lich_su')
                     ->insert([
                         'user_id'=>$user,
                         'nd_congviec'=>'Tạo truyện',
-                        'hd_khac'=>'tao'
+                        'truyen_id'=>$truyen_id,
+                        'hd_khac'=>'khac'
                     ]);
         return $check;
     }
@@ -236,5 +239,19 @@ class Truyen extends Model
                 ->where('truyen_id','=',$id)
                 ->update(['hien_trang'=>$tinhtrang]);
     }
-    
+    public function get_truyen_tinh_trang($tinhtrang){
+        $truyen = DB::table('truyen')
+                        ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                        ->where('tinh_trang','=',$tinhtrang)
+                        ->get();
+                        return $truyen;
+    }
+    public function min_truyen($min){
+        $truyen = DB::select("SELECT COUNT(ten_truyen) as ls, truyen.truyen_id,ten_truyen,ten_tac_gia,luot_doc,tinh_trang FROM `truyen` JOIN noi_dung_chuong ON noi_dung_chuong.truyen_id=truyen.truyen_id JOIN tac_gia ON tac_gia.tac_gia_id=truyen.truyen_id GROUP BY truyen.truyen_id HAVING ls>?", $min);
+        return $truyen;
+    }
+    public function max_truyen($max){
+        $truyen = DB::select("SELECT COUNT(ten_truyen) as ls, truyen.truyen_id,ten_truyen,ten_tac_gia,luot_doc,tinh_trang FROM `truyen` JOIN noi_dung_chuong ON noi_dung_chuong.truyen_id=truyen.truyen_id JOIN tac_gia ON tac_gia.tac_gia_id=truyen.truyen_id GROUP BY truyen.truyen_id HAVING ls<?", $max);
+        return $truyen;
+    }
 }

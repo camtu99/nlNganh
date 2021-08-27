@@ -17,10 +17,12 @@ use App\NoiDungChuong;
 use App\Review;
 use App\TagTruyen;
 use App\TheLoai;
+use App\ThuongThanh;
 use App\ThuVien;
 use App\Truyen;
 use App\TruyenThuVien;
 use App\Truycap;
+use App\HopThu;
 
 class UserController extends Controller
 {
@@ -158,7 +160,16 @@ class UserController extends Controller
                 if($id[0]->phan_quyen==2){Session::put('tk_admin',$idw);}
                 Session::put('id_tk',$idw);
                 Session::put('ten_tk',$ten);
-                Session::put('avatar_tk',$avatar);             
+                Session::put('avatar_tk',$avatar);
+                $idd=$idw;
+                $qc = new ThuongThanh();
+                $qc = $qc->get_ls_giao_dich($idd);  
+                if($qc[0]->id_thuong_thanh){
+                    $han_qc = $qc[0]->ngay_han;
+                    if(strtotime ( date('Y-m-d H:i:s') )< strtotime ( $han_qc )){
+                       Session::put('qc',$qc);
+                    }
+                }           
                 return redirect()->back();
             }else{
                 Session::flash('error','Bạn vẫn chưa xác thực email !! Hãy xác thực email ');
@@ -332,5 +343,23 @@ class UserController extends Controller
             $thanhvien = $thanhvien->phanquyen_admin($id,0);
             return redirect()->back();
           }
+    }
+    public function bxh_tichphan(){
+        $theloai = new TheLoai();
+    $theloai = $theloai->get_all_theloai();
+        $thanhvien = new User();
+        $thanhvien = $thanhvien->all_user_tichphan();
+        return view('danhsach',compact('thanhvien','theloai'));
+    }
+    public function messenger(Request $req,$email,$id){
+        $id_nhan = new User();
+        $id_nhan = $id_nhan->get_id($email);
+        $id_nhan_nhan = $id_nhan[0]->id;
+        $messenger = $req->messenger;
+       $them_mes = new HopThu();
+       $them_mes = $them_mes->create_mes($id_nhan_nhan,$id,$messenger);
+        Session::flash('success','Đã gửi');
+        return redirect()->back();
+        // return view('welcome',compact('id_nhan_nhan'));
     }
 }

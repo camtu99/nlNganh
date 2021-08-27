@@ -52,7 +52,7 @@ Route::get('dangnhap',function(){return view('dangnhap');});
 Auth::routes(['verify' => true]);
 Route::post('dangki','UserController@dangki');
 Route::post('doimatkhau/{email}','UserController@doimatkhau');
-Route::get('quenmatkhau',function(){return view('matkhau');});
+Route::get('quenmatkhau','CongViecController@quenmatkhau');
 Route::get('repassword/email/{id}','UserController@repass');
 Route::get('profile', function () {
     // Only verified users may enter...
@@ -67,7 +67,7 @@ Route::get('taotruyen/user','UserController@taotruyen');
 Route::get('/follow/huy/{id}','UserController@huy_follow');
 Route::get('/follow/them/{id}','UserController@them_follow');
 Route::get('user/phanquyen/{id}/{khoa}','UserController@phanquyen');
-//thuvien,bookmark,review,công việc, hoạt đọng,bình luận
+//thuvien,bookmark,review,công việc, hoạt đọng,bình luận, gửi thư
 Route::get('user/thuvien/{name}','UserController@thuvien');
 Route::get('/bookmark/user','BookmarkController@bookmark');
 Route::get('user/review/{name}','ReviewController@review');
@@ -84,7 +84,7 @@ Route::post('/review/binhluan/{id}/{id_review}','BinhluanController@review_bl');
 Route::get('/baocao/review/{id}','ReviewController@baocao_review');
 Route::post('/binhluan/{id}/{id_truyen}','BinhluanController@add_binhluan');
 Route::post('/binhluan/binhluan/{id}/{id_bl}/{id_truyen}','BinhluanController@binhluan_bl');
-
+Route::post('/messenger/{email}/{id}','UserController@messenger');
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');
@@ -111,10 +111,13 @@ Route::get('/admin/thongbao','CongViecController@thongbao');
 Route::post('/admin/thongbao/quangcao','CongViecController@update_qc');
 Route::post('/admin/thongbao/thongbao/{id}','CongViecController@update_thongbao');
 Route::get('/admin/thongketruycap','CongViecController@thongketruycap');
-//topic, quy định
+//topic, quy định,bxh,thương thành
 Route::get('/topic/cam-nhung','BinhluanController@cam_nhung');
 Route::post('/topic/cam-nhung/create','BinhluanController@add_camnhung');
 Route::get('/quydinh', 'CongViecController@quydinh');
+Route::get('/bang-xep-hang','UserController@bxh_tichphan');
+Route::get('/thuong-thanh','CongViecController@thuongthanh');
+Route::post('/thuong-thanh/doi','CongViecController@doitichphan');
 //test 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');

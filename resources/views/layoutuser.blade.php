@@ -52,6 +52,28 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{{URL::to('/review')}}">Review</a>
                 </li>
+                <li class="nav-item">
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Thông tin</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                       <p><a href="/quydinh">Quy định</a></p>
+                      <p> <a href="/topic/cam-nhung">Cấm nhúng</a></p>
+                      </div>                
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Bảng xếp hạng</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                       <p><a href="/bang-xep-hang">Bảng xếp hạng tích phân</a></p>
+                      <p> <a href="/thuong-thanh">Thương thành</a></p>
+                      </div>                
+                    </div>
+                  </div>
+                </li>
                 @if (Session::has('email_tk'))
                 <li class="nav-item" style="margin-left: auto;">
                   <a href="/user/{{Session::get('email_tk')}}">{{Session::get('ten_tk')}}</a>
@@ -224,7 +246,8 @@
                         <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/user/hoatdong/{{$user[0]->email}}" >Hoạt động</a></li>
                         @if (Session::get('email_tk')==$user[0]->email)
                           <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/bookmark/user" >Bookmark</a></li>
-                          <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/taotruyen/user">Nhúng link</a></li>  
+                          <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/hopthu/user">Hộp Thư</a></li>  
+                          <li class="thanh-dk-1"><a href="http://127.0.0.1:8000/taotruyen/user">Nhúng link</a></li> 
                         @endif
                       </ul>
                     </div>
@@ -233,10 +256,11 @@
                       <ul class="nav">
                         @if (Session::get('email_tk')!=$user[0]->email)
                           @if (isset($follow)&&$follow=='ok')
-                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a href="/follow/huy/{{$user[0]->id}}">Hủy Follow</a></li>
+                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a style="text-decoration: none;" href="/follow/huy/{{$user[0]->id}}">Hủy Follow</a></li>
                           @else
-                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a href="/follow/them/{{$user[0]->id}}"><i class="fas fa-plus"></i> Follow</a></li>
-                          @endif     
+                          <li class="thanh-dk-1 caidat" style="margin-left: auto;"><a style="text-decoration: none;" href="/follow/them/{{$user[0]->id}}"><i class="fas fa-plus"></i> Follow</a></li>
+                          @endif  
+                          <li class="thanh-dk-1 caidat" type="button" data-toggle="modal" data-target="#messenger"><i class="fa fa-envelope" aria-hidden="true"></i> Messenger</a></li>
                           <div class="dropdown" >
                             <li type="button" data-toggle="dropdown" class="thanh-dk-1 caidat"><i class="fas fa-tools"></i></li>
                             <div class="dropdown-menu">
@@ -313,3 +337,24 @@
         alert("Bạn chưa đăng nhập");
       }
       </script>
+      <!-- Messenger -->
+      @if (Session::get('email_tk')!=$user[0]->email)
+        <div id="messenger" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="" style="display: flex;padding: 10px;color: #90c0f6;">
+                <h5 class="modal-title">Gửi cho {{$user[0]->name}}</h5>
+                <button style="margin-left: auto;" type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+              <form action="/messenger/{{$user[0]->email}}/{{Session::get('id_tk')}}" method="post">
+                @csrf
+                <textarea style="width: 100%;" name="messenger" id="" cols="30" rows="10"></textarea>          
+                <div style="padding: 0 10px 10px;margin-left: auto;">
+                  <button type="submit" class="btn btn-success">Gửi</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </div> 
+              </form>          
+          </div>
+        </div>
+      @endif

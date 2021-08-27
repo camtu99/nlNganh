@@ -12,6 +12,7 @@ use App\Review;
 use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
+use App\ThuongThanh;
 use App\ThuVien;
 use App\topic;
 use App\Truycap;
@@ -203,6 +204,83 @@ class CongViecController extends Controller
         }
         if($check1==4){ $truyen=$truyen2;}    
         if($check2==4){ $truyen=$loai;} 
+        if($req->hoan){
+            if($truyen){
+                $truyen4 = array();$t=0;
+                $truyen3 = new Truyen();
+                $truyen3 = $truyen3->get_truyen_tinh_trang($req->hoan);
+                foreach($truyen as $tr){
+                    foreach($truyen3 as $tr3){
+                        if($tr3->truyen_id==$tr->truyen_id){
+                            $truyen4[$t]=$tr;
+                        }
+                    }
+                }
+                $t = $t+1;
+                $truyen = $truyen4;
+            }else{
+                $truyen = new Truyen();
+                $truyen = $truyen->get_truyen_tinh_trang($req->hoan);
+            }
+            
+        }
+        if($req->contiep){
+            if($truyen){
+                $truyen5 = array();$ti=0;
+                $truye3 = new Truyen();
+                $truye3 = $truye3->get_truyen_tinh_trang($req->contiep);
+                foreach($truyen as $tr){
+                    foreach($truye3 as $tr5){
+                        if($tr5->truyen_id==$tr->truyen_id){
+                            $truyen5[$ti]=$tr;
+                        }
+                    }
+                }
+                $ti = $ti+1;
+                $truyen = $truyen5;
+            }else{
+                $truyen = new Truyen();
+                $truyen = $truyen->get_truyen_tinh_trang($req->contiep);
+            }
+        }
+        // if($req->min){
+        //     if($truyen){
+        //         $min = array();$o=0;
+        //         $truyenmin = new Truyen();
+        //         $truyenmin = $truyenmin->min_truyen($req->min);
+        //         foreach($truyen as $tr){
+        //             foreach($truyenmin as $trmin){
+        //                 if($trmin->truyen_id==$tr->truyen_id){
+        //                     $min[$o]=$tr;
+        //                 }
+        //             }
+        //             $o = $o+1;
+        //         }
+        //         $truyen = $min;
+        //     }else{
+        //         $truyen = new Truyen();
+        //         $truyen = $truyen->min_truyen($req->min);
+        //     }
+        // }
+        // if($req->max){
+        //     if($truyen){
+        //         $max = array();$o=0;
+        //         $truyenmax = new Truyen();
+        //         $truyenmax = $truyenmax->max_truyen($req->max);
+        //         foreach($truyen as $tr){
+        //             foreach($truyenmax as $trmax){
+        //                 if($trmax->truyen_id==$tr->truyen_id){
+        //                     $max[$o]=$tr;
+        //                 }
+        //             }
+        //             $o = $o+1;
+        //         }
+        //         $truyen = $max;
+        //     }else{
+        //         $truyen = new Truyen();
+        //         $truyen = $truyen->max_truyen($req->max);
+        //     }
+        // }
         return view('timkiem',compact('theloai','truyen'));
     }
     public function admin(){
@@ -415,4 +493,127 @@ class CongViecController extends Controller
    
         return view('thongke',compact('truycap'));
     }
+    public function thuongthanh(){
+        $theloai = new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        if(Session::has('id_tk')){
+            $id = Session::get('id_tk');
+            $thuongthanh = new ThuongThanh();
+            $thuongthanh = $thuongthanh->get_ls_giao_dich($id);
+            return view('thuong_thanh',compact('theloai','thuongthanh'));
+        }else{
+            return view('thuong_thanh',compact('theloai'));
+        }
+    }
+    public function doitichphan(Request $req){
+      $tich_phan = $req->tichphan;
+      $add_tichphan =new ThuongThanh();
+      $id = Session::get('id_tk');
+      if($tich_phan==10){
+        $user = new User();
+        $user = $user->get_users($id);
+        $tich_phan_user = $user[0]->thanh_tich;
+        if($tich_phan>$tich_phan_user){
+            Session::flash('error','Tích phân của bạn không đủ để đổi');
+            return redirect()->back();
+        }else{
+            $tichphan_conlai = $tich_phan_user - $tich_phan;
+            $update_tichphan = new User();
+            $update_tichphan = $update_tichphan->update_tich_phan($id,$tichphan_conlai);
+        }
+        $loai='Thẻ miễn 1 ngày';
+        $date = date('Y-m-d H:i:s');
+        $newdate = strtotime ( '+1 day' , strtotime ( $date ) ) ;
+        $newdate = date ( 'Y-m-d H:i:s' , $newdate );
+        $add_tichphan = $add_tichphan->them_the($id,$loai,$date,$newdate);
+        Session::flash('Đổi thẻ thành công');
+        return redirect()->back();
+      }
+      if($tich_phan==30){
+        $user = new User();
+        $user = $user->get_users($id);
+        $tich_phan_user = $user[0]->thanh_tich;
+        if($tich_phan>$tich_phan_user){
+            Session::flash('error','Tích phân của bạn không đủ để đổi');
+            return redirect()->back();
+        }else{
+            $tichphan_conlai = $tich_phan_user - $tich_phan;
+            $update_tichphan = new User();
+            $update_tichphan = $update_tichphan->update_tich_phan($id,$tichphan_conlai);
+        }
+        $loai='Thẻ miễn 3 ngày';
+        $date = date('Y-m-d H:i:s');
+        $newdate = strtotime ( '+3 day' , strtotime ( $date ) ) ;
+        $newdate = date ( 'Y-m-d H:i:s' , $newdate );
+        $add_tichphan = $add_tichphan->them_the($id,$loai,$date,$newdate);
+        Session::flash('Đổi thẻ thành công');
+        return redirect()->back();
+      }
+      if($tich_phan==60){
+        $user = new User();
+        $user = $user->get_users($id);
+        $tich_phan_user = $user[0]->thanh_tich;
+        if($tich_phan>$tich_phan_user){
+            Session::flash('error','Tích phân của bạn không đủ để đổi');
+            return redirect()->back();
+        }else{
+            $tichphan_conlai = $tich_phan_user - $tich_phan;
+            $update_tichphan = new User();
+            $update_tichphan = $update_tichphan->update_tich_phan($id,$tichphan_conlai);
+        }
+        $loai='Thẻ miễn 7 ngày';
+        $date = date('Y-m-d H:i:s');
+        $newdate = strtotime ( '+7 day' , strtotime ( $date ) ) ;
+        $newdate = date ( 'Y-m-d H:i:s' , $newdate );
+        $add_tichphan = $add_tichphan->them_the($id,$loai,$date,$newdate);
+        Session::flash('Đổi thẻ thành công');
+        return redirect()->back();
+      }
+      if($tich_phan==80){
+        $user = new User();
+        $user = $user->get_users($id);
+        $tich_phan_user = $user[0]->thanh_tich;
+        if($tich_phan>$tich_phan_user){
+            Session::flash('error','Tích phân của bạn không đủ để đổi');
+            return redirect()->back();
+        }else{
+            $tichphan_conlai = $tich_phan_user - $tich_phan;
+            $update_tichphan = new User();
+            $update_tichphan = $update_tichphan->update_tich_phan($id,$tichphan_conlai);
+        }
+        $loai='Thẻ miễn 10 ngày';
+        $date = date('Y-m-d H:i:s');
+        $newdate = strtotime ( '+10 day' , strtotime ( $date ) ) ;
+        $newdate = date ( 'Y-m-d H:i:s' , $newdate );
+        $add_tichphan = $add_tichphan->them_the($id,$loai,$date,$newdate);
+        Session::flash('Đổi thẻ thành công');
+        return redirect()->back();
+      }
+      if($tich_phan==200){
+        $user = new User();
+        $user = $user->get_users($id);
+        $tich_phan_user = $user[0]->thanh_tich;
+        if($tich_phan>$tich_phan_user){
+            Session::flash('error','Tích phân của bạn không đủ để đổi');
+            return redirect()->back();
+        }else{
+            $tichphan_conlai = $tich_phan_user - $tich_phan;
+            $update_tichphan = new User();
+            $update_tichphan = $update_tichphan->update_tich_phan($id,$tichphan_conlai);
+        }
+        $loai='Thẻ miễn 30 ngày';
+        $date = date('Y-m-d H:i:s');
+        $newdate = strtotime ( '+30 day' , strtotime ( $date ) ) ;
+        $newdate = date ( 'Y-m-d H:i:s' , $newdate );
+        $add_tichphan = $add_tichphan->them_the($id,$loai,$date,$newdate);
+        Session::flash('Đổi thẻ thành công');
+        return redirect()->back();
+      }
+    }
+    public function quenmatkhau(){
+        $theloai =new TheLoai();
+        $theloai = $theloai->get_all_theloai();
+        return view('matkhau',compact('theloai'));
+    }
+
 }

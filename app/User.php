@@ -169,4 +169,15 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->where('id','=',$id)
                 ->update(['phan_quyen'=>$quyen]);
     }
+    public function all_user_tichphan(){
+        $thanhvien = DB::table('users')
+                        ->orderByDesc('thanh_tich')
+                        ->paginate(30);
+                        return $thanhvien;
+    }
+    public function update_tich_phan($id,$tichphan){
+        DB::table('users')
+                ->where('id','=',$id)
+                ->update(['thanh_tich'=>$tichphan]);
+    }
 }

@@ -53,7 +53,7 @@
                     @if (isset($chuongtruoc))
                         <a class="ct" href="{{$chuongtruoc[0]->ten_chuong}}">Chương trước </a>
                     @endif
-                    <a class="ct" href="chitiettruyen.php">Mục lục</a>
+                    <a class="ct" href="/truyen/{{Session::get('id_truyen')}}">Mục lục</a>
                     @if (isset($chuongke))
                         <a class="ct" href="{{$chuongke[0]->ten_chuong}}">Chương sau </a>
                     @endif  

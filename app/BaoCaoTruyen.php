@@ -28,6 +28,7 @@ class BaoCaoTruyen extends Model
         $baocao = DB::table('bao_cao_truyen')
                         ->join('users','users.id','=','bao_cao_truyen.user_id')
                         ->join('truyen','truyen.truyen_id','=','bao_cao_truyen.truyen_id')
+                        ->orderByDesc('ngay_bc')
                         ->paginate(20);
                         return $baocao;
     }

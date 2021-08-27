@@ -18,14 +18,17 @@
   </form> 
 @endisset
 @empty($user)
-<form action="datlaipass" method="get">
+<div style="    background-color: aliceblue;
+padding: 80px;">
+  <form action="datlaipass" method="get">
     @csrf
     <div style="display:flex;margin:10px">
-      <label for="fname" style="width:30%;">Email cần đặt lại mật khẩu:</label><br>
+      <label for="fname" style="width: 50%;">Email cần đặt lại mật khẩu:</label><br>
       <input type="email" id="fname" name="email"style="width:80%">
     </div>
     <input type="submit" value="Submit" style="width:100%;margin-top:10px;">
-  </form> 
+  </form>
+</div> 
 @endempty
 
 

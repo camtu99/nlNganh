@@ -107,7 +107,11 @@ class Noidung extends Controller
     $following = $following->get_following($id);
     $truycap = new Truycap();
     $truycap = $truycap->truycap();
-      return view('taotruyen',compact('user','theloai','follower','following'));
+    $truyn = "/".$truyen;
+    $url ="/truyen".$truyn;
+    return redirect($url);
+
+      //return view('taotruyen',compact('user','theloai','follower','following'));
     }
 
     public function update_ten_truyen(Request $req){

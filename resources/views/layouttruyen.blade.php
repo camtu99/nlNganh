@@ -55,9 +55,31 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{{URL::to('/review')}}">Review</a>
                 </li>
+                <li class="nav-item">
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Thông tin</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                       <p><a href="/quydinh">Quy định</a></p>
+                      <p> <a href="/topic/cam-nhung">Cấm nhúng</a></p>
+                      </div>                
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="dropdown1">
+                    <span><a class="nav-link" href="#">Bảng xếp hạng</a></span>
+                    <div class="dropdown-content1">
+                      <div style="">
+                       <p><a href="/bang-xep-hang">Bảng xếp hạng tích phân</a></p>
+                      <p> <a href="/thuong-thanh">Thương thành</a></p>
+                      </div>                
+                    </div>
+                  </div>
+                </li>
                 @if (Session::has('email_tk'))
                   <li class="nav-item" style="margin-left: auto;">
-                    <a href="/user/{{Session::get('email_tk')}}">{{Session::get('email_tk')}}</a>
+                    <a href="/user/{{Session::get('email_tk')}}">{{Session::get('ten_tk')}}</a>
                   </li>
                   <li class="nav-item" style="padding: 0 10px;">
                     <a href="/user/logout">Đăng xuất</a>
@@ -153,6 +175,7 @@
         
       @show   
     </div>
+    @if (!Session::has('qc'))
     @isset($quangcao)
     <div id="ads-left">
       <div style="margin:0 0 5px 0; padding:0;width:300px;position:fixed; left:50%;margin-left: 590px; top:0;">
@@ -167,6 +190,7 @@
       </div>
     </div>
     @endisset
+    @endif
     <script>
       function baoloi() {
         alert("Bạn chưa đăng nhập");
