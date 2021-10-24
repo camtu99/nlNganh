@@ -33,7 +33,8 @@ class Truycap extends Model
         
     // }
     public function truycap(){
-        DB::table('truycap')->insert(['luot_truycap'=>1]);
+       // DB::table('truycap')->insert(['luot_truycap'=>1]);
+       return null;
     }
     public function All_truycap($ngay){
        

@@ -178,6 +178,41 @@
         
       @show   
     </div>
+    <footer style="    background-color: #0194a6;color: #a8edeb;">
+      <div class="container" style="padding: 20px;font-size: 16px;">
+        <div class="row" style="padding: 0 20px;">
+          <div class="col-md-5">
+            <h5>Giới thiệu</h5>
+            WikiDich là công cụ dịch tiếng Hoa miễn phí tức thời, người dùng không cần biết tiếng Hoa cũng có thể chuyển ngữ dễ dàng. Với những công cụ đơn giản, thân thiện và tự động hoá, web cung cấp những trải nghiệm tiên tiến nhất, nối liền khoảng cách ngôn ngữ.
+          </div>
+          <div class="col-md-7">
+            <div class="row" style="margin-left: 50px;">
+              <div class="col-md-3">
+                <h5>Liên kết</h5>
+                <ul style="list-style: none;padding: 0;">
+                    <li><a href="/" style="color: #a8edeb">Trang chủ</a></li>
+                    
+                    <li><a href=""style="color: #a8edeb">Đăng ký</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h5>Trợ giúp</h5>
+                <ul style="list-style: none;padding: 0;">
+                    <li>Báo lỗi</li>
+                    <li>Bảo mật</li>
+                    <li>Điều lệ</li>
+                    <li>Liên hệ</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Liên hệ</h5>
+                  <li style="list-style: none;">Email: nhacactruyen@gmail.com</li>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </footer>
     @if (!Session::has('qc'))
     @isset($quangcao)
     <div id="ads-left">

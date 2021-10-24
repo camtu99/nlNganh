@@ -180,4 +180,10 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->where('id','=',$id)
                 ->update(['thanh_tich'=>$tichphan]);
     }
+    public function get_name($name){
+        $name = DB::table('users')
+                    ->where('name','=',$name)
+                    ->get();
+                    return $name;
+    }
 }

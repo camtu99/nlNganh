@@ -18,6 +18,5 @@ class TheLoai extends Model
                         ->get();
         return $theloai;
     }
-
-
+    
 }

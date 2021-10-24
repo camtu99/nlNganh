@@ -254,4 +254,16 @@ class Truyen extends Model
         $truyen = DB::select("SELECT COUNT(ten_truyen) as ls, truyen.truyen_id,ten_truyen,ten_tac_gia,luot_doc,tinh_trang FROM `truyen` JOIN noi_dung_chuong ON noi_dung_chuong.truyen_id=truyen.truyen_id JOIN tac_gia ON tac_gia.tac_gia_id=truyen.truyen_id GROUP BY truyen.truyen_id HAVING ls<?", $max);
         return $truyen;
     }
+    public function thongke_luotdoctruyen(){
+        $truyen = DB::select('SELECT * FROM `truyen` ORDER BY luot_doc DESC LIMIT 10');
+        return $truyen;
+    }
+    public function timtruyen_tomtat($tomtat){
+        $truyen = DB::table('truyen')
+        ->join('users','users.id','=','truyen.user_id')
+        ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                ->where('tom_tat','like','%'.$tomtat.'%')
+                ->get();
+        return $truyen;
+    }
 }

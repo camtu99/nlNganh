@@ -323,7 +323,7 @@
                 </div>                         
             </DIV>
             <hr>
-            {{-- <div style="display:flex;margin-bottom: 80px;">
+            <div style="display:flex;">
                 <label for="" style="    padding-right: 140px;font-weight: 700;">Độ dài chương</label>
                 <div style="padding-right: 30px;">
                     <label for="" style="font-weight: 700;">Trên:</label>
@@ -335,7 +335,12 @@
                     <input style=" border-color: #77aae1;border-top: aliceblue;border-left: aliceblue;background-color: #e9fbff;border-right: aliceblue;width: 60px;" type="number" name="max" id="">
                     <label for=""> chương</label>
                 </div>
-            </div> --}}
+            </div>
+            <hr>
+            <div style="    margin-bottom: 80px;">
+                <label style="font-weight: 700;padding-right: 40px;" for="">Tìm trong phần giới thiệu:</label>
+                <input type="text" width="100%" name='tomtat'>
+            </div>
             <button style="margin-left: 380px;" type="submit">Tìm truyện</button>
         </form>
     </div>

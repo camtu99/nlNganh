@@ -17,4 +17,21 @@ class HopThu extends Model
             'noi_dung'=>$mes
         ]);
     }
+    public function get_hopthu($id){
+        $hopthu = DB::table('hopthu')
+                    ->join('users','users.id','=','hopthu.id_gui')
+                    ->where('id_nhan','=',$id)
+                    ->get();
+                return $hopthu;
+    }
+    public function get_hopthu_chitiet($id){
+        DB::table('hopthu')
+                    ->where('hopthu_id','=',$id)
+                    ->update(['tinh_trang'=>'2']);
+        $hopthu = DB::table('hopthu')
+                    ->join('users','users.id','=','hopthu.id_gui')
+                    ->where('hopthu_id','=',$id )                         
+                    ->get();
+                    return $hopthu;
+    }
 }

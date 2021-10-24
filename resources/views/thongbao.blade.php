@@ -43,7 +43,7 @@
     </table>
 </div> 
 <hr>
-<h2>Quảng lý gim thông báo</h2>
+<h2>Quảng lý ghim thông báo</h2>
 <div class="cubaotruyen">
     <table style="background-color: #aliceblue;width:100%;">
         <tbody>

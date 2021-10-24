@@ -49,25 +49,41 @@
                                     <div class="form-group" style="width: 100%;margin: 10px;">
                                         <select class="form-control" id="sel1" name="tinhtrang">
                                           <option value="Chưa giải quyết">Chưa giải quyết</option>
-                                          <option value="Đã xong">Đã xong</option>                                 
+                                          <option value="Đã xong">Đã xong</option>
+                                          <option value="Gửi thư nhắc nhở" >Gửi thư nhắc nhở</option>                                  
                                         </select>
                                       </div>
                                       <button style="margin: 10px;" class="btn btn-success" type="submit">Đặt</button>
                                 </form>
                             </div>
                         @else
+                            @if ($item->tinh_trang_bc=='Đã xong')
+                                <div>
+                                    <form action="/baocao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">                                   
+                                        <div class="form-group"style="width: 100%;margin: 10px;">
+                                            <select class="form-control" id="sel1"  name='tinhtrang'>
+                                            <option value="Đã xong" >Đã xong</option>
+                                            <option value="Chưa giải quyết" >Chưa giải quyết</option>
+                                            <option value="Gửi thư nhắc nhở" >Gửi thư nhắc nhở</option>                                                                       
+                                            </select>
+                                        </div>
+                                        <button style="margin: 10px;"  class="btn btn-success" type="submit">Đặt</button>
+                                    </form>
+                                </div>
+                            @else
                             <div>
-                                <form action="/baocao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">
-                                   
+                                <form action="/baocao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">                                   
                                     <div class="form-group"style="width: 100%;margin: 10px;">
                                         <select class="form-control" id="sel1"  name='tinhtrang'>
+                                        <option value="Gửi thư nhắc nhở" >Gửi thư nhắc nhở</option>
                                         <option value="Đã xong" >Đã xong</option>
-                                        <option value="Chưa giải quyết" >Chưa giải quyết</option>                                                                        
+                                        <option value="Chưa giải quyết" >Chưa giải quyết</option>                                                                                                              
                                         </select>
                                     </div>
                                     <button style="margin: 10px;"  class="btn btn-success" type="submit">Đặt</button>
                                 </form>
-                            </div>
+                            </div>   
+                            @endif                           
                         @endif
                     </td>
                 </tr>

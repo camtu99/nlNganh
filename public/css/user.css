@@ -1,4 +1,7 @@
 
+a:hover{
+    text-decoration: none;
+}
 .navbar{
     background-color: aqua ;
  
@@ -244,4 +247,25 @@
   
   .dropdown1:hover .dropdown-content1 {
     display: block;
+  }
+  .hopthu{
+    background-color: white;
+    padding: 15px;
+  }
+  .chitiethopthu{
+    background-color: #f4f4f4;
+    border-radius: 4%;
+    padding: 5px;
+    color: black;
+    margin: 5px 0;
+    font-weight: 700;
+    font-family: cursive;
+  }
+  .chitiethopthu a{
+    width: 100%;
+    color: black;
+  }
+  .chitiethopthu a:hover{
+      text-decoration: none;
+      color: black;
   }

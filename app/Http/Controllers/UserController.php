@@ -157,17 +157,18 @@ class UserController extends Controller
                 $idw = $id[0]->id;
                 $ten = $id[0]->name;
                 $avatar = $id[0]->avatar;
-                if($id[0]->phan_quyen==2){Session::put('tk_admin',$idw);}
+                if($id[0]->phan_quyen==2){
+                    Session::put('tk_admin',$idw);
+                }
                 Session::put('id_tk',$idw);
                 Session::put('ten_tk',$ten);
                 Session::put('avatar_tk',$avatar);
-                $idd=$idw;
-                $qc = new ThuongThanh();
-                $qc = $qc->get_ls_giao_dich($idd);  
-                if($qc[0]->id_thuong_thanh){
-                    $han_qc = $qc[0]->ngay_han;
+                $qcd = new ThuongThanh();
+                $qcd = $qcd->get_ls_giao_dich($idw);  
+                if(count($qcd)){
+                    $han_qc = $qcd[0]->ngay_han;
                     if(strtotime ( date('Y-m-d H:i:s') )< strtotime ( $han_qc )){
-                       Session::put('qc',$qc);
+                       Session::put('qc',$qcd);
                     }
                 }           
                 return redirect()->back();

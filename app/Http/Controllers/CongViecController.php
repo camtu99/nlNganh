@@ -243,6 +243,25 @@ class CongViecController extends Controller
                 $truyen = $truyen->get_truyen_tinh_trang($req->contiep);
             }
         }
+        if($req->tomtat){
+            if($truyen){
+                $truyen6 = array();$ti=0;
+                $truye9 = new Truyen();
+                $truye9 = $truye9->timtruyen_tomtat($req->tomtat);
+                foreach($truyen as $tr){
+                    foreach($truye9 as $tr6){
+                        if($tr6->truyen_id==$tr->truyen_id){
+                            $truyen6[$ti]=$tr;
+                        }
+                    }
+                }
+                $ti = $ti+1;
+                $truyen = $truyen6;
+            }else{
+                $truyen = new Truyen();
+                $truyen = $truyen->timtruyen_tomtat($req->tomtat);
+            }
+        }
         // if($req->min){
         //     if($truyen){
         //         $min = array();$o=0;
@@ -331,74 +350,84 @@ class CongViecController extends Controller
         return view('cubaotruyen',compact('thanhvien'));
     }
     public function thongke(){
-        $thang = date('m');
-        $review = new Review();
-        $review = $review->top_review($thang);
-        $binhluan = new BinhLuan();
-        $binhluan = $binhluan->topbinhluan($thang);
-        $ngay = date('m');
-        if($ngay == 1 ||$ngay == 3||$ngay == 5||$ngay == 7||$ngay == 8||$ngay == 10||$ngay == 12){
-            $songay = 31;
-        }else{
-            $songay=30;
+        $tk_theloai = new TagTruyen();
+        $tk_theloai = $tk_theloai->thongke_theloai();
+        $thongke1 =  '["Tên loại", "lượt xem", { role: "style" } ]';
+        foreach($tk_theloai as $tk){
+            $tk1 =  $tk->ten_the_loai   ;
+            $tk2 = $tk->luotdoc;
+            $thongke1 = $thongke1. ',["'.$tk1.'", '.$tk2.', "#14b394" ]';
         }
-        for ($i=1; $i<=$songay ; $i++) { 
-            $check_rv[$i]=2;$check_bl[$i]=2;
-            if($i<=9){$ngayi = date('Y').'-'.date('m').'-0'.$i;}else{$ngayi = date('Y').'-'.date('m').'-'.$i;}
-            foreach($review as $rv){
-                if($rv->ngay==$ngayi){
-                    $thongke[$i]=",['".$rv->ngay."',  ".$rv->sl_review.", ";
-                    $check_rv[$i]=1;
-                }
-            }
-            foreach($binhluan as $bl){
-
-                if($bl->ngay==$ngayi){
-                    if($check_rv[$i]==1){
-                        $thongke[$i]=$thongke[$i].$bl->sl_binhluan."]";
-                        $check_bl[$i]=1;
-                    }else{
-                        $thongke[$i]=",['".$bl->ngay."',  0, ".$bl->sl_binhluan."]";
-                        $check_bl[$i]=1;  
-                    }
-                }
-            }
-            if($check_bl[$i]==2){
-                if($check_rv[$i]==2){
-                    $thongke[$i]=",['".$ngayi."',  0, 0]";
-                }else{
-                    $thongke[$i]=$thongke[$i]."0]"; 
-                }
-            }
-        }
-        $tke='';
-        foreach($thongke as $tk){
-            $tke = $tke.$tk;
-        }
-        $thongke1 = " <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script><script type='text/javascript'>
-        google.charts.load('current', {'packages':['corechart']});
+        $thongke_theloai = '   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
     
-          function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-              ['Ngày', 'Bình Luận', 'Review']".
-              
-             $tke
-              
-           . "]);
+          '.$thongke1.'
+          
+          
+          ]);
     
-            var options = {
-              title: 'Bảng thống kê lượt Bình luận, Review',
-              hAxis: {title: 'Ngày',  titleTextStyle: {color: '#333'}},
-              vAxis: {minValue: 0}
-            };
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
     
-            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-          }
-        </script>";
+          var options = {
+            title: "Xếp hạng thể loại",
+            width: 1000,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById("theloai"));
+          chart.draw(view, options);
+      }
+      </script>';
+      $truyen = new Truyen();
+      $truyen = $truyen->thongke_luotdoctruyen();
+      $thongketruyen =  '["Tên truyện", "lượt xem", { role: "style" } ]';
+      foreach($truyen as $t){
+          $t1 =  $t->ten_truyen;
+          $t2 = $t->luot_doc;
+          $thongketruyen = $thongketruyen. ',["'.$t1.'", '.$t2.', "#fad390" ]';
+      }
+      $thongketruyen1 = '   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+  
+        '.$thongketruyen.'
+        
+        
+        ]);
+  
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+                         { calc: "stringify",
+                           sourceColumn: 1,
+                           type: "string",
+                           role: "annotation" },
+                         2]);
+  
+        var options = {
+          title: "Truyện thuộc top 10 ",
+          width: 1000,
+          height: 400,
+          bar: {groupWidth: "95%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("truyen"));
+        chart.draw(view, options);
+    }
+    </script>';
    
-        return view('thongke',compact('thongke1'));
+        return view('thongke',compact('thongke_theloai','thongketruyen1'));
     }
     public function chuyentrang($id){
         $thongbao ="<script>

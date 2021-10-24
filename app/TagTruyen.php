@@ -93,5 +93,9 @@ class TagTruyen extends Model
         
         return $timloai;
     }
+    public function thongke_theloai(){
+        $theloai = DB::select('SELECT tl.ten_the_loai,COUNT(t.luot_doc) luotdoc FROM tagtruyen tg JOIN truyen t ON tg.truyen_id=t.truyen_id JOIN the_loai tl ON tg.the_loai_id=tl.the_loai_id GROUP BY tl.ten_the_loai');
+    return $theloai;
+    }
 
 }
