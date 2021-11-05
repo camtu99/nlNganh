@@ -26,14 +26,16 @@ class BinhLuan extends Model
         $binhluan = DB::table('binh_luan')
                 -> join('users','users.id','=','binh_luan.user_id')
                 -> where('truyen_id','=',$id_truyen)
-                -> paginate(10);
+                ->where('trang_thai_bl','=','sẵn sàng')
+                ->where('loai_binh_luan','=',null)
+                -> paginate(2);
         return $binhluan;
     }
     public function get_binh_luan_chitiet_cubao($id_truyen,$id_bl){
         $binhluan = DB::table('binh_luan')
                 -> join('users','users.id','=','binh_luan.user_id')
                 -> where('truyen_id','=',$id_truyen)
-                ->where('id_binh_luan','=',$id_bl)
+                -> where('id_binh_luan','=',$id_bl)               
                 -> paginate(10);
         return $binhluan;
     }
@@ -116,5 +118,62 @@ class BinhLuan extends Model
                 ->where('id_review','=',null)
                 ->get();
                 return $ds;
+    }
+    public function add_bl_sao($id,$id_user,$sao,$nd){
+        DB::table('binh_luan')
+            ->insert([
+                'truyen_id'=>$id,
+                'nd_binh_luan'=>$nd,
+                'user_id'=>$id_user,
+                'danh_gia'=>$sao,
+                'loai_binh_luan'=>'Đánh giá sao'
+            ]);
+    }
+    public function get_binh_luan_danh_gia_sao_truyen($id){
+        $binhluan = DB::table('binh_luan')
+                -> join('users','users.id','=','binh_luan.user_id')
+                -> where('truyen_id','=',$id)
+                ->where('loai_binh_luan','=','Đánh giá sao')
+                ->where('trang_thai_bl','=','sẵn sàng')
+                -> paginate(3);
+        return $binhluan;
+    }
+    public function get_diem_sao_binh_luan($id){
+        $sql ='SELECT count(*) solan,danh_gia FROM binh_luan WHERE loai_binh_luan = '."'Đánh giá sao'".' AND `truyen_id` = '.$id.' GROUP BY `danh_gia`';
+        $diem = DB::select($sql);
+        return $diem;
+    }
+    public function get_all_danh_gia(){
+        $binhluan = DB::table('binh_luan')
+                    ->join('truyen','truyen.truyen_id','=','binh_luan.truyen_id')
+                    -> join('users','users.id','=','binh_luan.user_id')
+                    ->where('loai_binh_luan','=','Đánh giá sao')
+                    -> paginate(20);
+                    return $binhluan;
+    }
+    public function search_danhgia_ten($ten){
+        $binhluan = DB::table('binh_luan')
+                    ->join('truyen','truyen.truyen_id','=','binh_luan.truyen_id')
+                    -> join('users','users.id','=','binh_luan.user_id')
+                    ->where('loai_binh_luan','=','Đánh giá sao')
+                    ->where('truyen.ten_truyen','like','%'.$ten.'%')
+                    -> paginate(20);
+                    return $binhluan;
+    }
+    public function search_danhgia_ngay($ngay){
+        $binhluan = DB::table('binh_luan')
+                    ->join('truyen','truyen.truyen_id','=','binh_luan.truyen_id')
+                    -> join('users','users.id','=','binh_luan.user_id')
+                    ->where('loai_binh_luan','=','Đánh giá sao')
+                    ->where('ngay_bl','like',$ngay)
+                    -> paginate(20);
+                    return $binhluan;
+    }
+    public function thongke_luotdanhgiatruyen(){
+        $truyen = DB::select('SELECT count(*) soluot,ten_truyen FROM `binh_luan` JOIN truyen t ON binh_luan.truyen_id=t.truyen_id WHERE `loai_binh_luan`='."'Đánh giá sao'".' GROUP BY binh_luan.`truyen_id` ORDER BY count(*) DESC LIMIT 10');
+        return $truyen;
+    }
+    public function xoaBinhLuan($id){
+        DB::select('UPDATE `binh_luan` SET `trang_thai_bl`= '."'no'".' WHERE `id_binh_luan`= ?', [$id]);       
     }
 }

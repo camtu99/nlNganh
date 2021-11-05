@@ -40,7 +40,7 @@ class TagTruyen extends Model
                     ->join('the_loai','the_loai.the_loai_id','=','tagtruyen.the_loai_id')
                     ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
                     ->where('ten_the_loai','=',$theloai)
-                    ->get();
+                    ->paginate(20);
         return $truyen;
     }
     public function xoa_tag($id,$id_user){
@@ -95,6 +95,10 @@ class TagTruyen extends Model
     }
     public function thongke_theloai(){
         $theloai = DB::select('SELECT tl.ten_the_loai,COUNT(t.luot_doc) luotdoc FROM tagtruyen tg JOIN truyen t ON tg.truyen_id=t.truyen_id JOIN the_loai tl ON tg.the_loai_id=tl.the_loai_id GROUP BY tl.ten_the_loai');
+    return $theloai;
+    }
+    public function thongke_theloai_theonam($nam){
+        $theloai = DB::select('SELECT tl.ten_the_loai,COUNT(tc.truy_cap_id) luotdoc FROM tagtruyen tg JOIN truyen t ON tg.truyen_id=t.truyen_id JOIN the_loai tl ON tg.the_loai_id=tl.the_loai_id JOIN truycap tc ON tc.truyen_id=t.truyen_id where year(ngay_truycap)= '.$nam.' GROUP BY tl.ten_the_loai,tl.the_loai_id');
     return $theloai;
     }
 

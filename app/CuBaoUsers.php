@@ -46,6 +46,7 @@ class CuBaoUsers extends Model
     public function all_baocao_user(){
         $user = DB::table('cu_bao_user')
                     ->join('users','users.id','=','cu_bao_user.user_id')
+                    ->orderByDesc('ngay_cb')
                     ->paginate(20);
                     return $user;
     }
@@ -62,6 +63,10 @@ class CuBaoUsers extends Model
                     ->whereDate('ngay_cb',$ngay)
                     ->paginate(20);
                     return $user;
+    }
+    public function settinhtrang($id,$tinhtrang){
+        DB::table('cu_bao_user') ->where('id_cu_bao','=',$id)
+                                 ->update(['trang_thai_cu_bao'=>$tinhtrang]); 
     }
     
 }

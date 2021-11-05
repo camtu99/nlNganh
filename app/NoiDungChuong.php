@@ -56,7 +56,7 @@ class NoiDungChuong extends Model
                     $truyen = DB::table('truyen') 
                                 ->where('truyen_id','=',$id)
                                 ->update(['luot_doc'=> $doc+1]);
-                    DB::table('truycap')->insert(['luot_truycap'=>1]);
+                    DB::table('truycap')->insert(['truyen_id'=>$id]);
                     return $chuong;
                 
     }

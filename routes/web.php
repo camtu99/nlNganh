@@ -37,6 +37,8 @@ Route::get('/theloai/{loai}','CongViecController@tim_theloai');
 Route::get('/tacgia','CongViecController@tacgia');
 Route::get('/tim-kiem-nang-cao','CongViecController@timkiemnangcao');
 Route::post('/truyen/timnangcao','CongViecController@timkiemcao');
+Route::get('/search','SearchController@searchAll');
+Route::get('/chuongmoi','SearchController@chuongmoinhat');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -95,7 +97,8 @@ Route::post('/admin/baocao/ngay','CubaoController@baocao_truyenngay');
 Route::post('/baocao/{id}','UserController@baocao');
 Route::get('/binhluan/cubao/{id}/{id_bl}/{nd}','CubaoController@baocao_binhluan');
 Route::get('/binhluan/cubao/{id_tk}/{id_bl}/{noidung}','CubaoController@cubao_bl');
-
+Route::post('/truyen/bao-cao/{id}','CubaoController@baocao_truyen');
+Route::post('/danhgia/{id}','BinhLuanController@danhgiasao');
 //admin
 Route::get('/admin/thongtin','CongViecController@admin');
 Route::get('/admin/truyen','CongViecController@truyen');
@@ -113,6 +116,16 @@ Route::get('/admin/thongbao','CongViecController@thongbao');
 Route::post('/admin/thongbao/quangcao','CongViecController@update_qc');
 Route::post('/admin/thongbao/thongbao/{id}','CongViecController@update_thongbao');
 Route::get('/admin/thongketruycap','CongViecController@thongketruycap');
+Route::get('/admin/truyen/danhgia','TruyenController@getdanhgiasao');
+Route::post('/admin/truyen/danhgia/search','TruyenController@searchdanhgiaten');
+Route::post('/admin/truyen/danhgia/search/day','TruyenController@searchdanhgiangay');
+Route::get('/review/xoa/{id}','TruyenController@xoaReview');
+Route::get('/binhluan/xoa/{id}','TruyenController@xoaBinhLuan');
+Route::get('/cubao/tinhtrang/{id}','TruyenController@settinhtrangcaobaoreview');
+Route::get('/admin/danhsachcam','TruyenController@getdanhsach');
+Route::post('/admin/danhsachcam/search/them','TruyenControlller@themtimkiem');
+Route::post('/admin/danhsachcam/create','TruyenController@createDanhSachCam');
+Route::post('/admin/baocao/timkiem','TruyenController@timkiemcubaotruyen');
 //topic, quy định,bxh,thương thành
 Route::get('/topic/cam-nhung','BinhluanController@cam_nhung');
 Route::post('/topic/cam-nhung/create','BinhluanController@add_camnhung');

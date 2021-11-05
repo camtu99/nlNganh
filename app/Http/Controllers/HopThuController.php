@@ -49,7 +49,8 @@ class HopThuController extends Controller
         $following = $following->get_following($id);
         $theloai = new TheLoai();
         $theloai = $theloai->get_all_theloai();
+        $noidung = $hopthu[0]->noi_dung;
         
-        return view('hopthu_chitiet',compact('user','id_gui','follower','following','hopthu','theloai'));        
+        return view('hopthu_chitiet',compact('user','id_gui','follower','following','hopthu','theloai','noidung'));        
     }
 }

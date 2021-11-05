@@ -105,8 +105,7 @@ class Noidung extends Controller
     $follower = $follower->get_follower($id);
     $following = new Follow();
     $following = $following->get_following($id);
-    $truycap = new Truycap();
-    $truycap = $truycap->truycap();
+    
     $truyn = "/".$truyen;
     $url ="/truyen".$truyn;
     return redirect($url);
@@ -115,8 +114,7 @@ class Noidung extends Controller
     }
 
     public function update_ten_truyen(Request $req){
-      $id = $req -> input('id_truyen'); $truycap = new Truycap();
-      $truycap = $truycap->truycap();
+      $id = $req -> input('id_truyen'); 
       $link = $req -> input('link');
       $ten_truyen = $req -> input('ten_truyen');
       $update = new Truyen();
@@ -187,8 +185,7 @@ class Noidung extends Controller
         $follower = new Follow();
         $follower = $follower->get_follower($id);
         $following = new Follow();
-        $following = $following->get_following($id); $truycap = new Truycap();
-        $truycap = $truycap->truycap();
+        $following = $following->get_following($id); 
         return view('taotruyen',compact('tentruyen','tacgia','theloai','taotruyen','link','user','follower','following'));
       }
     }
@@ -293,6 +290,39 @@ class Noidung extends Controller
         $binhluan = new BinhLuan();
         $binhluan = $binhluan ->get_binh_luan_chitiet($truyen_id);
       }
+      // bình luận đánh giá sao
+      $danhgiasao = new BinhLuan();
+      $danhgiasao = $danhgiasao->get_binh_luan_danh_gia_sao_truyen($truyen_id);
+      $danhgiadiem = new BinhLuan();
+      $danhgiadiem = $danhgiadiem->get_diem_sao_binh_luan($truyen_id);
+      $diem = 0; $solan=0;
+      foreach($danhgiadiem as $d){
+        $diem = $diem + $d->danh_gia * $d->solan;
+        $solan = $d->solan +  $solan;
+      }
+      $b = array();
+      for($i =1;$i <6;$i++){
+        $flat =true;
+        foreach($danhgiadiem as $di){
+         if( $di->danh_gia==$i){
+           $flat = false;
+         }         
+        }
+        if($flat){
+         $b[$i]=$i; 
+        }else{
+          $b[$i]=0;
+        }
+      }
+      if($solan==0){
+        $solan = 1;
+        $diemtrungbinh =  $diem/ $solan ;
+      }else{
+        $diemtrungbinh =  $diem/ $solan ;
+      }
+    
+      
+
     //  giới thiệu nội dung truyện
       if($trangnhung==1){
         $gioithieu= $noidung->find('.intro',0);
@@ -328,9 +358,8 @@ class Noidung extends Controller
         $dstheloai = $dstheloai->get_all_theloai();
       }
       $theloai = new TheLoai();
-      $theloai = $theloai->get_all_theloai(); $truycap = new Truycap();
-      $truycap = $truycap->truycap();
-      return view('chitiettruyen',compact('mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai'));
+      $theloai = $theloai->get_all_theloai(); 
+      return view('chitiettruyen',compact('b','mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai','danhgiasao','diemtrungbinh','danhgiadiem','solan'));
 
     }
     function stt_chuong($id_truyen,$chuong){
@@ -405,8 +434,7 @@ class Noidung extends Controller
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai();
       $quangcao = new topic();
-        $quangcao = $quangcao->get_topic_qc(); $truycap = new Truycap();
-        $truycap = $truycap->truycap();
+      $quangcao = $quangcao->get_topic_qc(); 
       if(isset($chuongke)&&isset($chuongtruoc)){
         return view('chitiet_chuong',compact('ten','chuong','noidung','chuongtruoc','chuongke','tacgia','nd_chuong','theloai','quangcao'));
       }else if(isset($chuongke)){
@@ -427,9 +455,9 @@ class Noidung extends Controller
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai();
       $thongbao = new topic();
-      $thongbao = $thongbao->get_topic_thongbao(); $truycap = new Truycap();
-      $truycap = $truycap->truycap();
-      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang','theloai','thongbao'));
+      $thongbao = $thongbao->get_topic_thongbao();
+       Session::put('thongbao',$thongbao); 
+      return view('trangchu',compact('newtruyen','viewtruyen','hiendai','cotrang','theloai'));
     }
     public function add_chuong_sxyxht($link,$id_truyen){
       $link ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';

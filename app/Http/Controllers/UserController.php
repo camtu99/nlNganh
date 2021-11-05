@@ -49,20 +49,14 @@ class UserController extends Controller
      return redirect()->back();
  }
  public function doimatkhau(Request $req,$email){
-    $truycap = new Truycap();
-    $truycap = $truycap->truycap();
         $repass = $req->pass;
         $pass = Hash::make($repass);
         $repassword = new User();
         $repassword = $repassword ->doimatkhau($email,$pass);
         Session::flash('success','Đã đổi password thành công. Vui lòng đăng nhập lại');
-        $theloai = new TheLoai();
-        $theloai = $theloai->get_all_theloai();
-        return view('matkhau',compact('theloai'));
+        return view('matkhau');
  }
- public function repass($id){
-    $truycap = new Truycap();
-    $truycap = $truycap->truycap();
+ public function repass($id){   
      $user = new User();
      $user = $user->get_users($id);
      $theloai = new TheLoai();
@@ -346,11 +340,9 @@ class UserController extends Controller
           }
     }
     public function bxh_tichphan(){
-        $theloai = new TheLoai();
-    $theloai = $theloai->get_all_theloai();
         $thanhvien = new User();
         $thanhvien = $thanhvien->all_user_tichphan();
-        return view('danhsach',compact('thanhvien','theloai'));
+        return view('danhsach',compact('thanhvien'));
     }
     public function messenger(Request $req,$email,$id){
         $id_nhan = new User();

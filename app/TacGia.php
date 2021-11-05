@@ -41,11 +41,17 @@ class TacGia extends Model
         $truyen = DB::table('tac_gia')
                     ->join('truyen','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
                     ->where('ten_tac_gia','=',$tentacgia)
-                    ->get();
+                    ->paginate(20);
                     return $truyen;
     }
     public function all_tac_gia(){
-    $tacgia = DB::select("SELECT ten_tac_gia, COUNT(ten_tac_gia) as sotruyen FROM `tac_gia` JOIN truyen ON tac_gia.tac_gia_id=truyen.tac_gia_id GROUP by tac_gia.ten_tac_gia order by sotruyen desc");
+    //$tacgia = DB::select("SELECT ten_tac_gia, COUNT(ten_tac_gia) as sotruyen FROM `tac_gia` JOIN truyen ON tac_gia.tac_gia_id=truyen.tac_gia_id GROUP by tac_gia.ten_tac_gia order by sotruyen desc");
+    $tacgia = DB::table('tac_gia')            
+            ->select(DB::raw('ten_tac_gia, COUNT(ten_tac_gia) as sotruyen'))
+            ->join('truyen','truyen.tac_gia_id','=','tac_gia.tac_gia_id')
+            ->groupBy('tac_gia.ten_tac_gia')
+            ->orderByDesc('sotruyen')          
+            ->paginate(20);
         return $tacgia;    
     }
 }

@@ -212,7 +212,7 @@ class Truyen extends Model
         $truyen = DB::table('truyen')
         ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
         ->where('tinh_trang','=',$tinhtrang)
-       ->get();
+       ->paginate(20);
         return $truyen;
     }
     public function sua_tinhtrang($id,$tinhtrang,$id_user){
@@ -265,5 +265,31 @@ class Truyen extends Model
                 ->where('tom_tat','like','%'.$tomtat.'%')
                 ->get();
         return $truyen;
+    }
+    public function seachAll($name){
+        $truyen = DB::table('truyen')
+                    ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                    ->join('tagtruyen','tagtruyen.truyen_id','=','truyen.truyen_id')
+                    ->join('the_loai','the_loai.the_loai_id','=','tagtruyen.the_loai_id')
+                    ->orWhere('the_loai.ten_the_loai','like','%'.$name.'%')
+                    ->orWhere('tac_gia.ten_tac_gia','like','%'.$name.'%')
+                    ->orwhere('truyen.ten_truyen','like','%'.$name.'%')
+                    ->groupBy('truyen.ten_truyen')
+                    ->distinct()->get();
+                    return $truyen;
+    }
+    public function getiduser($id){
+        $id_user = DB::table('truyen')
+                    ->where('truyen_id','=',$id)
+                    ->get();
+                    return $id_user;
+    }
+
+    public function chuongmoinhat(){
+        $truyen = DB::table('truyen')
+                    ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+                    ->orderByDesc('ngay_tao')
+                    ->paginate(20);
+                    return $truyen;
     }
 }

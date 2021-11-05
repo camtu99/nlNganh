@@ -4,10 +4,16 @@
         <div>
             @isset($thongke_theloai)
             @if ($thongke_theloai)
-            <?php echo $thongke_theloai;?>
+            <?php echo $thongke_theloai;
+                    echo $thongke_theloai11;
+            ?>
             @endif
                 <h1>Bảng thống kê lượt đọc theo thể loại truyện</h1>
-                <div> <div id="theloai" ></div></div>
+                <div style="display: flex">
+                     <div id="theloai" ></div>
+                <div id="theloaitheonam" ></div>
+                </div>
+               
             @if ($thongketruyen1)
             <?php echo $thongketruyen1;?>
             @endif
@@ -20,6 +26,13 @@
                 @endif
                 <h1>Bảng thống kê lượt truy cập website </h1>
                 <div><div id="chart_div" ></div></div>
+            @endisset
+            @isset($thongketruyen12)
+                @if ($thongketruyen12)
+                    <?php echo $thongketruyen12;?>
+                @endif
+                <h1>Bảng thống kê lượt đánh giá truyện</h1>
+                <div><div id="truyendanhgia" ></div></div>
             @endisset
         </div>
         

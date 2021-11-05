@@ -1,7 +1,7 @@
 @extends('layouttruyen')
 @section('content')
 <h3>Tìm kiếm</h3>
-<div class="row">
+<div class="row" style="margin-bottom: 40px;margin-top: 40px;">
   @foreach ($truyen as $truyen1)
     <div class="book-item col-md-3">
       <a href="/truyen/{{$truyen1->truyen_id}}" data-toggle="tooltip" data-placement="bottom" title=" " >
@@ -23,6 +23,9 @@
       </a>
     </div> 
   @endforeach
+  @if (empty($truyennangcao))
+  <DIv>{{$truyen->links()}}</DIv> 
+  @endif
 
 </div>
 @endsection

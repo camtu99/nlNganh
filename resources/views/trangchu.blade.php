@@ -4,11 +4,11 @@
   <div class="row">
     <div style="width:100%;background-color: white;padding: 25px;">
       <div class="list" style="width:100%">
-        <div class="col-md-8">
-          <h3>Chương mới</h3>
+        <div class="col-lg-12">
+          <h3>Truyện mới cập nhật</h3>
           <div class="row">
             @foreach ($newtruyen as $truyen)
-              <div class="book-item col-md-3">
+              <div class="book-item col-lg-3">
                 <a href="/truyen/<?php echo $truyen->truyen_id;?> " data-toggle="tooltip" data-placement="bottom" title=" <?php echo $truyen->ten_truyen;?>" >
                   <div class="img-cover">   
                     <img src="http://127.0.0.1:8000/hinhanh/<?php echo $truyen->hinh_anh?>">  
@@ -29,58 +29,45 @@
               </div> 
             @endforeach
           </div>
-        </div>
-        <div class="col-md-4">
-          <div><p>Top xem nhiều nhất</p></div>
-          <div class="list-top-view">
-            <ul class="list-top-ul">
-              @foreach ($viewtruyen as $view)
-                <li class="list-top-li">
-                  <a href="/truyen/{{$view->truyen_id}}">
-                    <div class="list-top-img">
-                      <img src="http://127.0.0.1:8000/hinhanh/<?php echo $view->hinh_anh?>" style="height=70px;width:50px;">
-                    </div>
-                    <div class=" infor-infor ">
-                      <b><?php echo $view->ten_truyen;?></b>
-                      <p> <?php echo $view->ten_tac_gia;?></p>
-                      <p><i class="fa fa-eye" aria-hidden="true" style=" font-weight: 100;"><?php echo $view->luot_doc;?>&nbsp lượt đọc</i></p>
-                    </div>
-                  </a>
-                </li>   
-              @endforeach           
-            </ul>
-          </div>
-        </div>          
-      </div>
+          
+          <div ><a href="/chuongmoi" style="color: #06eb3a;float: right;"> << Xem thêm >> </a></div>
+        </div>  
+                     
+      </div><hr>
       {{-- thể loại hiện đại --}}
-      <div class="col-md-8">
-        <h3>Hiện đại</h3>
-        <div class="row">
-          @foreach ($hiendai as $truyen)
-            <div class="book-item col-md-3">
-              <a href="" data-toggle="tooltip" data-placement="bottom" title=" <?php echo $truyen->ten_truyen;?>" >
-                <div class="img-cover">   
-                  <img src="http://127.0.0.1:8000/hinhanh/<?php echo $truyen->hinh_anh?>">  
-                </div>
-                <div class="infor">
-                  <div class="infor-item">
-                    <?php echo $truyen->ten_truyen;?>                           
+      <div class="list" style="width:100%">
+        <div class="col-md-12">
+          <h3>Hiện đại</h3>
+          <div class="row">
+            @foreach ($hiendai as $truyen)
+              <div class="book-item col-md-3">
+                <a href="" data-toggle="tooltip" data-placement="bottom" title=" <?php echo $truyen->ten_truyen;?>" >
+                  <div class="img-cover">   
+                    <img src="http://127.0.0.1:8000/hinhanh/<?php echo $truyen->hinh_anh?>">  
                   </div>
-                  <div class="author">
-                    <?php echo $truyen->ten_tac_gia;?>
+                  <div class="infor">
+                    <div class="infor-item">
+                      <?php echo $truyen->ten_truyen;?>                           
+                    </div>
+                    <div class="author">
+                      <?php echo $truyen->ten_tac_gia;?>
+                    </div>
+                    <div class="view-sach">
+                      <i class="fa fa-eye" aria-hidden="true" style=" font-weight: 100;"><?php echo $truyen->luot_doc;?></i>
+                      <i class="fa fa-comment" aria-hidden="true" style=" font-weight: 100;">2</i>
+                    </div>
                   </div>
-                  <div class="view-sach">
-                    <i class="fa fa-eye" aria-hidden="true" style=" font-weight: 100;"><?php echo $truyen->luot_doc;?></i>
-                    <i class="fa fa-comment" aria-hidden="true" style=" font-weight: 100;">2</i>
-                  </div>
-                </div>
-              </a>
-            </div> 
-          @endforeach
+                </a>
+              </div> 
+            @endforeach
+          </div>
+          <div ><a href="/theloai/Hiện Đại" style="color: #06eb3a;float: right;"> << Xem thêm >> </a></div>
         </div>
+        <hr>
       </div>
       {{-- Cổ trang --}}
-      <div class="col-md-8">
+
+      <div class="col-md-12">
         <h3>Cổ trang</h3>
         <div class="row">
           @foreach ($cotrang as $truyen)
@@ -106,6 +93,8 @@
           @endforeach
         </div>
       </div>
+      <div ><a href="/theloai/Cổ Trang" style="color: #06eb3a;float: right;"> << Xem thêm >> </a></div>
+      <div >
     </div>
   </div>
 </div>  

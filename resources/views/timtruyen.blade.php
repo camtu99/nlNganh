@@ -209,7 +209,7 @@
                                 </div> 
                                 <div class="col-md-4">
                                     <input type="checkbox" name="29" value="29" id="">
-                                    <label for="">Sản văn</label>
+                                    <label for="">Sảng văn</label>
                                 </div>
                                 <div class="col-md-4">
                                     <input type="checkbox" name="30" value="30" id="">

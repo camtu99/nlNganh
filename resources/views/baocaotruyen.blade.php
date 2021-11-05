@@ -4,7 +4,7 @@
     <div >
         <form action="/admin/baocao/timkiem" method="post">
             @csrf
-            <label for="">Nhập tên thành viên: </label>
+            <label for="">Nhập tên truyện: </label>
             <input type="text"name="timkiem">
             <button type="submit" class="btn btn-success">Tìm</button>
         </form>

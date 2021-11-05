@@ -1,6 +1,6 @@
 @extends('layoutadmin')
 @section('content')
-<h2>Quản lý quảng cáo</h2>
+<div style="margin-left: -15px;background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Quảng cáo</h2></div>
 <div class="cubaotruyen">
     <table style="background-color: #aliceblue;width:100%;">
         <tbody>
@@ -43,12 +43,12 @@
     </table>
 </div> 
 <hr>
-<h2>Quảng lý ghim thông báo</h2>
+<div style="margin-left: -15px;background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Thông báo</h2></div>
 <div class="cubaotruyen">
     <table style="background-color: #aliceblue;width:100%;">
         <tbody>
             <tr>
-                <th>Tên Thông báo gim</th>
+                <th>Tên Thông báo</th>
                 <th>Link thông báo</th>
                 <th>Cài đặt</th>
             </tr>

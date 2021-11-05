@@ -118,9 +118,9 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('id','=',$id)
             ->update(['email_verified_at'=>'1']);
     }
-    public function doimatkhau($id,$pass){
+    public function doimatkhau($email,$pass){
         DB::table('users')
-            ->where('id','=',$id)
+            ->where('email','=',$email)
             ->update(['password'=>$pass]);
     }
     public function sua_anh($id,$anh){
@@ -172,7 +172,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function all_user_tichphan(){
         $thanhvien = DB::table('users')
                         ->orderByDesc('thanh_tich')
-                        ->paginate(30);
+                        ->paginate(20);
                         return $thanhvien;
     }
     public function update_tich_phan($id,$tichphan){

@@ -14,13 +14,15 @@ class HopThu extends Model
         ->insert([
             'id_gui'=>$id_gui,
             'id_nhan'=>$id_nhan,
-            'noi_dung'=>$mes
+            'noi_dung'=>$mes,
+            'loai_thu'=>'Messenger'
         ]);
     }
     public function get_hopthu($id){
         $hopthu = DB::table('hopthu')
                     ->join('users','users.id','=','hopthu.id_gui')
                     ->where('id_nhan','=',$id)
+                    ->orderByDesc('ngay')
                     ->get();
                 return $hopthu;
     }
@@ -33,5 +35,13 @@ class HopThu extends Model
                     ->where('hopthu_id','=',$id )                         
                     ->get();
                     return $hopthu;
+    }
+    public function create_thongbaotruyen($id_nhan,$mes){
+        DB::table('hopthu')
+        ->insert([
+            'id_gui'=>'29',
+            'id_nhan'=>$id_nhan,
+            'noi_dung'=>$mes
+        ]);
     }
 }

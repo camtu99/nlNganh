@@ -19,6 +19,7 @@ use App\Truycap;
 use App\Truyen;
 use App\TruyenThuVien;
 use Illuminate\Http\Resources\MergeValue;
+use Illuminate\Support\Facades\Date;
 use Symfony\Component\Translation\Catalogue\MergeOperation;
 
 class CongViecController extends Controller
@@ -102,9 +103,8 @@ class CongViecController extends Controller
         $truycap = $truycap->truycap();
         $tacgia = new TacGia();
         $tacgia = $tacgia->all_tac_gia();
-        $theloai = new TheLoai();
-        $theloai = $theloai->get_all_theloai();
-        return view('danhsach',compact('tacgia','theloai'));
+ 
+        return view('danhsach',compact('tacgia'));
     }
     public function hoatdong($name){
         $theloai = new TheLoai();
@@ -262,6 +262,7 @@ class CongViecController extends Controller
                 $truyen = $truyen->timtruyen_tomtat($req->tomtat);
             }
         }
+        $truyennangcao = 'ok';
         // if($req->min){
         //     if($truyen){
         //         $min = array();$o=0;
@@ -300,7 +301,7 @@ class CongViecController extends Controller
         //         $truyen = $truyen->max_truyen($req->max);
         //     }
         // }
-        return view('timkiem',compact('theloai','truyen'));
+        return view('timkiem',compact('theloai','truyen','truyennangcao'));
     }
     public function admin(){
         if(!Session::has('tk_admin')){ 
@@ -379,12 +380,51 @@ class CongViecController extends Controller
     
           var options = {
             title: "Xếp hạng thể loại",
-            width: 1000,
+            width: 800,
             height: 400,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
           };
           var chart = new google.visualization.ColumnChart(document.getElementById("theloai"));
+          chart.draw(view, options);
+      }
+      </script>';
+      $tk_theloai11 = new TagTruyen();
+        $nam = date("Y");
+        $tk_theloai11 = $tk_theloai11->thongke_theloai_theonam($nam);
+        $thongke11 =  '["Tên loại", "lượt xem", { role: "style" } ]';
+        foreach($tk_theloai11 as $tk){
+            $tk111 =  $tk->ten_the_loai   ;
+            $tk211 = $tk->luotdoc;
+            $thongke11 = $thongke11. ',["'.$tk111.'", '.$tk211.', "#14b394" ]';
+        }
+        $thongke_theloai11 = '   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+    
+          '.$thongke11.'
+          
+          
+          ]);
+    
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
+    
+          var options = {
+            title: "Xếp hạng thể loại",
+            width: 800,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById("theloaitheonam"));
           chart.draw(view, options);
       }
       </script>';
@@ -417,7 +457,7 @@ class CongViecController extends Controller
   
         var options = {
           title: "Truyện thuộc top 10 ",
-          width: 1000,
+          width: 800,
           height: 400,
           bar: {groupWidth: "95%"},
           legend: { position: "none" },
@@ -426,8 +466,48 @@ class CongViecController extends Controller
         chart.draw(view, options);
     }
     </script>';
+
+    $truyendanhsao = new BinhLuan();
+      $truyendanhsao = $truyendanhsao->thongke_luotdanhgiatruyen();
+      $thongketruyen12 =  '["Tên truyện", "lượt xem", { role: "style" } ]';
+      foreach($truyendanhsao as $t){
+          $t12 =  $t->ten_truyen;
+          $t22 = $t->soluot;
+          $thongketruyen12 = $thongketruyen12. ',["'.$t12.'", '.$t22.', "#fad390" ]';
+      }
+      $thongketruyen12 = '   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+  
+        '.$thongketruyen12.'
+        
+        
+        ]);
+  
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+                         { calc: "stringify",
+                           sourceColumn: 1,
+                           type: "string",
+                           role: "annotation" },
+                         2]);
+  
+        var options = {
+          title: "Truyện đánh giá thuộc top 10 ",
+          width: 800,
+          height: 400,
+          bar: {groupWidth: "95%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("truyendanhgia"));
+        chart.draw(view, options);
+    }
+    </script>';
+
    
-        return view('thongke',compact('thongke_theloai','thongketruyen1'));
+        return view('thongke',compact('thongke_theloai','thongketruyen1','thongke_theloai11','thongketruyen12'));
     }
     public function chuyentrang($id){
         $thongbao ="<script>
@@ -452,6 +532,7 @@ class CongViecController extends Controller
         $thongbao = $thongbao->get_topic_thongbao();
         $truycap = new Truycap();
         $truycap = $truycap->truycap();
+        Session::put('thongbao',$thongbao);
         return view('thongbao',compact('quangcao','thongbao'));
     }
     public function update_qc(Request $req){

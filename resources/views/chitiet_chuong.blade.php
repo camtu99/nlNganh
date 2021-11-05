@@ -2,7 +2,7 @@
 @section('content')
 <div class="truyen" id="truyen">
     <div class="container">
-        <div class="tieude">
+        <div class="tieude" style="padding-bottom: 1px;">
             <div class="tieude1">
                 <p>
                 {{$ten}}>>{{$chuong}}
@@ -39,6 +39,15 @@
                 @endif
             </div>
             <div class="tentua">
+                <div class="ml-them-dau">
+                    @if (isset($chuongtruoc))
+                        <a class="ml_them" href="{{$chuongtruoc[0]->ten_chuong}}"> << Chương trước >>  </a>
+                    @endif
+                    <a class="ml_them" href="/truyen/{{Session::get('id_truyen')}}">Mục lục</a>
+                    @if (isset($chuongke))
+                        <a class="ml_them" href="{{$chuongke[0]->ten_chuong}}"><< Chương sau >></a>
+                    @endif  
+                </div>
                 <b class="tentua1">{{$ten}}</b>
                 <p style="margin: 0;">{{$chuong}}</p>
                 <p> Tác giả: <a href="">{{$tacgia[0]->ten_tac_gia}}</a></p>
@@ -59,75 +68,7 @@
                     @endif  
                 </div>
             </div>
-        </div>
-        <div class="binhluan">         
-            <div class="nhanbinhluan">
-                <p style="font-size: x-large;width:90%"><i class="fa fa-commenting" aria-hidden="true" style="color:orange"></i>&nbsp;<b>Bình luận</b></p>
-                <p style="right: auto;">Xếp theo&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></p>
-            </div>
-            <div class="binhluan1">
-                <i class="far fa-comment-dots" aria-hidden="true" style="font-size:100px;margin:auto;color:#c9c9c9"></i><p></p>
-                <div class="binhluan1-1">
-                <form action="xulibinhluan.php">
-                    <textarea name="message" style="width:100%; height:150px;"></textarea>
-                    <br>
-                    <input type="submit" style="float: right;">
-                </form>
-                </div>
-            </div>
-            @if (isset($binhluan))
-                @foreach ($binhluan as $bl)
-                    <div class="listcmt">
-                        <div class="m-avatar">
-                            <div class="avatar">
-                                <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-                            </div> 
-                        </div>
-                        <div class="comment">
-                            <div class="comment-box2">
-                                <div class="cmt-name">
-                                    <b>{{$bl->ten_thanh_vien}}</b>
-                                </div>
-                                <div class="cmt-nd">
-                                    <p>{{$bl->nd_binh_luan}}</p>       
-                                </div>
-                                <div class="cmt-rep">
-                                    <div style="margin-left: auto;">
-                                    <b>Cử báo</b>
-                                    <b>Trả lời</b>
-                                    </div>
-                                </div>
-                            </div>
-                            @foreach ($binhluan as $blcon)
-                                @if ($blcon->id_binh_luan_con==$bl->id_binh_luan)
-                                    <div class="cmt-con">
-                                        <div class="m-avatar">
-                                            <div class="avatar">
-                                                <img src="{{asset('/hinhanh/1617558780_cây đậu.jpg')}}" alt="">
-                                            </div> 
-                                        </div>
-                                        <div class="comment-box3">
-                                            <div class="cmt-name">
-                                                <b>{{$blcon->ten_thanh_vien}}</b>
-                                            </div>
-                                            <div class="cmt-nd">
-                                                <p>{{$blcon->nd_binh_luan}}</p>       
-                                            </div>
-                                            <div class="cmt-rep">
-                                                <div style="margin-left: auto;">
-                                                <b>Cử báo</b>
-                                                <b>Trả lời</b>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif 
-                            @endforeach
-                        </div>
-                    </div> 
-                @endforeach 
-            @endif
-        </div>
+        </div>       
     </div>
 </div>
 <script>

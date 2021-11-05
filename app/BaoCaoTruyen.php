@@ -21,7 +21,8 @@ class BaoCaoTruyen extends Model
             ->insert([
                 'user_id'=>$id_user,
                 'truyen_id'=>$id,
-                'nd_bao_cao'=>$noidung
+                'nd_bao_cao'=>$noidung,
+                'loai_bao_cao'=>'Báo lỗi'
             ]);
     }
     public function all_baocao(){
@@ -45,4 +46,23 @@ class BaoCaoTruyen extends Model
                     ->paginate(20);
                     return $baocao;
     }
+    public function add_baocao($id,$id_user,$noidung){
+        DB::table('bao_cao_truyen')
+            ->insert([
+                'user_id'=>$id_user,
+                'truyen_id'=>$id,
+                'nd_bao_cao'=>$noidung,
+                'loai_bao_cao'=>'Báo cáo'
+            ]);
+        
+    }
+    public function get_truyen_ten($ten){
+        $baocao = DB::table('bao_cao_truyen')
+                    ->join('users','users.id','=','bao_cao_truyen.user_id')
+                    ->join('truyen','truyen.truyen_id','=','bao_cao_truyen.truyen_id')
+                    ->where('truyen.ten_truyen','like','%'.$ten.'%')
+                    ->paginate(20);
+                    return $baocao;
+    }
+
 }

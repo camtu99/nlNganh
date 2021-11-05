@@ -1,10 +1,10 @@
 @extends('layouttruyen')
 @section('content')
 @isset($user)
-  <form action="doimatkhau/{{$user->email}}" method="post">
+  <form action="/doimatkhau/{{$user[0]->email}}" method="post">
     @csrf
     <div style="display:flex;margin:10px">
-      <label for="fname" style="width:30%;">Email: {{$user->email}}</label><br>
+      <label for="fname" style="width:30%;">Email: {{$user[0]->email}}</label><br>
     </div>
     <div style="display:flex;margin:10px"> 
       <label for="lname" style="width:30%">Mật khẩu mới:</label><br>

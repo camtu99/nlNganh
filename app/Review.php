@@ -34,6 +34,7 @@ class Review extends Model
              ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
              ->join('users','users.id','=','review.user_id')
              ->orderBy('ngay_rv','desc')
+             ->where('tinh_trang_rv','=','ok')
              ->paginate(2);
              return $review;
 
@@ -78,4 +79,9 @@ class Review extends Model
         return $review;
 
      }
+     public function xoareview($id){
+         
+         DB::select('UPDATE `review` SET`tinh_trang_rv`= '."'no'".' WHERE `id_review`= ?', [$id]);
+     }
+     
 }

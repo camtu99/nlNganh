@@ -31,9 +31,10 @@
                     <p class="khung-item"><a href="/admin/truyen">Quản lý truyện</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/truyen">Cử báo truyện</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/taikhoan">Cử báo tài khoản</a></p>
+                    <p class="khung-item"><a href="/admin/truyen/danhgia">Quản lý đánh giá</a></p>
                     <p class="khung-item"><a href="/admin/thongbao">Quản lí thông báo</a></p>
                     <p class="khung-item"><a href="/admin/thongke">Thống kê Review,bình luận</a></p>
-                    <p class="khung-item"><a href="/admin/thongketruycap">Thống kê Lượt truy cập</a></p>
+                    <p class="khung-item"><a href="/admin/danhsachcam">Quản lý danh sách cấm</a></p>
                 </div>
             </div>
             <div class="col-md-10">

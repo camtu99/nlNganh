@@ -6,9 +6,12 @@ use App\BinhLuan;
 use App\Review;
 use App\BaoCaoTruyen;
 use App\CuBaoUsers;
+use App\HopThu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Truycap;
+use App\Truyen;
+use App\User;
 
 class CubaoController extends Controller
 {
@@ -128,5 +131,45 @@ class CubaoController extends Controller
           return redirect()->back();
         }
     }
-
+    public function baocao_truyen(Request $req,$id){
+        $noidung = '';
+        if($req->chinhtri){
+            $noidung = $req->chinhtri;
+        }
+        if($noidung==''){
+            $noidung = $req->chuanmuc;
+        }else{
+            if($req->chuanmuc){
+                $noidung =  $noidung.', '.$req->chuanmuc;
+            }           
+        }
+        if( $noidung==''){
+            $noidung = $req->saithongtin;
+        }else{
+            if($req->saithongtin){
+                $noidung =  $noidung.', '.$req->saithongtin;
+            }           
+        }
+        if( $noidung==''){
+            $noidung = $req->bacao;
+        }else{
+            if($req->bacao){
+                $noidung =  $noidung.', '.$req->bacao;
+            } 
+           
+        }
+        $id_user = Session::get('id_tk');
+        $baocao = new BaoCaoTruyen();
+        $baocao = $baocao->add_baocao($id,$id_user,$noidung);
+        $thongbao_user = new Truyen();
+        $thongbao_user = $thongbao_user->getiduser($id);
+        $thongbao_id = $thongbao_user[0]->user_id;
+        $tentruyen = $thongbao_user[0]->ten_truyen;
+        $mess = '<div style="padding-bottom: 10px;">Truyện <b>'.$tentruyen.'</b> đã bị cử báo</div>';
+        $mess = $mess .'<div><p style="margin: 0;">Nội dung báo cáo:</p><p style="background-color: #e1e1e1;padding: 10px;">'.$noidung.'</p></div>';
+        $hopthu = new HopThu();
+        $hopthu = $hopthu->create_thongbaotruyen($thongbao_id,$mess);
+        Session::flash('success','Đã Báo cáo');
+        return redirect()->back();
+    }
 }

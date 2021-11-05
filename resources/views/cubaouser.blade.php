@@ -65,7 +65,7 @@
                             </div>
                         @else
                             <div>
-                                <form action="/cubao/tinhtrang/{{$item->id_bao_cao}}" method="get"style="display: flex;width: 100%;">
+                                <form action="/cubao/tinhtrang/{{$item->id_cu_bao}}" method="get"style="display: flex;width: 100%;">
                                    
                                     <div class="form-group"style="width: 100%;margin: 10px;">
                                         <select class="form-control" id="sel1"  name='tinhtrang'>

@@ -35,11 +35,36 @@
                   <div class="dropdown1">
                     <span><a class="nav-link" href="#">Thể loại</a></span>
                     <div class="dropdown-content1">
-                      <div style="">
-                        @foreach ($theloai as $tl)
-                          <p><a href="/theloai/{{$tl->ten_the_loai}}">{{$tl->ten_the_loai}}</a></p>
-                        @endforeach
-                      </div>                
+                      <div class="theloai111">
+                        <p><a href="/theloai/Cổ đại"> Cổ đại</a> </p>                     
+                        <p><a href="/theloai/Hiện đại">Hiện đại</a></p>
+                       <p><a href="/theloai/Cổ đại">Tương lai</a>  </p>                    
+                        <p><a href="/theloai/Hiện đại">Dân quốc</a></p>
+                      </div> 
+                      <div class="theloai111">
+                        <p><a href="/theloai/Tình cảm"> Tình cảm</a>    </p>                  
+                       <p> <a href="/theloai/Võ hiệp">Võ hiệp</a></p>
+                       <p><a href="/theloai/Tiên hiệp">Tiên hiệp</a>  </p>                    
+                       <p><a href="/theloai/Trinh thám">Trinh thám</a></p>
+                      </div> 
+                      <div class="theloai111">
+                        <p><a href="/theloai/Kinh dị"> Kinh dị</a>    </p>                  
+                       <p> <a href="/theloai/Võng du">Võng du</a></p>
+                       <p><a href="/theloai/Huyền huyễn">Huyền huyễn</a>  </p>                    
+                       <p><a href="/theloai/Hài hước">Hài hước</a></p>
+                      </div> 
+                      <div class="theloai111">
+                        <p><a href="/theloai/Dị thế"> Dị thế</a>    </p>                  
+                       <p> <a href="/theloai/Hồng hoang">Hồng hoang</a></p>
+                       <p><a href="/theloai/Tinh tế">Tinh tế</a>  </p>                    
+                       <p><a href="/theloai/Mạt thế">Mạt thế</a></p>
+                      </div> 
+                      <div class="theloai111">
+                        <p><a href="/theloai/Phong thủy"> Phong thủy</a>    </p>                  
+                       <p> <a href="/theloai/Phá án">Phá án</a></p>
+                       <p><a href="/theloai/Trộm mộ">Trộm mộ</a>  </p>                    
+                       <p><a href="/theloai/Thể thao">Thể thao</a></p>
+                      </div>                      
                     </div>
                   </div>
                 </li>
@@ -341,7 +366,7 @@
       }
       </script>
       <!-- Messenger -->
-      @if (Session::get('email_tk')!=$user[0]->email)
+      @if (Session::get('email_tk')!=$user[0]->email && Session::has('id_tk'))
         <div id="messenger" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
