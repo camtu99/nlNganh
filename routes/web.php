@@ -30,6 +30,8 @@ Route::get('truyen/{id}/{chuong}','Noidung@chitiet_chuong');
 Route::post('suatruyen/{id}','Noidung@tinhtrang_truyen');
 Route::post('/suatruyen/theloai/{id}','Noidung@theloai_truyen');
 Route::get('/truyen/hientrang/{id}/{trang}','Noidung@hientrang_truyen');
+Route::post('/hagtag/suatag/{id}','TruyenController@suaTag');
+Route::get('/truyen/hagtag/xoa/{idtag}','TruyenController@suahagtag');
 //tìm kiếm truyện theo tac giả. tên, thể loại, nâng cao
 Route::get('/trangthai/{tinhtrang}','CongViecController@tinhtrang');
 Route::get('/tacgia/{tentacgia}','CongViecController@timkiem_tacgia');
@@ -89,6 +91,7 @@ Route::post('/binhluan/binhluan/{id}/{id_bl}/{id_truyen}','BinhluanController@bi
 Route::post('/messenger/{email}/{id}','UserController@messenger');
 Route::get('/hopthu/user','HopThuController@index');
 Route::get('/hopthu/user/{name}/{hopthu_id}','HopThuController@chitiet');
+Route::get('/thuvien/themtruyen/{idthuvien}/{idtruyen}','TruyenController@themthuvien');
 //Cử báo review,bình luận, truyện
 Route::get('review/cubao/{id_tk}/{id_review}/{noidung}','CubaoController@cubao');
 Route::post('/baoloi/{id}','Noidung@baoloitruyen');

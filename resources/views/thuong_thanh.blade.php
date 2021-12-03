@@ -1,7 +1,7 @@
 @extends('layouttruyen')
 @section('content')
 <div>
-    <p>Thương thành ></p>
+    <p>Khu mua sắm >></p>
     <hr>
     <div style="    margin-top: 1rem;
     border: 2px solid #d6e5e8;

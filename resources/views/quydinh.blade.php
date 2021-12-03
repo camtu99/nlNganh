@@ -1,6 +1,6 @@
 @extends('layouttruyen')
 @section('content')
-    <div style="background-color: #dae1e9;padding: 30px;">
+    <div style="background-color: #73dff745;padding: 30px;">
         <h1>Những quy định về hoạt động trên Nhã Các</h1>
         <div style="background-color: white;padding: 30px;margin-bottom: 25px;">Nhã Các cung cấp cho người sử dụng một sân chơi cùng rất nhiều công cụ. Sự phức tạp của các công cụ tạo ra nhiều bug trong hệ thống và khe hở để lợi dụng. Do đó mà bên cạnh việc fix lỗi, cải thiện tính năng, BQT còn phải không ngừng tiếp thu ý kiến phản hồi từ cộng đồng và xây dựng một bộ quy định để ứng đối với các kiểu vi phạm, lòn lách. BQT chung tay với thành viên xây dựng quy định này với mong muốn giữ gìn một môi trường tốt đẹp, giảm thiểu vi phạm, sai lầm, tăng chất lượng truyện convert, tạo tiện lợi cho người nhúng và người đọc.
 

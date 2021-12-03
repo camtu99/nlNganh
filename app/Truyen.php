@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 class Truyen extends Model
 {
@@ -47,7 +49,7 @@ class Truyen extends Model
     public function user(){
         return $this -> hasMany('App\User','user_id','id');
     }
-    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung)
+    public function insert_truyen($ten,$link,$hinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung,$tomtat)
     {
         $check =DB::table('truyen') 
                     -> where('ten_truyen','=',$ten)
@@ -63,7 +65,8 @@ class Truyen extends Model
                 'ngay_tao' => $ngaytao,
                 'luot_doc'=> 0,
                 'user_id'=>$user,
-                'trang_nhung'=>$trangnhung
+                'trang_nhung'=>$trangnhung,
+                'tom_tat'=>$tomtat
             ]);
         }
         $tichphan=DB::table('users')
@@ -259,12 +262,26 @@ class Truyen extends Model
         return $truyen;
     }
     public function timtruyen_tomtat($tomtat){
-        $truyen = DB::table('truyen')
-        ->join('users','users.id','=','truyen.user_id')
-        ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
-                ->where('tom_tat','like','%'.$tomtat.'%')
-                ->get();
-        return $truyen;
+        ##########################################################
+        $res = Http::post('http://127.0.0.1:5000/sumerize', [
+            'text' => $tomtat,
+        ]);
+        #sumerize
+        $result="";
+        if ($res->getStatusCode() == 200) {
+            $result = json_decode($res->getBody());
+        } 
+        elseif ($res->getStatusCode() == 404) {
+            $result = redirect()->route('/');
+        }
+        echo $result->tentruyen; # kết quả trả về từ flask api
+        ##########################################################
+        // $truyen = DB::table('truyen')
+        // ->join('users','users.id','=','truyen.user_id')
+        // ->join('tac_gia','tac_gia.tac_gia_id','=','truyen.tac_gia_id')
+        //         ->where('tom_tat','like','%'.$tomtat.'%')
+        //         ->get();
+        // return $truyen;
     }
     public function seachAll($name){
         $truyen = DB::table('truyen')
@@ -292,4 +309,5 @@ class Truyen extends Model
                     ->paginate(20);
                     return $truyen;
     }
+    
 }

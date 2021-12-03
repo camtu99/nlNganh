@@ -98,7 +98,7 @@
                     <div class="dropdown-content1">
                       <div style="">
                        <p><a href="/bang-xep-hang">Bảng xếp hạng tích phân</a></p>
-                      <p> <a href="/thuong-thanh">Thương thành</a></p>
+                      <p> <a href="/thuong-thanh">Khu mua sắm</a></p>
                       </div>                
                     </div>
                   </div>
@@ -190,13 +190,13 @@
           <div class="carousel-inner">
           <div class="carousel-item active">
             <a href="gfdgsd"> 
-            <img src="https://media-cdn.laodong.vn/Storage/NewsPortal/2021/5/26/913299/Ngan-Ha25.jpg" alt="Chicago" width="100%" height="400px"> </a > 
+            <img src="{!! asset('hinhanh/anh_cam.jpg') !!}" alt="Chicago" width="100%" height="400px"> </a > 
             </div>
             <div class="carousel-item">
-              <img src="https://media-cdn.laodong.vn/Storage/NewsPortal/2021/5/26/913299/Ngan-Ha25.jpg" alt="Chicago"  width="100%"height="400px">
+              <img src="{!! asset('hinhanh/2-2-1068x427.jpg') !!}" alt="Chicago"  width="100%"height="400px">
             </div>
             <div class="carousel-item">
-              <img src="https://media-cdn.laodong.vn/Storage/NewsPortal/2021/5/26/913299/Ngan-Ha25.jpg" alt="New York"  width="100%"height="400px">
+              <img src="{!! asset('hinhanh/ngon-tinh-hoc-duong-1.jpg') !!}" alt="New York"  width="100%"height="400px">
             </div>
           </div>
           <a class="carousel-control-prev" href="#demo" data-slide="prev">

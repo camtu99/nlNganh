@@ -247,7 +247,7 @@ class CongViecController extends Controller
             if($truyen){
                 $truyen6 = array();$ti=0;
                 $truye9 = new Truyen();
-                $truye9 = $truye9->timtruyen_tomtat($req->tomtat);
+              //  $truye9 = $truye9->timtruyen_tomtat($req->tomtat);
                 foreach($truyen as $tr){
                     foreach($truye9 as $tr6){
                         if($tr6->truyen_id==$tr->truyen_id){
@@ -352,12 +352,20 @@ class CongViecController extends Controller
     }
     public function thongke(){
         $tk_theloai = new TagTruyen();
-        $tk_theloai = $tk_theloai->thongke_theloai();
-        $thongke1 =  '["Tên loại", "lượt xem", { role: "style" } ]';
+        $tk_theloai = $tk_theloai->thongke_theloaisoluongtruyen();
+        $thongke1 =  '["Tên loại", "Số lượng truyện", { role: "style" } ]';
+        $checkmau=false;
         foreach($tk_theloai as $tk){
+            if($checkmau){
+                $mau = '#edbc3e';
+                $checkmau = false;
+            }else{
+                $mau = '#14b394';
+                $checkmau = true;
+            }
             $tk1 =  $tk->ten_the_loai   ;
-            $tk2 = $tk->luotdoc;
-            $thongke1 = $thongke1. ',["'.$tk1.'", '.$tk2.', "#14b394" ]';
+            $tk2 = $tk->soluong;
+            $thongke1 = $thongke1. ',["'.$tk1.'", '.$tk2.', "'.$mau .'" ]';
         }
         $thongke_theloai = '   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
         google.charts.load("current", {packages:["corechart"]});
@@ -379,19 +387,73 @@ class CongViecController extends Controller
                            2]);
     
           var options = {
-            title: "Xếp hạng thể loại",
-            width: 800,
-            height: 400,
-            bar: {groupWidth: "95%"},
+            title: "Truyện",
+            width: 1600,
+            height: 350,
+            bar: {groupWidth: "100%"},
             legend: { position: "none" },
           };
           var chart = new google.visualization.ColumnChart(document.getElementById("theloai"));
           chart.draw(view, options);
       }
       </script>';
+
+//     $thongke_theloai=' <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+//   <script type="text/javascript">
+//     google.charts.load("current", {packages:["corechart"]});
+//     google.charts.setOnLoadCallback(drawChart);
+//     function drawChart() {
+//       var data = google.visualization.arrayToDataTable([
+//         ["Element", "Density", { role: "style" } ],
+//         ["Ngôn tình", 14, "silver"],
+//         ["Nam sinh", 11, "silver"],
+//         ["Đam mỹ", 6, "silver"],
+//         ["Nữ tôn", 7, "silver"],
+//         ["Bách hợp", 5,  "silver"],
+//         ["Không CP", 2, "silver"],
+//         ["Cổ đại", 4, "silver"],
+//         ["Hiện đại", 19.30, "silver"],
+//         ["Tương lai", 21.45, "silver"],
+//         ["HE", 8, "silver"  ],
+//         ["SE", 8.94, "silver"],
+//         ["OE", 10.49, "silver"],
+//         ["Tình cảm", 19.30, "silver"],
+//         ["Võ hiệp", 21.45, "silver"],
+//         ["Tiên hiệp",3 ,"silver" ],
+//         ["Kinh dị", 8.94, "silver"],
+//         ["Võng du", 10.49, "silver"],
+//         ["Khoa học viễn tưởng", 19.30, "silver"],
+//         ["Cẩu huyết", 21.45, "silver"],
+//         ["Ngược luyến", 3,  "silver"],
+//         ["Thanh thủy văn", 8.94, "silver"],
+//         ["Đoản văn", 10.49, "silver"],
+//         ["Dị thế", 19.30, "silver"],
+//         ["Mạt thế", 21.45, "silver"],
+//         ["Huyền huyễn", 21.45, "silver"]
+//       ]);
+
+//       var view = new google.visualization.DataView(data);
+//       view.setColumns([0, 1,
+//                        { calc: "stringify",
+//                          sourceColumn: 1,
+//                          type: "string",
+//                          role: "annotation" },
+//                        2]);
+
+//       var options = {
+//         title: "Density of Precious Metals, in g/cm^3",
+//         width: 1500,
+//         height: 400,
+//         bar: {groupWidth: "95%"},
+//         legend: { position: "none" },
+//       };
+//       var chart = new google.visualization.ColumnChart(document.getElementById("theloai"));
+//       chart.draw(view, options);
+//   }
+//   </script>';
       $tk_theloai11 = new TagTruyen();
         $nam = date("Y");
-        $tk_theloai11 = $tk_theloai11->thongke_theloai_theonam($nam);
+        $tk_theloai11 = $tk_theloai11->thongke_theloai();
         $thongke11 =  '["Tên loại", "lượt xem", { role: "style" } ]';
         foreach($tk_theloai11 as $tk){
             $tk111 =  $tk->ten_the_loai   ;
@@ -418,9 +480,9 @@ class CongViecController extends Controller
                            2]);
     
           var options = {
-            title: "Xếp hạng thể loại",
-            width: 800,
-            height: 400,
+            title: "Lượt đọc",
+            width: 1600,
+            height: 340,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
           };

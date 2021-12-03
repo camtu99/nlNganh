@@ -38,6 +38,15 @@
             <div>
               <?php echo $gioithieu;?>
             </div>
+            <div style="display: flex">
+              @isset($hagtag_truyen)
+
+              <b>Tag: </b>
+                  @foreach ($hagtag_truyen as $tag)
+                      <a type="button" href="/tag/{{$tag->ten_tag}}" style="padding: 2px 10px;background-color: #b0e0e652;border-radius: 10%;color: #08086dc7;margin: 0 5px;">{{$tag->ten_tag}}</a>
+                  @endforeach
+              @endisset
+            </div>
             <div style="display: flex;padding:10px;">
               <div class="name1-1">
                 <a href="#mucluc" class="name1"><i class="fas fa-th-list"></i></a>
@@ -54,6 +63,7 @@
                     <ul class="dropdown-menu">
                       <p data-toggle="modal" data-target="#trang-thai"type="button">Thay đổi trạng thái</p>
                       <p  data-toggle="modal" data-target="#the-loai"type="button">Thay đổi thể loại</p>
+                      <p  data-toggle="modal" data-target="#tag"type="button">Thay đổi tag</p>
                     </ul>
                   </div>
                 </div>                  
@@ -67,7 +77,7 @@
                       <ul class="dropdown-menu">
                         @if($thuvien)
                             @foreach ($thuvien as $tv)
-                                <p style="text-align: center"><a style="color: black;" href="/thuvien/themtruyen/{{$tv->id_thu_vien}}/{{$truyen[0]->truyen_id}}">{{$tv->ten_thu_vien}}</a></p>
+                                <p style="text-align: center"><a style="color: black;" href="/thuvien/them/{{$tv->id_thu_vien}}/{{$truyen[0]->truyen_id}}">{{$tv->ten_thu_vien}}</a></p>
                             @endforeach
                         @endif
                         <p style="text-align: center" data-toggle="modal" data-target="#add-ds"type="button">Tạo danh sách đọc</p>
@@ -179,7 +189,7 @@
              0/5    
             @endif
           </div>       
-          <span>38 đánh giá &amp; 3 nhận xét</span>
+          <span>{{$countdanhgia}} lượt đánh giá </span>
         </div>
       </div>
       <div class="col-5">
@@ -608,14 +618,14 @@
     </div>
     <div class="modal fade" id="the-loai" role="dialog">
       <div class="modal-dialog">
-        <div class="modal-content" style="    width: 280px;">
+        <div class="modal-content" style="    width: 600px;">
           <div class="modal-body" style="text-align: center">
             <form action="/suatruyen/theloai/{{$truyen[0]->truyen_id}}/" method="post">
               @csrf
-              <div>
+              <div class="row">
                 @if ($dstheloai)
                   @foreach ($dstheloai as $ds)
-                    <div class="form-check">
+                    <div class="form-check col-md-4">
                       <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" name="{{$ds->the_loai_id}}" value="{{$ds->the_loai_id}}">{{$ds->ten_the_loai}}
                       </label>
@@ -623,6 +633,35 @@
                   @endforeach
                 @endif
               </div>
+          <button class="themds" type="submit">Thay đổi</button>
+          <button type="button"class="themds" data-dismiss="modal">Hủy</button></form> 
+          </div>
+        </div>  
+      </div>
+    </div>
+    <div class="modal fade" id="tag" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content" style="    width: 600px;">
+          <div class="modal-body" style="text-align: center">           
+              <div class="row">
+                @if ($hagtag_truyen)
+                <div class="col-md-12"> <h5 style="text-align: start;">Tag</h5> </div>
+                  @foreach ($hagtag_truyen as $ds)
+                    <div class="form-check col-md-4">
+                      <label class="form-check-label" style="padding: 2px 5px; background-color: #11c9cf;color: lightyellow; border-radius: 0.5rem;">
+                        {{$ds->ten_tag}}
+                      </label>
+                      <a href="/truyen/hagtag/xoa/{{$ds->id_hagtag}}" style="color: orange;">Xóa</a>
+                    </div>  
+                  @endforeach
+                @endif
+              </div>
+              <form action="/hagtag/suatag/{{$truyen[0]->truyen_id}}" method="post">
+                @csrf
+                <div class="col-md-12" style="margin: 25px 0;text-align: start;">
+                  <b>Thêm tag: </b> 
+                  <input type="text" name="tag" id="">
+                </div>
           <button class="themds" type="submit">Thay đổi</button>
           <button type="button"class="themds" data-dismiss="modal">Hủy</button></form> 
           </div>

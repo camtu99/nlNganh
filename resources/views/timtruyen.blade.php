@@ -30,7 +30,7 @@
                 <div class="row" 
                 style="width:100%">         
                     <div class="col-md-3">
-                        <b>Giới tính:</b>
+                        <b>Xu hướng:</b>
                     </div>
                     <div class="col-md-9">
                         <div style="display:flex">

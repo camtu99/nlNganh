@@ -22,11 +22,16 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     {{-- Khung hộp thoại --}}
+    <div style="    text-align: end;background-color: #bcdffe;"><a style="color: blueviolet;" href="">Thoát <i class="fas fa-sign-in-alt    "></i></a> </div>
     <div>
         @include('error')
         <div class="row admin">
             <div class="col-md-2" style="padding-right: 0">
                 <div class=" khung-admin">
+                    <div style="width:100%;padding:10px">
+                        <div style="width:100px;    margin: auto;"><img src="{!! asset('hinhanh/admin.jpg') !!}" alt="" style="width:100px;height:100px;border-radius:50%"></div>
+                        
+                    </div>
                     <p class="khung-item"><a href="/admin/thongtin">Quản lý tài khoản</a></p>
                     <p class="khung-item"><a href="/admin/truyen">Quản lý truyện</a></p>
                     <p class="khung-item" type="button" id="cubao"class="collapse"><a href="/admin/cubao/truyen">Cử báo truyện</a></p>
@@ -37,7 +42,7 @@
                     <p class="khung-item"><a href="/admin/danhsachcam">Quản lý danh sách cấm</a></p>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10" style="padding-left: 0;">
                 <div>
                     @section('content')
                         

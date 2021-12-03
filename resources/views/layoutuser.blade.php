@@ -97,7 +97,7 @@
                     <div class="dropdown-content1">
                       <div style="">
                        <p><a href="/bang-xep-hang">Bảng xếp hạng tích phân</a></p>
-                      <p> <a href="/thuong-thanh">Thương thành</a></p>
+                      <p> <a href="/thuong-thanh">Khu mua sắm</a></p>
                       </div>                
                     </div>
                   </div>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use App\BinhLuan;
 use App\CuBaoUsers;
 use App\DanhSachCam;
+use App\Hagtag;
 use App\Review;
 use Illuminate\Http\Request;
 
@@ -76,4 +77,20 @@ class TruyenController extends Controller
         $baocao = $baocao->get_truyen_ten($ten);
         return view('baocaotruyen',compact('baocao'));
     }
+
+    public function suaTag(Request $req,$id){
+        $tag = explode(" ", $req->tag);
+        for ($i=0; $i < count($tag); $i++) {
+            $tagtruyen = $tag[$i]; 
+            $hagtag = new Hagtag();
+            $hagtag = $hagtag->themhagtag($id,$tagtruyen);
+        }
+        return redirect()->back();
+    }
+    public function suahagtag($idtag){
+        $tag = new Hagtag();
+        $tag = $tag->deletehagtag($idtag);
+        return redirect()->back();
+    }
+    
 }

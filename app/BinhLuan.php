@@ -148,6 +148,7 @@ class BinhLuan extends Model
                     ->join('truyen','truyen.truyen_id','=','binh_luan.truyen_id')
                     -> join('users','users.id','=','binh_luan.user_id')
                     ->where('loai_binh_luan','=','Đánh giá sao')
+                    ->orderByDesc('ngay_bl')
                     -> paginate(20);
                     return $binhluan;
     }
@@ -174,6 +175,16 @@ class BinhLuan extends Model
         return $truyen;
     }
     public function xoaBinhLuan($id){
-        DB::select('UPDATE `binh_luan` SET `trang_thai_bl`= '."'no'".' WHERE `id_binh_luan`= ?', [$id]);       
+      //  DB::select('UPDATE `binh_luan` SET `trang_thai_bl`= '."'no'".' WHERE `id_binh_luan`= ?', [$id]); 
+        DB::table('binh_luan')
+            ->where('id_binh_luan','=',$id)
+            ->delete();      
+    }
+    public function countdanhgia($id){
+        $count = DB::table('binh_luan')
+                ->where('truyen_id','=',$id)
+                ->where('loai_binh_luan','=','Đánh giá sao')
+                ->count();
+                return $count;
     }
 }

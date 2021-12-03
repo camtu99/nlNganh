@@ -22,6 +22,12 @@
                 <input style="width:80%;"type="text" name='tacgia' value='<?php echo $tacgia;?>' readonly>
             </div>
             <div class="tao">
+                <label for="" style="width:20%;
+                font-weight: 900;">Mô tả: </label>
+                <textarea style="width:80%;" name="tomtat" rows="8">{{$tomtat}}</textarea>
+               
+            </div>
+            <div class="tao">
                 <label for=""style="width:20%;
                 font-weight: 900;">Hình ảnh: </label>
                 <input type="file" name="hinhanh">
@@ -34,7 +40,7 @@
                         <div class="row" 
                         style="width:100%">         
                             <div class="col-md-3">
-                                <b>Giới tính:</b>
+                                <b>Xu hướng:</b>
                             </div>
                             <div class="col-md-9">
                                 <div style="display:flex">
@@ -329,9 +335,26 @@
                     <hr>
                 </div>
             </div>
+            <div class="tao">
+                <label for=""style="width:20%;
+                font-weight: 900;">Tag: </label>
+                 <div style="width:80%;" id="congtag">
+                    <input type="text" name="tag"> <label for=""> Mỗi tag cách nhau bằng dấu cách</label>                  
+                 </div>
+            </div>
             <div><button type="submit">Nhúng</button></div>
         </form>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function (){
+        var i =1;
+      $("#themtag").click(function(){
+          i = i+1;        
+        $("#congtag").append("<input type="text" name="tag+i+">");
+      });
+    });
+    </script>
     @else
     <div style="">
         <form action="{{URL::to('taotruyen')}}" method="post">
@@ -365,6 +388,7 @@
         
     </div>
     @endif
+
 @endsection
 
 

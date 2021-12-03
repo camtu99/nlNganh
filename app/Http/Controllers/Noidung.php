@@ -15,6 +15,7 @@ use App\TacGia;
 use App\TagTruyen;
 use App\TheLoai;
 use App\Follow;
+use App\Hagtag;
 use App\ThuVien;
 use App\User;
 use App\topic;
@@ -34,6 +35,8 @@ class Noidung extends Controller
       $link = $req -> input('li');
       $ten_truyen = $req->input('tentruyen');
       $tac_gia = $req -> input('tacgia') ;
+      $tag = $req -> input('tag') ;
+      $tomtattruyen = $req->input('tomtat');
       if(substr_count($link,'www.sxyxht.com')==1){
         $chuyenlink ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
         $trangnhung=1;
@@ -73,10 +76,18 @@ class Noidung extends Controller
       $tacgia=$id_tacgia[0]->tac_gia_id;
       $user = Session::get('id_tk');
       $inserttruyen = new Truyen();
-      $inserttruyen = $inserttruyen ->insert_truyen($ten_truyen,$chuyenlink,$gethinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung);
+      $inserttruyen = $inserttruyen ->insert_truyen($ten_truyen,$chuyenlink,$gethinhanh,$tinhtrang,$tacgia,$ngaytao,$user,$trangnhung,$tomtattruyen);
       $id_truyen = new Truyen();
       $id_truyen = json_decode($id_truyen -> get_id_truyen($ten_truyen));
       $truyen=$id_truyen[0]->truyen_id;
+      //thêm hagtag
+      $mangtag = explode(" ",$tag);
+      for($i=0; $i<count($mangtag); $i++){
+        $hagtag=$mangtag[$i];
+        $themhagtag = new Hagtag();
+        $themhagtag = $themhagtag->themhagtag($truyen,$hagtag);
+      }
+      
       //thêm thể loại
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai();
@@ -160,12 +171,15 @@ class Noidung extends Controller
           $chuyenlink ='http://dichtienghoa.com/translate/www.sxyxht.com?u='.$link.'&t=vi';
           $truyen = file_get_html($chuyenlink);
           $tentruyen = $truyen ->find('.btitle',0)->find('h1',0)->plaintext;
+          $tomtat = $truyen->find('.intro',0)->plaintext;
           $tacgia = $truyen -> find('.btitle',0)->find('a',0)->plaintext;
+
         }
         if(substr_count($link,'www.mbtxt.la')==1){
           $chuyenlink ='http://dichtienghoa.com/translate/www.mbtxt.la?u='.$link.'&t=vi';
           $truyen = file_get_html($chuyenlink);
           $tentruyen = $truyen ->find('.booktitle',0)->plaintext;
+          $tomtat = $truyen->find('.bookintro',0)->plaintext;
           $tacgia = $truyen -> find('.booktag',0)->find('a',0)->plaintext;
         }
         if(substr_count($link,'www.ruochenwx.com')==1){
@@ -186,7 +200,7 @@ class Noidung extends Controller
         $follower = $follower->get_follower($id);
         $following = new Follow();
         $following = $following->get_following($id); 
-        return view('taotruyen',compact('tentruyen','tacgia','theloai','taotruyen','link','user','follower','following'));
+        return view('taotruyen',compact('tomtat','tentruyen','tacgia','theloai','taotruyen','link','user','follower','following'));
       }
     }
     
@@ -359,7 +373,13 @@ class Noidung extends Controller
       }
       $theloai = new TheLoai();
       $theloai = $theloai->get_all_theloai(); 
-      return view('chitiettruyen',compact('b','mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai','danhgiasao','diemtrungbinh','danhgiadiem','solan'));
+      // lấy hagtag
+      $hagtag_truyen = new Hagtag();
+      $hagtag_truyen = $hagtag_truyen->get_hagtag($truyen_id);
+      //đếm sl đánh giá
+      $countdanhgia = new BinhLuan();
+      $countdanhgia = $countdanhgia->countdanhgia($truyen_id);
+      return view('chitiettruyen',compact('countdanhgia','hagtag_truyen','b','mucluc','truyen','gioithieu','theloaitruyen','theloai','binhluan','chuongmoi','cung_tacgia','cung_loaitruyen','soluong','thuvien','dstheloai','danhgiasao','diemtrungbinh','danhgiadiem','solan'));
 
     }
     function stt_chuong($id_truyen,$chuong){

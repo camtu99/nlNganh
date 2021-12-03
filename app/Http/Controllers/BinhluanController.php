@@ -62,6 +62,8 @@ class BinhluanController extends Controller
         $res = Http::post('http://127.0.0.1:5000/predict', [
             'text' => $_danhgia,
         ]);
+
+
         #prediction
         $result="";
         if ($res->getStatusCode() == 200) {
@@ -69,7 +71,7 @@ class BinhluanController extends Controller
         } elseif ($res->getStatusCode() == 404) {
             $result = redirect()->route('/');
         }
-        if(($result->prediction=="0" && $_sosao>=3) or ($result->prediction=="1" && $_sosao<3)){
+        if(($result->prediction=="1" && $_sosao>=3) or ($result->prediction=="0" && $_sosao<3)){
             try{
                 #chỗ này insert vô db
                 $danhgia = $danhgia->add_bl_sao($id,$id_user,$req->star,$_danhgia);

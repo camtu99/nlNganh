@@ -8,9 +8,18 @@
                     echo $thongke_theloai11;
             ?>
             @endif
-                <h1>Bảng thống kê lượt đọc theo thể loại truyện</h1>
-                <div style="display: flex">
-                     <div id="theloai" ></div>
+                <div>
+                    <h4 style="background-color: aquamarine;color: currentColor;padding: 5px 0 2px 10px;">Thể loại</h4>
+                    <div id="theloai" ></div>
+                </div>
+                    
+                <div >
+                 <div style="text-align: end;padding: 5px;margin-top: 20px;">
+                     <form action="/action_page.php">
+                        <label for="birthday" style="font-size: larger;font-weight: bold;">Ngày:</label>
+                        <input type="date" id="birthday" name="birthday">
+                        <input type="submit" value="Submit" class="btn btn-success">
+                    </form></div>  
                 <div id="theloaitheonam" ></div>
                 </div>
                

@@ -1,6 +1,6 @@
 @extends('layoutadmin')
 @section('content')
-<div style="margin-left: -15px;background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Quảng cáo</h2></div>
+<div style="background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Quảng cáo</h2></div>
 <div class="cubaotruyen">
     <table style="background-color: #aliceblue;width:100%;">
         <tbody>
@@ -22,20 +22,10 @@
                     <img src="{{$item->hinh_anh_topic}}" alt="">                  
                 </td>
                 <td>
-                                   
+                   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Thay đổi</button>             
                 </td>
             </tr>
-             <tr>
-                <div id="qc{{$item->id_topic}}" class="collapse">
-                    <form action="/admin/thongbao/quangcao" method="post">
-                        @csrf
-                        <td><input type="text" name="ten_topic" required></td>
-                        <td><input style="    width: 100%;" type="url" name="link_topic" required></td>
-                        <td><input type="url" name="hinh_anh_topic" required id=""></td>
-                        <td><button type="submit" class="btn btn-success">Thay đổi</button> </td>   
-                    </form>
-                </div>
-            </tr>   
+              
                                        
                 
             @endforeach
@@ -43,7 +33,7 @@
     </table>
 </div> 
 <hr>
-<div style="margin-left: -15px;background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Thông báo</h2></div>
+<div style="background-color: #c1d6ec;"><h2 style="padding: 5px 15px;color: #4a4949;">Thông báo</h2></div>
 <div class="cubaotruyen">
     <table style="background-color: #aliceblue;width:100%;">
         <tbody>
@@ -57,23 +47,71 @@
                 <td style="text-align: left;padding-left:10px;font-weight: 700;">{{$item->ten_topic}}</td>
                 <td>{{$item->link_topic}}</td>
                 <td>
-                                          
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#qc{{$item->id_topic}}">Thay đổi</button>                           
                 </td>
             </tr>
-            <div id="qc{{$item->id_topic}}" class="collapse">
-                <tr>
-                    <form action="/admin/thongbao/thongbao/{{$item->id_topic}}" method="post">
-                        @csrf
-                        <td style="text-align: left;padding-left:10px;font-weight: 700;"><input type="text" name="ten_topic" required></td>
-                        <td><input type="url" name="link_topic" id="" required></td>
-                        <td>
-                            <button type="submit" class="btn btn-success">Thay đổi</button>    
-                        </td>
-                    </form> 
-                </tr>                             
-            </div>
+            
             @endforeach
         </tbody>
     </table>
-</div>    
+</div>   
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Quảng cáo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="width:100%">
+                <form action="/admin/thongbao/quangcao" method="post">
+                    @csrf
+                    <div>
+                        <label style="width:30%">Tên quảng cáo:</label><input type="text" name="ten_topic" required  style="width:70%">
+                    </div>
+                    <div>
+                        <label  style="width:30%">Link:</label><input type="url" name="link_topic" required  style="width:70%">
+                    </div>
+                    <div>
+                            <label  style="width:30%">Hình ảnh:</label><input type="url" name="hinh_anh_topic" required  style="width:70%">
+                    </div>                                       
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Thay đổi</button>  </form> <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        
+        </div>
+    </div>
+  
+</div> 
+@foreach ($thongbao as $item)
+    <div class="modal fade" id="qc{{$item->id_topic}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Quảng cáo</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="width:100%">
+                    <form action="/admin/thongbao/thongbao/{{$item->id_topic}}" method="post">
+                        @csrf
+                        <div>
+                            <label style="width:30%">Tên Thông báo:</label><input type="text" name="ten_topic" required  style="width:70%">
+                        </div>
+                        <div>
+                            <label style="width:30%">Link:</label><input type="url" name="link_topic"  required  style="width:70%">
+                        </div>
+                       
+                        
+                            
+                        
+                                                      
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Thay đổi</button>  </form> <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>            
+            </div>
+        </div>
+    </div>  
+   
+@endforeach
 @endsection
